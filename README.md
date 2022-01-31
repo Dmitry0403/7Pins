@@ -1,4 +1,5 @@
 # 7Pins
+
 The pet project
 
 Technologies: React, ReactRouter, Webpack, TypeScript (without fromTheBoxSolutions) + ESLint + prettier + sass
@@ -11,8 +12,3 @@ Branch naming convention: taskName-(short-name) (task2-impement-homepage)
 
 Project businessValue: Utility to help keep track of points when playing 7 pins
 Rules of the game: https://www.llb.su/rules/fishki
-
-
-
-
- 
