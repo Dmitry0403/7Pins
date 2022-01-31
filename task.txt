@@ -1,0 +1,11 @@
+Task 1.
+Business value discusiion (questions).
+Setup project:
+- react application with RaactRouter and Typescript (WebPach)
+
+Acceptance criteria:
+command npm run dev should start the development server, open browser with homepage
+with links and pages
+-home(/) with content Welcome to 7Pins!,
+-rules (/rules) with content 7Pins rules,
+-strat(/start) with content Lets start! 
