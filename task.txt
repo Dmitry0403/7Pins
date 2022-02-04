@@ -9,3 +9,12 @@ with links and pages
 -home(/) with content Welcome to 7Pins!,
 -rules (/rules) with content 7Pins rules,
 -strat(/start) with content Lets start! 
+
+Task 2.
+Add Redux to project.
+
+AC: 
+- Redux added like common nata store
+- There is one reducer (TestReducer : {message: ""}) ad two actions kinda ADD_MESSAGE, REMOVE_MESSAGE
+  and UI for testing it (for instance input and 2 buttons for add and delete)
+- All Redux stuffs in src/store with logical organisation
