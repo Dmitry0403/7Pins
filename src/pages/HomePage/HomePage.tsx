@@ -1,9 +1,59 @@
 import css from "./styles.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Input, Button } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { getMessages } from "../../store/TestReducer";
+import { messagesAction } from "../../store/TestReducer";
+import { useState } from "react";
 
-export const HomePage = () => {
+export const HomePage: React.FC = () => {
+    const dispatch = useDispatch();
+    const messages = useSelector(getMessages);
+    const [value, setValue] = useState("");
+
+    const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    };
+
+    const handlerClickSubmit = () => {
+        dispatch(messagesAction.addMessage(value.trim()));
+        setValue("");
+    };
+
+    const handlerClickDelete = (id: string) => {
+        dispatch(messagesAction.removeMessage(id));
+    };
+
     return (
         <div>
             <div className={css.title}> Welcome to 7Pins! </div>
+            <div className={css.inputSection}>
+                <Input
+                    size="middle"
+                    placeholder="message"
+                    value={value}
+                    className={css.input}
+                    prefix={<UserOutlined />}
+                    onChange={handlerChange}
+                />
+
+                <Button size="middle" onClick={handlerClickSubmit}>
+                    Submit
+                </Button>
+            </div>
+            <div className={css.messagesSection}>
+                {messages.map((item) => (
+                    <div className={css.cardMessage} key={item.id}>
+                        <div className={css.message}>{item.itemMessage}</div>
+                        <Button
+                            size="middle"
+                            onClick={() => handlerClickDelete(item.id)}
+                        >
+                            delete
+                        </Button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

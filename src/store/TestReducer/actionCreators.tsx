@@ -5,7 +5,7 @@ export const addMessage = (payload: string) => ({
     payload,
 });
 
-export const removeMessage = (payload: string) => ({
+export const removeMessage = (id: string) => ({
     type: TEST_ACTIONS.REMOVE_MESSAGE,
-    payload,
+    id,
 });
