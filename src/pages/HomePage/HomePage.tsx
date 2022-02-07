@@ -1,4 +1,4 @@
-import css from "./styles.module.css";
+import scss from "./styles.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -26,13 +26,13 @@ export const HomePage: React.FC = () => {
 
     return (
         <div>
-            <div className={css.title}> Welcome to 7Pins! </div>
-            <div className={css.inputSection}>
+            <div className={scss.title}> Welcome to 7Pins! </div>
+            <div className={scss.inputSection}>
                 <Input
                     size="middle"
                     placeholder="message"
                     value={value}
-                    className={css.input}
+                    className={scss.input}
                     prefix={<UserOutlined />}
                     onChange={handlerChange}
                 />
@@ -41,10 +41,10 @@ export const HomePage: React.FC = () => {
                     Submit
                 </Button>
             </div>
-            <div className={css.messagesSection}>
+            <div className={scss.messagesSection}>
                 {messages.map((item) => (
-                    <div className={css.cardMessage} key={item.id}>
-                        <div className={css.message}>{item.itemMessage}</div>
+                    <div className={scss.cardMessage} key={item.id}>
+                        <div className={scss.message}>{item.itemMessage}</div>
                         <Button
                             size="middle"
                             onClick={() => handlerClickDelete(item.id)}

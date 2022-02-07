@@ -5,11 +5,11 @@ import { GamePage } from "../GamePage";
 import { ResultsPage } from "../ResultsPage";
 import { LINKS } from "../../common/routes";
 import "antd/dist/antd.css";
-import css from "./styles.module.css";
+import scss from "./styles.module.scss";
 
 export const App = () => {
     return (
-        <div className={css.wrapper}>
+        <div className={scss.wrapper}>
             <Routes>
                 <Route path={LINKS.home} element={<HomePage />} />
                 <Route path={LINKS.rules} element={<RulesPage />} />
