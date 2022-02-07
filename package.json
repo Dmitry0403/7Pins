@@ -6,7 +6,8 @@
     "scripts": {
         "dev": " webpack server",
         "build": "webpack",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "checkts": "tsc -p ./tsconfig.json --noEmit --skipLibCheck"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
