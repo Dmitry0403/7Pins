@@ -22,6 +22,7 @@ AC:
   UPDATE (2/7/2022)
   - add scss, replace all css files (exclude fonts and reset styles for browser), investigate scss files organization
   - implement the redux toolkit
+  - move app to components folder
   AC:
   - all styles use scss
   - migration to redux-toolkit
