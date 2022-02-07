@@ -1,5 +1,5 @@
 Task 1.
-Business value discusiion (questions).
+Business value discussion (questions).
 Setup project:
 - react application with RaactRouter and Typescript (WebPach)
 
@@ -11,10 +11,23 @@ with links and pages
 -strat(/start) with content Lets start! 
 
 Task 2.
-Add Redux to project.
+Add Redux to the project.
 
 AC: 
-- Redux added like common nata store
+- Redux added like common data store
 - There is one reducer (TestReducer : {message: ""}) ad two actions kinda ADD_MESSAGE, REMOVE_MESSAGE
   and UI for testing it (for instance input and 2 buttons for add and delete)
-- All Redux stuffs in src/store with logical organisation
+- All Redux stuffs in src/store with logical organization
+  
+  UPDATE (2/7/2022)
+  - add scss, replace all css files (exclude fonts and reset styles for browser), investigate scss files organization
+  - implement the redux toolkit
+  AC:
+  - all styles use scss
+  - migration to redux-toolkit
+  - removed unnecessary background images, and other stuff not described in task 1 and 2 
+
+  Task 3:
+  - appConfig.json
+  - HomePage - page with welcome text and big START button and games history (last 10). If local storage contains not completed games - ask the user bout a continuing game
+  - StartPage - inputs for names,(players limit), NextButton
