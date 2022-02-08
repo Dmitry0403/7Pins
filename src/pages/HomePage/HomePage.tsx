@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import scss from "./styles.module.scss";
-import { useDispatch, useSelector } from "react-redux";
 import { Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { getMessages, messagesAction } from "../../store/TestReducer";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+    addMessage,
+    removeMessage,
+    getMessages,
+} from "../../store/testSlice/testSlice";
 
 export const HomePage: React.FC = () => {
-    const dispatch = useDispatch();
-    const messages = useSelector(getMessages);
+    const dispatch = useAppDispatch();
+    const messages = useAppSelector(getMessages);
     const [value, setValue] = useState("");
 
     const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,12 +19,12 @@ export const HomePage: React.FC = () => {
     };
 
     const handlerClickSubmit = () => {
-        dispatch(messagesAction.addMessage(value.trim()));
+        dispatch(addMessage(value.trim()));
         setValue("");
     };
 
     const handlerClickDelete = (id: string) => {
-        dispatch(messagesAction.removeMessage(id));
+        dispatch(removeMessage(id));
     };
 
     return (
@@ -43,7 +47,7 @@ export const HomePage: React.FC = () => {
             <div className={scss.messagesSection}>
                 {messages.map((item) => (
                     <div className={scss.cardMessage} key={item.id}>
-                        <div className={scss.message}>{item.itemMessage}</div>
+                        <div className={scss.message}>{item.title}</div>
                         <Button
                             size="middle"
                             onClick={() => handlerClickDelete(item.id)}
