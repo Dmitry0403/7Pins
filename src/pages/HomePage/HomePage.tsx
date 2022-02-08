@@ -1,10 +1,9 @@
+import React, { useState } from "react";
 import scss from "./styles.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { getMessages } from "../../store/TestReducer";
-import { messagesAction } from "../../store/TestReducer";
-import { useState } from "react";
+import { getMessages, messagesAction } from "../../store/TestReducer";
 
 export const HomePage: React.FC = () => {
     const dispatch = useDispatch();
