@@ -1,3 +1,3 @@
-export const SetPage = () => {
+export const SettingPage = () => {
     return <div>Setting Page</div>;
 };

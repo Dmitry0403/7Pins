@@ -1,1 +1,1 @@
-export { SetPage } from "./SettingPage";
+export { SettingPage } from "./SettingPage";
