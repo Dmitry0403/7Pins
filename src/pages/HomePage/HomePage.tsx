@@ -8,7 +8,7 @@ import { LINKS } from "../../common/routes";
 
 interface GameType {
     game: string;
-    id: string;
+    idGame: string;
     players: {
         name: string;
         idPlayer: string;
@@ -19,7 +19,7 @@ interface GameType {
 let listGames: GameType[] = [
     {
         game: "Mon Dec 29 2021",
-        id: "1",
+        idGame: "1",
         players: [
             { name: "Pavel", idPlayer: "1" },
             { name: "Dima", idPlayer: "2" },
@@ -28,7 +28,7 @@ let listGames: GameType[] = [
     },
     {
         game: "Wed Jan 05 2022",
-        id: "2",
+        idGame: "2",
         players: [
             { name: "Pavel", idPlayer: "3" },
             { name: "Kolya", idPlayer: "4" },
@@ -37,7 +37,7 @@ let listGames: GameType[] = [
     },
     {
         game: "Wed Feb 02 2022",
-        id: "3",
+        idGame: "3",
         players: [
             { name: "Pavel", idPlayer: "5" },
             { name: "Vasya", idPlayer: "6" },
@@ -84,13 +84,13 @@ export const HomePage: React.FC = () => {
                         <div className={scss.listGames}>
                             {listGames.map((item) => (
                                 <Link
-                                    to={LINKS.details}
+                                    to={LINKS.details + "/" + item.idGame}
                                     className={
                                         item.isComplete
                                             ? scss.gameCompleted
                                             : scss.gameUncompleted
                                     }
-                                    key={item.id}
+                                    key={item.idGame}
                                 >
                                     <div className={scss.data}>{item.game}</div>
                                     <div className={scss.players}>

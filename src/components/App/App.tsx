@@ -15,7 +15,10 @@ export const App = () => {
         <div className={scss.wrapper}>
             <Routes>
                 <Route path={LINKS.home} element={<HomePage />} />
-                <Route path={LINKS.details} element={<DetailsPage />} />
+                <Route
+                    path={LINKS.details + LINKS.idGame}
+                    element={<DetailsPage />}
+                />
                 <Route path={LINKS.start} element={<StartPage />} />
                 <Route path={LINKS.setting} element={<SettingPage />} />
                 <Route path={LINKS.game} element={<GamePage />} />
