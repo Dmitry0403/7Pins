@@ -1,5 +1,32 @@
-.game {
+.sectionButton {
+    margin: 20px;
+}
+
+.buttonTitle {
+    margin-bottom: 10px;
+}
+
+.listGames {
+    display: inline-block;
+}
+
+%game-shared {
     display: flex;
+    color: black;
+}
+
+.gameCompleted {
+    @extend %game-shared;
+    &:hover {
+        color: #52c41a;
+    }
+}
+
+.gameUncompleted {
+    @extend %game-shared;
+    &:hover {
+        color: #eb2f96;
+    }
 }
 
 .data {
@@ -8,4 +35,14 @@
 
 .player {
     margin-right: 10px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+.message {
+    padding: 10px;
+    color: #eb2f96;
 }

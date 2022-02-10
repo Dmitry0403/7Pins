@@ -1,7 +1,9 @@
 import { Button } from "antd";
+import { CheckCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
+import classNames from "classnames";
 import { LINKS } from "../../common/routes";
 
 interface GameType {
@@ -11,7 +13,7 @@ interface GameType {
         name: string;
         idPlayer: string;
     }[];
-    isComplit: boolean;
+    isComplete: boolean;
 }
 
 let listGames: GameType[] = [
@@ -22,7 +24,7 @@ let listGames: GameType[] = [
             { name: "Pavel", idPlayer: "1" },
             { name: "Dima", idPlayer: "2" },
         ],
-        isComplit: true,
+        isComplete: true,
     },
     {
         game: "Wed Jan 05 2022",
@@ -31,7 +33,7 @@ let listGames: GameType[] = [
             { name: "Pavel", idPlayer: "3" },
             { name: "Kolya", idPlayer: "4" },
         ],
-        isComplit: false,
+        isComplete: false,
     },
     {
         game: "Wed Feb 02 2022",
@@ -40,7 +42,7 @@ let listGames: GameType[] = [
             { name: "Pavel", idPlayer: "5" },
             { name: "Vasya", idPlayer: "6" },
         ],
-        isComplit: true,
+        isComplete: true,
     },
 ];
 
@@ -53,6 +55,8 @@ export const HomePage: React.FC = () => {
         }
     }, []);
 
+    const isCompleteGame = listGames.find((item) => item.isComplete === false);
+
     return (
         <div className={scss.wrapper}>
             <div className={scss.mainTitle}>Welcome to 7Pins!</div>
@@ -63,29 +67,55 @@ export const HomePage: React.FC = () => {
                 </Button>
             </div>
             <div className={scss.sectionListGames}>
-                <div className={scss.titleListGames}>List of your games:</div>
+                <div className={scss.titleListGames}>
+                    List of your games (view details):
+                </div>
                 {listGames.length === 0 ? (
                     <div className={scss.emptyListGames}>
                         list of your games is empty.
                     </div>
                 ) : (
-                    <div className={scss.listGames}>
-                        {listGames.map((item) => (
-                            <div className={scss.game} key={item.id}>
-                                <div className={scss.data}>{item.game}</div>
-                                <div className={scss.players}>
-                                    players:
-                                    {item.players.map((item) => (
-                                        <span
-                                            className={scss.player}
-                                            key={item.idPlayer}
-                                        >
-                                            {item.name}
-                                        </span>
-                                    ))}
-                                </div>
+                    <div>
+                        {isCompleteGame && (
+                            <div className={scss.message}>
+                                you have uncompleted games
                             </div>
-                        ))}
+                        )}
+                        <div className={scss.listGames}>
+                            {listGames.map((item) => (
+                                <Link
+                                    to={LINKS.details}
+                                    className={
+                                        item.isComplete
+                                            ? scss.gameCompleted
+                                            : scss.gameUncompleted
+                                    }
+                                    key={item.id}
+                                >
+                                    <div className={scss.data}>{item.game}</div>
+                                    <div className={scss.players}>
+                                        players:
+                                        {item.players.map((item) => (
+                                            <span
+                                                className={scss.player}
+                                                key={item.idPlayer}
+                                            >
+                                                {item.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    {item.isComplete ? (
+                                        <div className={scss.icon}>
+                                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                        </div>
+                                    ) : (
+                                        <div className={scss.icon}>
+                                            <MinusCircleTwoTone twoToneColor="#eb2f96" />
+                                        </div>
+                                    )}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
