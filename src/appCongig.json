@@ -1,3 +1,4 @@
 {
-    "initialQuantityInput": 2
+    "minInputsQuantity": 2,
+    "maxInputsQuantity": 5
 }

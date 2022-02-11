@@ -3,22 +3,12 @@ import { CheckCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
-import classNames from "classnames";
 import { LINKS } from "../../common/routes";
-
-interface GameType {
-    game: string;
-    idGame: string;
-    players: {
-        name: string;
-        idPlayer: string;
-    }[];
-    isComplete: boolean;
-}
+import type { GameType } from "../../store/gameSlice";
 
 let listGames: GameType[] = [
     {
-        game: "Mon Dec 29 2021",
+        dateGame: "Mon Dec 29 2021",
         idGame: "1",
         players: [
             { name: "Pavel", idPlayer: "1" },
@@ -27,7 +17,7 @@ let listGames: GameType[] = [
         isComplete: true,
     },
     {
-        game: "Wed Jan 05 2022",
+        dateGame: "Wed Jan 05 2022",
         idGame: "2",
         players: [
             { name: "Pavel", idPlayer: "3" },
@@ -36,7 +26,7 @@ let listGames: GameType[] = [
         isComplete: false,
     },
     {
-        game: "Wed Feb 02 2022",
+        dateGame: "Wed Feb 02 2022",
         idGame: "3",
         players: [
             { name: "Pavel", idPlayer: "5" },
@@ -92,7 +82,9 @@ export const HomePage: React.FC = () => {
                                     }
                                     key={item.idGame}
                                 >
-                                    <div className={scss.data}>{item.game}</div>
+                                    <div className={scss.data}>
+                                        {item.dateGame}
+                                    </div>
                                     <div className={scss.players}>
                                         players:
                                         {item.players.map((item) => (
