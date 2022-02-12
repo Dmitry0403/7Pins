@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { InputsComponent } from "../../components/Input";
 import { Button, notification } from "antd";
-import appConfig from "../../appCongig.json";
+import appConfig from "../../appConfig.json";
 import { useAppDispatch } from "../../store/hooks";
 import { gameActions } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
@@ -39,9 +39,9 @@ export const StartPage: React.FC = () => {
     let [values, setValues] = useState(dataPlayers);
 
     const handlerAddQuantity = () => {
-        if (quantity === maxQuantity) {
+        if (Object.keys(values).length === maxQuantity) {
             notification.open({
-                message: "no more than 5 players",
+                message: `no more than ${maxQuantity} players`,
                 duration: 1.5,
             });
             return;
@@ -62,24 +62,23 @@ export const StartPage: React.FC = () => {
     };
 
     const handlerDispatch = () => {
-        notification.close("closeNotification");
         const players = getDataForDispatch(values);
-        if (Object.keys(players).length < 2) {
+        if (Object.keys(players).length < initialQuantity) {
             notification.open({
-                message: "no less than 2 players",
+                message: `no less than ${initialQuantity} players`,
                 duration: 1.5,
             });
             return;
         }
         dispatch(gameActions.createGame(players));
-        navigate(LINKS.rules);
+        navigate(LINKS.setting);
     };
 
     const handlerSubmit = () => {
-        const isEmptyValue = typeof Object.values(values).find(
+        const emptyValue = typeof Object.values(values).find(
             (item) => item === ""
         );
-        if (isEmptyValue !== "undefined") {
+        if (emptyValue !== "undefined") {
             notification.open({
                 message: "Attention",
                 description: "You have empty lines. Continue?",
@@ -87,7 +86,10 @@ export const StartPage: React.FC = () => {
                     <Button
                         type="primary"
                         size="small"
-                        onClick={handlerDispatch}
+                        onClick={() => {
+                            notification.close("closeNotification");
+                            handlerDispatch();
+                        }}
                     >
                         Confirm
                     </Button>
@@ -95,9 +97,9 @@ export const StartPage: React.FC = () => {
                 key: "closeNotification",
                 onClose: () => notification.close("closeNotification"),
             });
-        } else {
-            handlerDispatch();
+            return;
         }
+        handlerDispatch();
     };
 
     return (
