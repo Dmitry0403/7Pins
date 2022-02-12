@@ -4,38 +4,37 @@ import { UserOutlined } from "@ant-design/icons";
 import type { PlayerType } from "../../pages/StartPage";
 
 interface RepeatType {
-    numTimes: number;
-    children: (i: number) => React.ReactElement;
+    values: PlayerType;
+    children: (i: string) => React.ReactElement;
 }
 
 interface InputsComponentType {
     values: PlayerType;
-    quantity: number;
     handlerChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Repeat: React.FC<RepeatType> = (props) => {
+    const values = props.values;
     let items: React.ReactElement[] = [];
-    for (let i = 1; i < props.numTimes || i === props.numTimes; i++) {
-        items = [...items, props.children(i)];
-    }
+    Object.keys(values).map((key) => {
+        items = [...items, props.children(key)];
+    });
     return <div>{items}</div>;
 };
 
 export const InputsComponent: React.FC<InputsComponentType> = ({
-    quantity,
     values,
     handlerChange,
 }) => {
     return (
-        <Repeat numTimes={quantity}>
-            {(index: number) => (
-                <div className={scss.inputSection} key={index}>
+        <Repeat values={values}>
+            {(key) => (
+                <div className={scss.inputSection} key={key}>
                     <Input
                         size="large"
                         placeholder="player"
-                        name={`name${index}`}
-                        value={values[`name${index}`]}
+                        name={key}
+                        value={values[key]}
                         className={scss.input}
                         prefix={<UserOutlined />}
                         onChange={handlerChange}

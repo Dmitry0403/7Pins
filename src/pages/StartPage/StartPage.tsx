@@ -105,11 +105,7 @@ export const StartPage: React.FC = () => {
     return (
         <div>
             <div className={scss.title}> Player registration</div>
-            <InputsComponent
-                quantity={quantity}
-                values={values}
-                handlerChange={handlerChange}
-            />
+            <InputsComponent values={values} handlerChange={handlerChange} />
             <Button size="middle" onClick={handlerAddQuantity}>
                 add player
             </Button>
