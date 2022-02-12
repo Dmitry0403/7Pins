@@ -1,0 +1,6 @@
+{
+    "minPlayersNumber": 2,
+    "maxPlayersNumber": 5,
+    "minInputLengthInRegistrationForm": 2,
+    "maxInputLengthInRegistrationForm": 10
+}
