@@ -1,1 +1,0 @@
-export { InputsComponent } from "./Input";

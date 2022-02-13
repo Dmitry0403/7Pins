@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
-import { InputsComponent } from "../../components/Input";
-import { Button, notification } from "antd";
+import { Button, Input, notification } from "antd";
 import appConfig from "../../appConfig.json";
 import { useAppDispatch } from "../../store/hooks";
 import { gameActions } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
+import { UserOutlined } from "@ant-design/icons";
 
 export interface PlayerType {
     [key: string]: string;
@@ -105,7 +105,19 @@ export const StartPage: React.FC = () => {
     return (
         <div>
             <div className={scss.title}> Player registration</div>
-            <InputsComponent values={values} handlerChange={handlerChange} />
+            {Object.keys(values).map((key) => (
+                <div className={scss.inputSection} key={key}>
+                    <Input
+                        size="large"
+                        placeholder="player"
+                        name={key}
+                        value={values[key]}
+                        className={scss.input}
+                        prefix={<UserOutlined />}
+                        onChange={handlerChange}
+                    />
+                </div>
+            ))}
             <Button size="middle" onClick={handlerAddQuantity}>
                 add player
             </Button>
