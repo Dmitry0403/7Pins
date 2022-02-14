@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { PlayerType } from "../../pages/StartPage";
-import { v4 as uuidv4 } from "uuid";
+import { nanoid } from "nanoid";
 
 export interface GameType {
     dateGame: string;
@@ -28,13 +28,13 @@ const gameSlice = createSlice({
             const players = Object.values(action.payload).map(
                 (item: string) => ({
                     name: item,
-                    idPlayer: uuidv4(),
+                    idPlayer: nanoid(),
                 })
             );
             return (state = {
                 ...state,
                 dateGame: new Date().toDateString(),
-                idGame: uuidv4(),
+                idGame: nanoid(),
                 players,
             });
         },
@@ -43,4 +43,4 @@ const gameSlice = createSlice({
 
 export const gameActions = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
-export const getGame = (state: RootState) => state.game;
+export const gameSelector = (state: RootState) => state.game;

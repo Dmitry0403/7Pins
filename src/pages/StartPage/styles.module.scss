@@ -1,16 +1,32 @@
-.cardMessage {
-    display: flex;
-    margin-bottom: 5px;
+.wrapper {
+    padding: 20px;
+    text-align: center;
 }
 
-.message {
-    margin-right: 5px;
+.title {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
 }
 
 .inputSection {
-    margin: 10px 0 10px 0;
+    flex-grow: 1;
+}
+
+.inputItem {
+    margin-bottom: 10px;
 }
 
 .input {
-    max-width: 250px;
+    max-width: 200px;
+}
+
+.footerButtons {
+    display: flex;
+    justify-content: space-evenly;
 }

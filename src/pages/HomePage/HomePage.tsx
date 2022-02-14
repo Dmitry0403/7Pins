@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { CheckCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +12,9 @@ let listGames: GameType[] = [
         players: [
             { name: "Pavel", idPlayer: "1" },
             { name: "Dima", idPlayer: "2" },
+            { name: "Pavel", idPlayer: "3" },
+            { name: "Dima", idPlayer: "4" },
+            { name: "Pavel", idPlayer: "5" },
         ],
         isComplete: true,
     },
@@ -49,12 +51,17 @@ export const HomePage: React.FC = () => {
 
     return (
         <div className={scss.wrapper}>
-            <div className={scss.mainTitle}>Welcome to 7Pins!</div>
+            <div className={scss.mainTitle}>
+                Welcome to <span>7Pins!</span>
+            </div>
             <div className={scss.sectionButton}>
                 <div className={scss.buttonTitle}>Start a new game</div>
-                <Button size="large" onClick={() => navigate(LINKS.start)}>
+                <div
+                    className={scss.button}
+                    onClick={() => navigate(LINKS.start)}
+                >
                     Let's go
-                </Button>
+                </div>
             </div>
             <div className={scss.sectionListGames}>
                 <div className={scss.titleListGames}>
@@ -82,29 +89,33 @@ export const HomePage: React.FC = () => {
                                     }
                                     key={item.idGame}
                                 >
-                                    <div className={scss.data}>
-                                        {item.dateGame}
-                                    </div>
-                                    <div className={scss.players}>
-                                        players:
-                                        {item.players.map((item) => (
-                                            <span
-                                                className={scss.player}
-                                                key={item.idPlayer}
-                                            >
-                                                {item.name}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    {item.isComplete ? (
-                                        <div className={scss.icon}>
-                                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                    <div className={scss.listContent}>
+                                        <div className={scss.data}>
+                                            {item.dateGame}
                                         </div>
-                                    ) : (
-                                        <div className={scss.icon}>
-                                            <MinusCircleTwoTone twoToneColor="#eb2f96" />
+                                        <div className={scss.players}>
+                                            players:
+                                            {item.players.map((item) => (
+                                                <span
+                                                    className={scss.player}
+                                                    key={item.idPlayer}
+                                                >
+                                                    {item.name}
+                                                </span>
+                                            ))}
                                         </div>
-                                    )}
+                                    </div>
+                                    <div className={scss.icon}>
+                                        {item.isComplete ? (
+                                            <div>
+                                                <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <MinusCircleTwoTone twoToneColor="#eb5b2f" />
+                                            </div>
+                                        )}
+                                    </div>
                                 </Link>
                             ))}
                         </div>

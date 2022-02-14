@@ -61,6 +61,8 @@ export const StartPage: React.FC = () => {
         }));
     };
 
+    const handlerDelete = () => {};
+
     const handlerDispatch = () => {
         const players = getDataForDispatch(values);
         if (Object.keys(players).length < initialQuantity) {
@@ -103,27 +105,43 @@ export const StartPage: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className={scss.wrapper}>
             <div className={scss.title}> Player registration</div>
-            {Object.keys(values).map((key) => (
-                <div className={scss.inputSection} key={key}>
-                    <Input
-                        size="large"
-                        placeholder="player"
-                        name={key}
-                        value={values[key]}
-                        className={scss.input}
-                        prefix={<UserOutlined />}
-                        onChange={handlerChange}
-                    />
+            <div className={scss.content}>
+                <div className={scss.inputSection}>
+                    {Object.keys(values).map((key) => (
+                        <div className={scss.inputItem} key={key}>
+                            <Input
+                                size="large"
+                                placeholder="player"
+                                name={key}
+                                value={values[key]}
+                                className={scss.input}
+                                prefix={<UserOutlined />}
+                                onChange={handlerChange}
+                            />
+                            <Button
+                                size="large"
+                                danger={true}
+                                onClick={handlerDelete}
+                            >
+                                delete
+                            </Button>
+                        </div>
+                    ))}
+                    <Button size="middle" onClick={handlerAddQuantity}>
+                        add player
+                    </Button>
                 </div>
-            ))}
-            <Button size="middle" onClick={handlerAddQuantity}>
-                add player
-            </Button>
-            <Button size="middle" onClick={handlerSubmit}>
-                start game
-            </Button>
+                <div className={scss.footerButtons}>
+                    <Button size="middle" onClick={() => navigate(LINKS.home)}>
+                        back
+                    </Button>
+                    <Button size="middle" onClick={handlerSubmit}>
+                        start game
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };
