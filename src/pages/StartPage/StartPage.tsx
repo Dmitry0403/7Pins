@@ -6,7 +6,7 @@ import appConfig from "../../appConfig.json";
 import { useAppDispatch } from "../../store/hooks";
 import { gameActions } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 export interface PlayerType {
     [key: string]: string;
@@ -92,7 +92,6 @@ export const StartPage: React.FC = () => {
                 }));
             }
         });
-
         if (!emptyInputs) {
             handlerDispatch();
         }
@@ -121,18 +120,22 @@ export const StartPage: React.FC = () => {
                                     }
                                     name={key}
                                     value={players.values[key]}
-                                    className={scss.input}
                                     prefix={<UserOutlined />}
                                     onChange={handlerChange}
                                 />
                             </div>
                             {isActiveButtons.deleting && (
-                                <Button
-                                    size="large"
+                                <div
+                                    className={scss.icon}
                                     onClick={() => handlerDelete(key)}
                                 >
-                                    delete
-                                </Button>
+                                    <CloseCircleOutlined
+                                        style={{
+                                            fontSize: "25px",
+                                            color: "gray",
+                                        }}
+                                    />
+                                </div>
                             )}
                         </div>
                     ))}
@@ -148,7 +151,6 @@ export const StartPage: React.FC = () => {
                     <Button size="large" onClick={() => navigate(LINKS.home)}>
                         back
                     </Button>
-
                     <Button size="large" onClick={handlerSubmit}>
                         start game
                     </Button>

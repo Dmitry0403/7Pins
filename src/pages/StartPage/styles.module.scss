@@ -27,15 +27,18 @@ $colorRed: #eb5b2f;
     margin-bottom: 10px;
 }
 
-.input {
+%input-shared {
     max-width: 200px;
     margin-right: 5px;
 }
 
+.input {
+    @extend %input-shared;
+}
+
 .error {
+    @extend %input-shared;
     border: solid 2px $colorRed;
-    max-width: 200px;
-    margin-right: 5px;
 }
 
 .addingButton {
@@ -46,4 +49,10 @@ $colorRed: #eb5b2f;
     display: flex;
     justify-content: space-evenly;
     align-items: flex-end;
+}
+
+.icon {
+    &:hover {
+        cursor: pointer;
+    }
 }
