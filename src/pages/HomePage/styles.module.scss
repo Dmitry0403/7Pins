@@ -1,3 +1,6 @@
+$colorRed: #eb5b2f;
+$colorGreen: #52c41a;
+
 .wrapper {
     text-align: center;
     padding: 20px;
@@ -35,6 +38,9 @@
     background-color: rgb(253, 251, 251);
     color: black;
     margin-bottom: 10px;
+    &:hover {
+        box-shadow: 0 0 10px rgb(128, 128, 128);
+    }
 }
 
 .button {
@@ -44,23 +50,20 @@
     padding: 5px 15px 5px 15px;
     &:hover {
         cursor: pointer;
-        box-shadow: 0 0 10px rgb(128, 128, 128);
     }
 }
 
 .gameCompleted {
     @extend %game-shared;
     &:hover {
-        color: #52c41a;
-        box-shadow: 0 0 7px rgb(128, 128, 128);
+        color: $colorGreen;
     }
 }
 
 .gameUncompleted {
     @extend %game-shared;
     &:hover {
-        color: #eb5b2f;
-        box-shadow: 0 0 7px rgb(128, 128, 128);
+        color: $colorRed;
     }
 }
 
@@ -90,5 +93,5 @@
 
 .message {
     padding: 10px;
-    color: #eb5b2f;
+    color: $colorRed;
 }

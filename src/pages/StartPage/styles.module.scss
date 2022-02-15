@@ -1,3 +1,5 @@
+$colorRed: #eb5b2f;
+
 .wrapper {
     padding: 20px;
     text-align: center;
@@ -11,7 +13,7 @@
 .content {
     display: flex;
     flex-direction: column;
-    height: 70vh;
+    height: 60vh;
 }
 
 .inputSection {
@@ -19,14 +21,29 @@
 }
 
 .inputItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 10px;
 }
 
 .input {
     max-width: 200px;
+    margin-right: 5px;
+}
+
+.error {
+    border: solid 2px $colorRed;
+    max-width: 200px;
+    margin-right: 5px;
+}
+
+.addingButton {
+    margin-bottom: 20px;
 }
 
 .footerButtons {
     display: flex;
     justify-content: space-evenly;
+    align-items: flex-end;
 }

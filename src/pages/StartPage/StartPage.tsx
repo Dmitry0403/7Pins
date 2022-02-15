@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
-import { Button, Input, notification } from "antd";
+import { Button, Input } from "antd";
 import appConfig from "../../appConfig.json";
 import { useAppDispatch } from "../../store/hooks";
 import { gameActions } from "../../store/gameSlice";
@@ -12,16 +12,6 @@ export interface PlayerType {
     [key: string]: string;
 }
 
-const getDataForDispatch = (obj: PlayerType) => {
-    let newObj: PlayerType = {};
-    for (let key in obj) {
-        if (obj[key].trim()) {
-            newObj[key] = obj[key];
-        }
-    }
-    return newObj;
-};
-
 export const StartPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -30,114 +20,136 @@ export const StartPage: React.FC = () => {
     const maxQuantity = appConfig.maxInputsQuantity;
 
     let [quantity, setQuantity] = useState(initialQuantity);
+    const [isActiveButtons, setActiveButtons] = useState({
+        adding: true,
+        deleting: true,
+    });
 
     let dataPlayers: PlayerType = {};
     for (let i = 1; i < quantity || i === quantity; i++) {
         dataPlayers[`name${i}`] = "";
     }
 
-    let [values, setValues] = useState(dataPlayers);
+    const [players, setPlayers] = useState({
+        values: dataPlayers,
+        errors: dataPlayers,
+    });
+
+    useEffect(() => {
+        setActiveButtons((prevState) => ({
+            ...prevState,
+            adding:
+                Object.keys(players.values).length === maxQuantity
+                    ? false
+                    : true,
+            deleting:
+                Object.keys(players.values).length === initialQuantity
+                    ? false
+                    : true,
+        }));
+    }, [players]);
 
     const handlerAddQuantity = () => {
-        if (Object.keys(values).length === maxQuantity) {
-            notification.open({
-                message: `no more than ${maxQuantity} players`,
-                duration: 1.5,
-            });
-            return;
-        }
         setQuantity(++quantity);
-        setValues((prevState) => ({
-            ...prevState,
-            [`name${quantity}`]: "",
+        setPlayers((prevState) => ({
+            values: { ...prevState.values, [`name${quantity}`]: "" },
+            errors: { ...prevState.errors, [`name${quantity}`]: "" },
         }));
     };
 
     const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
-        setValues((prevState) => ({
-            ...prevState,
-            [target.name]: target.value,
+        setPlayers((prevState) => ({
+            values: { ...prevState.values, [target.name]: target.value },
+            errors: { ...prevState.errors, [target.name]: "" },
         }));
     };
 
-    const handlerDelete = () => {};
+    const handlerDelete = (key: string) => {
+        delete players.values[key];
+        setPlayers((prevState) => ({
+            ...prevState,
+        }));
+    };
 
     const handlerDispatch = () => {
-        const players = getDataForDispatch(values);
-        if (Object.keys(players).length < initialQuantity) {
-            notification.open({
-                message: `no less than ${initialQuantity} players`,
-                duration: 1.5,
-            });
-            return;
-        }
-        dispatch(gameActions.createGame(players));
+        dispatch(gameActions.createGame(players.values));
         navigate(LINKS.setting);
     };
 
     const handlerSubmit = () => {
-        const emptyValue = typeof Object.values(values).find(
-            (item) => item === ""
-        );
-        if (emptyValue !== "undefined") {
-            notification.open({
-                message: "Attention",
-                description: "You have empty lines. Continue?",
-                btn: (
-                    <Button
-                        type="primary"
-                        size="small"
-                        onClick={() => {
-                            notification.close("closeNotification");
-                            handlerDispatch();
-                        }}
-                    >
-                        Confirm
-                    </Button>
-                ),
-                key: "closeNotification",
-                onClose: () => notification.close("closeNotification"),
-            });
-            return;
+        const emptyInputs = Object.keys(players.values).find((key) => {
+            if (players.values[key] === "") {
+                return key;
+            }
+        });
+
+        Object.keys(players.values).map((key) => {
+            if (players.values[key] === "") {
+                setPlayers((prevState) => ({
+                    ...prevState,
+                    errors: { ...prevState.errors, [key]: "Enter your name" },
+                }));
+            }
+        });
+
+        if (!emptyInputs) {
+            handlerDispatch();
         }
-        handlerDispatch();
     };
 
     return (
         <div className={scss.wrapper}>
-            <div className={scss.title}> Player registration</div>
+            <div className={scss.title}> Players registration</div>
             <div className={scss.content}>
                 <div className={scss.inputSection}>
-                    {Object.keys(values).map((key) => (
+                    {Object.keys(players.values).map((key) => (
                         <div className={scss.inputItem} key={key}>
-                            <Input
-                                size="large"
-                                placeholder="player"
-                                name={key}
-                                value={values[key]}
-                                className={scss.input}
-                                prefix={<UserOutlined />}
-                                onChange={handlerChange}
-                            />
-                            <Button
-                                size="large"
-                                danger={true}
-                                onClick={handlerDelete}
+                            <div
+                                className={
+                                    players.errors[key]
+                                        ? scss.error
+                                        : scss.input
+                                }
                             >
-                                delete
-                            </Button>
+                                <Input
+                                    size="large"
+                                    placeholder={
+                                        players.errors[key]
+                                            ? players.errors[key]
+                                            : "player"
+                                    }
+                                    name={key}
+                                    value={players.values[key]}
+                                    className={scss.input}
+                                    prefix={<UserOutlined />}
+                                    onChange={handlerChange}
+                                />
+                            </div>
+                            {isActiveButtons.deleting && (
+                                <Button
+                                    size="large"
+                                    onClick={() => handlerDelete(key)}
+                                >
+                                    delete
+                                </Button>
+                            )}
                         </div>
                     ))}
-                    <Button size="middle" onClick={handlerAddQuantity}>
-                        add player
-                    </Button>
+                </div>
+                <div className={scss.addingButton}>
+                    {isActiveButtons.adding && (
+                        <Button size="middle" onClick={handlerAddQuantity}>
+                            add player
+                        </Button>
+                    )}
                 </div>
                 <div className={scss.footerButtons}>
-                    <Button size="middle" onClick={() => navigate(LINKS.home)}>
+                    <Button size="large" onClick={() => navigate(LINKS.home)}>
                         back
                     </Button>
-                    <Button size="middle" onClick={handlerSubmit}>
+
+                    <Button size="large" onClick={handlerSubmit}>
                         start game
                     </Button>
                 </div>
