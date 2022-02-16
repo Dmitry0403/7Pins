@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { Button, Input } from "antd";
@@ -6,95 +6,60 @@ import appConfig from "../../appConfig.json";
 import { useAppDispatch } from "../../store/hooks";
 import { gameActions } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
+import { nanoid } from "nanoid";
 import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 export interface PlayerType {
-    [key: string]: string;
+    name: string;
+    id: string;
 }
+
+const minPlayers = appConfig.minPlayersNumber;
+const maxPlayers = appConfig.maxPlayersNumber;
 
 export const StartPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const initialQuantity = appConfig.minInputsQuantity;
-    const maxQuantity = appConfig.maxInputsQuantity;
-
-    let [quantity, setQuantity] = useState(initialQuantity);
-    const [isActiveButtons, setActiveButtons] = useState({
-        adding: true,
-        deleting: true,
-    });
-
-    let dataPlayers: PlayerType = {};
-    for (let i = 1; i < quantity || i === quantity; i++) {
-        dataPlayers[`name${i}`] = "";
-    }
-
-    const [players, setPlayers] = useState({
-        values: dataPlayers,
-        errors: dataPlayers,
-    });
-
-    useEffect(() => {
-        setActiveButtons((prevState) => ({
-            ...prevState,
-            adding:
-                Object.keys(players.values).length === maxQuantity
-                    ? false
-                    : true,
-            deleting:
-                Object.keys(players.values).length === initialQuantity
-                    ? false
-                    : true,
-        }));
-    }, [players]);
-
-    const handlerAddQuantity = () => {
-        setQuantity(++quantity);
-        setPlayers((prevState) => ({
-            values: { ...prevState.values, [`name${quantity}`]: "" },
-            errors: { ...prevState.errors, [`name${quantity}`]: "" },
-        }));
+    const getInitialPlayers = () => {
+        let initialPlayers: PlayerType[] = [];
+        for (let i = 1; i <= minPlayers; i++) {
+            initialPlayers = [...initialPlayers, { name: "", id: nanoid() }];
+        }
+        return initialPlayers;
     };
 
-    const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [players, setPlayers] = useState<PlayerType[]>(getInitialPlayers());
+
+    const numberPlayers = players.length;
+
+    const handleAddInput = () => {
+        setPlayers((prevState) => [...prevState, { name: "", id: nanoid() }]);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
-        setPlayers((prevState) => ({
-            values: { ...prevState.values, [target.name]: target.value },
-            errors: { ...prevState.errors, [target.name]: "" },
-        }));
+        const newPlayers = players.map((item) => {
+            if (item.id === target.name) {
+                item.name = target.value;
+            }
+            return item;
+        });
+        setPlayers(newPlayers);
     };
 
-    const handlerDelete = (key: string) => {
-        delete players.values[key];
-        setPlayers((prevState) => ({
-            ...prevState,
-        }));
+    const handleDelete = (id: string) => {
+        const newPlayers = players.filter((item) => item.id !== id);
+        setPlayers(newPlayers);
     };
 
-    const handlerDispatch = () => {
-        dispatch(gameActions.createGame(players.values));
+    const dispatchPlayersToStore = () => {
+        // dispatch(gameActions.createGame(players.values));
         navigate(LINKS.setting);
     };
 
-    const handlerSubmit = () => {
-        const emptyInputs = Object.keys(players.values).find((key) => {
-            if (players.values[key] === "") {
-                return key;
-            }
-        });
-
-        Object.keys(players.values).map((key) => {
-            if (players.values[key] === "") {
-                setPlayers((prevState) => ({
-                    ...prevState,
-                    errors: { ...prevState.errors, [key]: "Enter your name" },
-                }));
-            }
-        });
-        if (!emptyInputs) {
-            handlerDispatch();
-        }
+    const handleSubmit = () => {
+        dispatchPlayersToStore();
     };
 
     return (
@@ -102,32 +67,22 @@ export const StartPage: React.FC = () => {
             <div className={scss.title}> Players registration</div>
             <div className={scss.content}>
                 <div className={scss.inputSection}>
-                    {Object.keys(players.values).map((key) => (
-                        <div className={scss.inputItem} key={key}>
-                            <div
-                                className={
-                                    players.errors[key]
-                                        ? scss.error
-                                        : scss.input
-                                }
-                            >
+                    {players.map((item) => (
+                        <div className={scss.inputItem} key={item.id}>
+                            <div className={scss.input}>
                                 <Input
                                     size="large"
-                                    placeholder={
-                                        players.errors[key]
-                                            ? players.errors[key]
-                                            : "player"
-                                    }
-                                    name={key}
-                                    value={players.values[key]}
+                                    placeholder={"player"}
+                                    name={item.id}
+                                    value={item.name}
                                     prefix={<UserOutlined />}
-                                    onChange={handlerChange}
+                                    onChange={handleChange}
                                 />
                             </div>
-                            {isActiveButtons.deleting && (
+                            {numberPlayers !== minPlayers && (
                                 <div
                                     className={scss.icon}
-                                    onClick={() => handlerDelete(key)}
+                                    onClick={() => handleDelete(item.id)}
                                 >
                                     <CloseCircleOutlined
                                         style={{
@@ -141,8 +96,8 @@ export const StartPage: React.FC = () => {
                     ))}
                 </div>
                 <div className={scss.addingButton}>
-                    {isActiveButtons.adding && (
-                        <Button size="middle" onClick={handlerAddQuantity}>
+                    {numberPlayers !== maxPlayers && (
+                        <Button size="middle" onClick={handleAddInput}>
                             add player
                         </Button>
                     )}
@@ -151,7 +106,7 @@ export const StartPage: React.FC = () => {
                     <Button size="large" onClick={() => navigate(LINKS.home)}>
                         back
                     </Button>
-                    <Button size="large" onClick={handlerSubmit}>
+                    <Button size="large" onClick={handleSubmit}>
                         start game
                     </Button>
                 </div>

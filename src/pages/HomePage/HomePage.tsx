@@ -1,6 +1,6 @@
 import { CheckCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, generatePath } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { LINKS } from "../../common/routes";
 import type { GameType } from "../../store/gameSlice";
@@ -41,9 +41,11 @@ let listGames: GameType[] = [
 export const HomePage: React.FC = () => {
     const navigate = useNavigate();
 
+    const getItemFromStorage = localStorage.getItem("listGames");
+
     useEffect(() => {
-        if (localStorage.getItem("listGames")) {
-            listGames = JSON.parse(localStorage.getItem("listGames") as string);
+        if (getItemFromStorage) {
+            listGames = JSON.parse(getItemFromStorage as string);
         }
     }, []);
 
@@ -81,7 +83,9 @@ export const HomePage: React.FC = () => {
                         <div className={scss.listGames}>
                             {listGames.map((item) => (
                                 <Link
-                                    to={LINKS.details + "/" + item.idGame}
+                                    to={generatePath(LINKS.details, {
+                                        id: item.idGame,
+                                    })}
                                     className={
                                         item.isComplete
                                             ? scss.gameCompleted

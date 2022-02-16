@@ -1,4 +1,4 @@
 {
-    "minInputsQuantity": 2,
-    "maxInputsQuantity": 5
+    "minPlayersNumber": 2,
+    "maxPlayersNumber": 5
 }
