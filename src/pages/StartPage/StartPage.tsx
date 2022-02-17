@@ -19,6 +19,8 @@ interface PlayerType {
 
 const minPlayers = appConfig.minPlayersNumber;
 const maxPlayers = appConfig.maxPlayersNumber;
+const minLength = appConfig.minInputLength;
+const maxLength = appConfig.maxInputLength;
 
 export const StartPage: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -40,6 +42,7 @@ export const StartPage: React.FC = () => {
     };
 
     const [players, setPlayers] = useState<PlayerType>(getInitialPlayers());
+    const [validation, setValidation] = useState<PlayerType>({});
 
     const numberPlayers = Object.keys(players).length;
 
@@ -53,15 +56,27 @@ export const StartPage: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
+        players[target.name].name = target.value;
+        if (validation[target.name]) {
+            delete validation[target.name];
+        }
         setPlayers((prevState) => ({
             ...prevState,
-            [target.name]: { name: target.value },
+        }));
+        setValidation((prevState) => ({
+            ...prevState,
         }));
     };
 
     const handleDelete = (id: string) => {
         delete players[id];
+        if (validation[id]) {
+            delete validation[id];
+        }
         setPlayers((prevState) => ({
+            ...prevState,
+        }));
+        setValidation((prevState) => ({
             ...prevState,
         }));
     };
@@ -72,8 +87,36 @@ export const StartPage: React.FC = () => {
         navigate(LINKS.setting);
     };
 
+    const getPlayersValidation = () => {
+        Object.keys(players).map((key) => {
+            let error = "";
+            const value = players[key].name.trim();
+            if (value.length === 0) {
+                error = "enter your name";
+            } else if (value.length <= minLength) {
+                error = `at least ${minLength} letters`;
+            } else if (value.length > maxLength) {
+                error = `no more than ${maxLength} letters`;
+            }
+            if (error) {
+                Object.assign(validation, { [key]: { name: error } });
+                players[key].name = "";
+                setPlayers((prevState) => ({
+                    ...prevState,
+                }));
+                setValidation((prevState) => ({
+                    ...prevState,
+                }));
+            }
+        });
+        return Object.keys(validation).length;
+    };
+
     const handleSubmit = () => {
-        dispatchPlayersToStore();
+        const isValid = getPlayersValidation();
+        if (isValid === 0) {
+            dispatchPlayersToStore();
+        }
     };
 
     return (
@@ -83,10 +126,18 @@ export const StartPage: React.FC = () => {
                 <div className={scss.inputSection}>
                     {Object.keys(players).map((id) => (
                         <div className={scss.inputItem} key={id}>
-                            <div className={scss.input}>
+                            <div
+                                className={
+                                    validation[id] ? scss.error : scss.input
+                                }
+                            >
                                 <Input
                                     size="large"
-                                    placeholder={"player"}
+                                    placeholder={
+                                        validation[id]
+                                            ? validation[id].name
+                                            : "player"
+                                    }
                                     name={id}
                                     value={players[id].name}
                                     prefix={<UserOutlined />}

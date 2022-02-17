@@ -1,4 +1,6 @@
 {
     "minPlayersNumber": 2,
-    "maxPlayersNumber": 5
+    "maxPlayersNumber": 5,
+    "minInputLength": 2,
+    "maxInputLength": 10
 }
