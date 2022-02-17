@@ -9,9 +9,12 @@ import { LINKS } from "../../common/routes";
 import { nanoid } from "nanoid";
 import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
-export interface PlayerType {
+export interface NameType {
     name: string;
-    id: string;
+}
+
+interface PlayerType {
+    [id: string]: NameType;
 }
 
 const minPlayers = appConfig.minPlayersNumber;
@@ -21,40 +24,51 @@ export const StartPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const getInitialPlayers = () => {
-        let initialPlayers: PlayerType[] = [];
-        for (let i = 1; i <= minPlayers; i++) {
-            initialPlayers = [...initialPlayers, { name: "", id: nanoid() }];
-        }
-        return initialPlayers;
+    const getInitialPlayers = (): PlayerType => {
+        return Array(minPlayers)
+            .fill("player")
+            .map(() => ({
+                name: "",
+            }))
+            .reduce(
+                (object, item) => ({
+                    ...object,
+                    [nanoid()]: item,
+                }),
+                {}
+            );
     };
 
-    const [players, setPlayers] = useState<PlayerType[]>(getInitialPlayers());
+    const [players, setPlayers] = useState<PlayerType>(getInitialPlayers());
 
-    const numberPlayers = players.length;
+    const numberPlayers = Object.keys(players).length;
 
     const handleAddInput = () => {
-        setPlayers((prevState) => [...prevState, { name: "", id: nanoid() }]);
+        const idPlayer = nanoid();
+        setPlayers((prevState) => ({
+            ...prevState,
+            [idPlayer]: { name: "" },
+        }));
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
-        const newPlayers = players.map((item) => {
-            if (item.id === target.name) {
-                item.name = target.value;
-            }
-            return item;
-        });
-        setPlayers(newPlayers);
+        setPlayers((prevState) => ({
+            ...prevState,
+            [target.name]: { name: target.value },
+        }));
     };
 
     const handleDelete = (id: string) => {
-        const newPlayers = players.filter((item) => item.id !== id);
-        setPlayers(newPlayers);
+        delete players[id];
+        setPlayers((prevState) => ({
+            ...prevState,
+        }));
     };
 
     const dispatchPlayersToStore = () => {
-        // dispatch(gameActions.createGame(players.values));
+        const arrayNames = Object.values(players);
+        dispatch(gameActions.createGame(arrayNames));
         navigate(LINKS.setting);
     };
 
@@ -67,14 +81,14 @@ export const StartPage: React.FC = () => {
             <div className={scss.title}> Players registration</div>
             <div className={scss.content}>
                 <div className={scss.inputSection}>
-                    {players.map((item) => (
-                        <div className={scss.inputItem} key={item.id}>
+                    {Object.keys(players).map((id) => (
+                        <div className={scss.inputItem} key={id}>
                             <div className={scss.input}>
                                 <Input
                                     size="large"
                                     placeholder={"player"}
-                                    name={item.id}
-                                    value={item.name}
+                                    name={id}
+                                    value={players[id].name}
                                     prefix={<UserOutlined />}
                                     onChange={handleChange}
                                 />
@@ -82,7 +96,7 @@ export const StartPage: React.FC = () => {
                             {numberPlayers !== minPlayers && (
                                 <div
                                     className={scss.icon}
-                                    onClick={() => handleDelete(item.id)}
+                                    onClick={() => handleDelete(id)}
                                 >
                                     <CloseCircleOutlined
                                         style={{

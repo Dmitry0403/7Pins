@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { PlayerType } from "../../pages/StartPage";
+import type { NameType } from "../../pages/StartPage";
 import { nanoid } from "nanoid";
 
 export interface GameType {
@@ -24,13 +24,11 @@ const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        createGame: (state, action: PayloadAction<PlayerType>) => {
-            const players = Object.values(action.payload).map(
-                (item: string) => ({
-                    name: item,
-                    idPlayer: nanoid(),
-                })
-            );
+        createGame: (state, action: PayloadAction<NameType[]>) => {
+            const players = action.payload.map((item) => ({
+                name: item.name,
+                idPlayer: nanoid(),
+            }));
             return (state = {
                 ...state,
                 dateGame: new Date().toDateString(),
