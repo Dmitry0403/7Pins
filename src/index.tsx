@@ -4,11 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./components/App";
 import { store } from "./store/store";
 import "./styles/styles.css";
+import { MasterPage } from "./pages/MasterPage";
 
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <MasterPage>
+                <App />
+            </MasterPage>
         </BrowserRouter>
     </Provider>,
     document.getElementById("root")

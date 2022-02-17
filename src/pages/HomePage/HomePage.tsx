@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Link, useNavigate, generatePath } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { LINKS } from "../../common/routes";
+import { Api } from "../../api";
 import type { GameType } from "../../store/gameSlice";
 
 let listGames: GameType[] = [
@@ -41,11 +42,11 @@ let listGames: GameType[] = [
 export const HomePage: React.FC = () => {
     const navigate = useNavigate();
 
-    const getItemFromStorage = localStorage.getItem("listGames");
+    const getItemFromStorage = Api.prototype.getListGames;
 
     useEffect(() => {
         if (getItemFromStorage) {
-            listGames = JSON.parse(getItemFromStorage as string);
+            listGames = JSON.parse(getItemFromStorage as unknown as string);
         }
     }, []);
 

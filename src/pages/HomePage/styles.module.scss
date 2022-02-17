@@ -1,9 +1,7 @@
-$colorRed: #f5805c;
-$colorGreen: #52c41a;
+@import "../../common/palette.scss";
 
 .wrapper {
     text-align: center;
-    padding: 20px;
 }
 
 .mainTitle {
@@ -56,14 +54,14 @@ $colorGreen: #52c41a;
 .gameCompleted {
     @extend %game-shared;
     &:hover {
-        color: $colorGreen;
+        color: $colorComplete;
     }
 }
 
 .gameUncompleted {
     @extend %game-shared;
     &:hover {
-        color: $colorRed;
+        color: $colorUncomplete;
     }
 }
 
@@ -93,5 +91,5 @@ $colorGreen: #52c41a;
 
 .message {
     padding: 10px;
-    color: $colorRed;
+    color: $colorError;
 }

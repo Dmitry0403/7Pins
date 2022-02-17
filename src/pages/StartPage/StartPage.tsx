@@ -54,7 +54,7 @@ export const StartPage: React.FC = () => {
         }));
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
         players[target.name].name = target.value;
         if (validation[target.name]) {
@@ -68,7 +68,7 @@ export const StartPage: React.FC = () => {
         }));
     };
 
-    const handleDelete = (id: string) => {
+    const handleDeleteInput = (id: string) => {
         delete players[id];
         if (validation[id]) {
             delete validation[id];
@@ -112,7 +112,7 @@ export const StartPage: React.FC = () => {
         return Object.keys(validation).length;
     };
 
-    const handleSubmit = () => {
+    const handleSubmitNames = () => {
         const isValid = getPlayersValidation();
         if (isValid === 0) {
             dispatchPlayersToStore();
@@ -124,54 +124,56 @@ export const StartPage: React.FC = () => {
             <div className={scss.title}> Players registration</div>
             <div className={scss.content}>
                 <div className={scss.inputSection}>
-                    {Object.keys(players).map((id) => (
-                        <div className={scss.inputItem} key={id}>
-                            <div
-                                className={
-                                    validation[id] ? scss.error : scss.input
-                                }
-                            >
-                                <Input
-                                    size="large"
-                                    placeholder={
-                                        validation[id]
-                                            ? validation[id].name
-                                            : "player"
-                                    }
-                                    name={id}
-                                    value={players[id].name}
-                                    prefix={<UserOutlined />}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            {numberPlayers !== minPlayers && (
+                    <div className={scss.inputSubSection}>
+                        {Object.keys(players).map((id) => (
+                            <div className={scss.inputItem} key={id}>
                                 <div
-                                    className={scss.icon}
-                                    onClick={() => handleDelete(id)}
+                                    className={
+                                        validation[id] ? scss.error : scss.input
+                                    }
                                 >
-                                    <CloseCircleOutlined
-                                        style={{
-                                            fontSize: "25px",
-                                            color: "gray",
-                                        }}
+                                    <Input
+                                        size="large"
+                                        placeholder={
+                                            validation[id]
+                                                ? validation[id].name
+                                                : "player"
+                                        }
+                                        name={id}
+                                        value={players[id].name}
+                                        prefix={<UserOutlined />}
+                                        onChange={handleChangeName}
                                     />
                                 </div>
+                                {numberPlayers !== minPlayers && (
+                                    <div
+                                        className={scss.icon}
+                                        onClick={() => handleDeleteInput(id)}
+                                    >
+                                        <CloseCircleOutlined
+                                            style={{
+                                                fontSize: "25px",
+                                                color: "gray",
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                        <div className={scss.addingButton}>
+                            {numberPlayers !== maxPlayers && (
+                                <Button size="middle" onClick={handleAddInput}>
+                                    add player
+                                </Button>
                             )}
                         </div>
-                    ))}
-                </div>
-                <div className={scss.addingButton}>
-                    {numberPlayers !== maxPlayers && (
-                        <Button size="middle" onClick={handleAddInput}>
-                            add player
-                        </Button>
-                    )}
+                    </div>
                 </div>
                 <div className={scss.footerButtons}>
                     <Button size="large" onClick={() => navigate(LINKS.home)}>
                         back
                     </Button>
-                    <Button size="large" onClick={handleSubmit}>
+                    <Button size="large" onClick={handleSubmitNames}>
                         start game
                     </Button>
                 </div>

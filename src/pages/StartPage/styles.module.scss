@@ -1,11 +1,7 @@
-$colorRed: #eb5b2f;
-
-.wrapper {
-    padding: 20px;
-    text-align: center;
-}
+@import "../../common/palette.scss";
 
 .title {
+    text-align: center;
     font-size: 35px;
     margin-bottom: 20px;
 }
@@ -17,19 +13,25 @@ $colorRed: #eb5b2f;
 }
 
 .inputSection {
+    position: relative;
     flex-grow: 1;
+}
+
+.inputSubSection {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 .inputItem {
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
     margin-bottom: 10px;
 }
 
 %input-shared {
-    max-width: 200px;
+    max-width: 250px;
     margin-right: 5px;
 }
 
@@ -39,10 +41,12 @@ $colorRed: #eb5b2f;
 
 .error {
     @extend %input-shared;
-    border: solid 2px $colorRed;
+    border: solid 2px $colorError;
 }
 
 .addingButton {
+    display: flex;
+    justify-content: flex-end;
     margin-bottom: 20px;
 }
 
@@ -53,6 +57,9 @@ $colorRed: #eb5b2f;
 }
 
 .icon {
+    position: absolute;
+    left: 100%;
+    top: 20%;
     &:hover {
         cursor: pointer;
     }
