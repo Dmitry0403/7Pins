@@ -91,9 +91,12 @@ export const StartPage: React.FC = () => {
         Object.keys(players).map((key) => {
             let error = "";
             const value = players[key].name.trim();
+            const isString = value.match(/[^A-Za-zА-Яа-я]/);
             if (value.length === 0) {
                 error = "enter your name";
-            } else if (value.length <= minLength) {
+            } else if (isString) {
+                error = `use letters only`;
+            } else if (value.length < minLength) {
                 error = `at least ${minLength} letters`;
             } else if (value.length > maxLength) {
                 error = `no more than ${maxLength} letters`;
