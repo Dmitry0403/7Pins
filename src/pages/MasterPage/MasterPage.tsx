@@ -1,12 +1,12 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import scss from "./styles.module.scss";
 
-interface Props {
-    children: React.ReactChild;
-}
+interface IMasterPageProps {}
 
-export const MasterPage: React.FC<Props> = (props) => {
+export const MasterPage: React.FC = (
+    props: PropsWithChildren<IMasterPageProps>
+) => {
     return (
         <div className={scss.wrapper}>
             <div className={scss.header}>

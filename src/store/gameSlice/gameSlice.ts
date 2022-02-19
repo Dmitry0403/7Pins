@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { NameType } from "../../pages/StartPage";
+import type { NameType } from "../../components/RegistrationForm";
 import { nanoid } from "nanoid";
 
 export interface GameType {
