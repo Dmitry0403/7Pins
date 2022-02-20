@@ -42,3 +42,4 @@ const gameSlice = createSlice({
 export const gameActions = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
 export const gameSelector = (state: RootState) => state.game;
+export const playersSelector = (state: RootState) => state.game.players;

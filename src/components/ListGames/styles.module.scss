@@ -1,0 +1,72 @@
+@import "../../styles/palette.scss";
+
+.listGames {
+    display: inline-block;
+}
+
+%game-shared {
+    display: flex;
+    border: solid 1px black;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+    padding: 5px;
+    background-color: rgb(253, 251, 251);
+    color: black;
+    margin-bottom: 10px;
+    &:hover {
+        box-shadow: 0 0 10px rgb(128, 128, 128);
+    }
+}
+
+.button {
+    @extend %game-shared;
+    display: inline-block;
+    font-size: 20px;
+    padding: 5px 15px 5px 15px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.gameCompleted {
+    @extend %game-shared;
+    &:hover {
+        color: $colorComplete;
+    }
+}
+
+.gameUncompleted {
+    @extend %game-shared;
+    &:hover {
+        color: $colorUncomplete;
+    }
+}
+
+.listContent {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.data {
+    margin-right: 10px;
+}
+
+.players {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.player {
+    margin-right: 10px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+.message {
+    padding: 10px;
+    color: $colorError;
+}

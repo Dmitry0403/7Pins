@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { Button, Input } from "antd";
 import appConfig from "../../appConfig.json";
-import { useAppDispatch } from "../../store/hooks";
-import { gameActions } from "../../store/gameSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { gameActions, playersSelector } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
 import { nanoid } from "nanoid";
 import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
@@ -27,11 +27,15 @@ export const RegistrationForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const playerNames = useAppSelector(playersSelector);
+    let initialPlayers: PlayerType = {};
+
     const getInitialPlayers = (): PlayerType => {
         return Array(minPlayers)
             .fill("player")
             .map(() => ({
                 name: "",
+                error: "",
             }))
             .reduce(
                 (object, item) => ({
@@ -42,7 +46,23 @@ export const RegistrationForm: React.FC = () => {
             );
     };
 
-    const [players, setPlayers] = useState<PlayerType>(getInitialPlayers());
+    const getInitialPlayersFromStore = (): PlayerType => {
+        return playerNames.reduce(
+            (object, item) => ({
+                ...object,
+                [item.idPlayer]: { name: item.name, error: "" },
+            }),
+            {}
+        );
+    };
+
+    useMemo(() => {
+        playerNames[0]
+            ? (initialPlayers = getInitialPlayersFromStore())
+            : (initialPlayers = getInitialPlayers());
+    }, [playerNames]);
+
+    const [players, setPlayers] = useState<PlayerType>(initialPlayers);
     const [validation, setValidation] = useState<string[]>([]);
 
     const numberPlayers = Object.keys(players).length;
@@ -52,8 +72,16 @@ export const RegistrationForm: React.FC = () => {
         const isString = value.match(/[^A-Za-zА-Яа-я\s]/);
         if (isString) {
             error = `use letters only`;
-        } else if (value.length > maxLength) {
+        }
+        if (value.length > maxLength) {
             error = `no more than ${maxLength} letters`;
+        }
+        if (
+            Object.keys(players).find(
+                (key) => players[key].name === value && players[key].name !== ""
+            )
+        ) {
+            error = "this name already exists";
         }
         return error;
     };

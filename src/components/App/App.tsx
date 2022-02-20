@@ -6,6 +6,7 @@ import { SettingPage } from "../../pages/SettingPage";
 import { RulesPage } from "../../pages/RulesPage";
 import { GamePage } from "../../pages/GamePage";
 import { ResultsPage } from "../../pages/ResultsPage";
+import { DetailsPage } from "../../pages/DetailsPage";
 import { LINKS } from "../../common/routes";
 import "antd/dist/antd.css";
 
@@ -14,6 +15,7 @@ export const App: React.FC = () => {
         <div>
             <Routes>
                 <Route path={LINKS.home} element={<HomePage />} />
+                <Route path={LINKS.details} element={<DetailsPage />} />
                 <Route path={LINKS.start} element={<StartPage />} />
                 <Route path={LINKS.setting} element={<SettingPage />} />
                 <Route path={LINKS.game} element={<GamePage />} />

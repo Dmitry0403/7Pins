@@ -23,10 +23,6 @@
     margin-bottom: 10px;
 }
 
-.listGames {
-    display: inline-block;
-}
-
 %game-shared {
     display: flex;
     border: solid 1px black;
@@ -49,47 +45,4 @@
     &:hover {
         cursor: pointer;
     }
-}
-
-.gameCompleted {
-    @extend %game-shared;
-    &:hover {
-        color: $colorComplete;
-    }
-}
-
-.gameUncompleted {
-    @extend %game-shared;
-    &:hover {
-        color: $colorUncomplete;
-    }
-}
-
-.listContent {
-    display: flex;
-    flex-wrap: wrap;
-    flex-grow: 1;
-}
-
-.data {
-    margin-right: 10px;
-}
-
-.players {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.player {
-    margin-right: 10px;
-}
-
-.icon {
-    display: flex;
-    align-items: center;
-}
-
-.message {
-    padding: 10px;
-    color: $colorError;
 }
