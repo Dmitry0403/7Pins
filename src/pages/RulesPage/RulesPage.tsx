@@ -1,3 +1,5 @@
+import React from "react";
+
 export const RulesPage = () => {
-    return <div>7Pins rules</div>;
+    return <div>Game rules</div>;
 };

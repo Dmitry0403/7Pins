@@ -1,62 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
-import { Input, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import {
-    addMessage,
-    removeMessage,
-    getMessages,
-} from "../../store/testSlice/testSlice";
+import { LINKS } from "../../common/routes";
+import { MasterPage } from "../MasterPage";
+import { ListGames } from "../../components/ListGames";
 
 export const HomePage: React.FC = () => {
-    const dispatch = useAppDispatch();
-    const messages = useAppSelector(getMessages);
-    const [value, setValue] = useState("");
-
-    const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    };
-
-    const handlerClickSubmit = () => {
-        dispatch(addMessage(value.trim()));
-        setValue("");
-    };
-
-    const handlerClickDelete = (id: string) => {
-        dispatch(removeMessage(id));
-    };
+    const navigate = useNavigate();
 
     return (
-        <div>
-            <div className={scss.title}> Welcome to 7Pins! </div>
-            <div className={scss.inputSection}>
-                <Input
-                    size="middle"
-                    placeholder="message"
-                    value={value}
-                    className={scss.input}
-                    prefix={<UserOutlined />}
-                    onChange={handlerChange}
-                />
-
-                <Button size="middle" onClick={handlerClickSubmit}>
-                    Submit
-                </Button>
-            </div>
-            <div className={scss.messagesSection}>
-                {messages.map((item) => (
-                    <div className={scss.cardMessage} key={item.id}>
-                        <div className={scss.message}>{item.title}</div>
-                        <Button
-                            size="middle"
-                            onClick={() => handlerClickDelete(item.id)}
-                        >
-                            delete
-                        </Button>
+        <MasterPage>
+            <div className={scss.container}>
+                <div className={scss.mainTitle}>
+                    Welcome to <span>7Pins!</span>
+                </div>
+                <div className={scss.sectionButton}>
+                    <div className={scss.buttonTitle}>Start a new game</div>
+                    <div
+                        className={scss.button}
+                        onClick={() => navigate(LINKS.start)}
+                    >
+                        Let's go
                     </div>
-                ))}
+                </div>
+                <ListGames />
             </div>
-        </div>
+        </MasterPage>
     );
 };

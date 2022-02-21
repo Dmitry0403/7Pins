@@ -1,3 +1,5 @@
-export const SetPage = () => {
+import React from "react";
+
+export const SettingPage = () => {
     return <div>Setting Page</div>;
 };

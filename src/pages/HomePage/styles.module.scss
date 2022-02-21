@@ -1,16 +1,48 @@
-.inputSection {
-    margin: 10px 0 10px 0;
+@import "../../styles/palette.scss";
+
+.container {
+    text-align: center;
 }
 
-.input {
-    max-width: 250px;
+.mainTitle {
+    font-size: 35px;
+    padding: 10px;
+    span {
+        font-size: 50px;
+        font-weight: 600;
+    }
 }
 
-.cardMessage {
+.sectionButton {
+    font-size: 25px;
+    padding: 0px 10px 10px 10px;
+    margin-bottom: 10px;
+}
+
+.buttonTitle {
+    margin-bottom: 10px;
+}
+
+%game-shared {
     display: flex;
-    margin-bottom: 5px;
+    border: solid 1px black;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+    padding: 5px;
+    background-color: rgb(253, 251, 251);
+    color: black;
+    margin-bottom: 10px;
+    &:hover {
+        box-shadow: 0 0 10px rgb(128, 128, 128);
+    }
 }
 
-.message {
-    margin-right: 5px;
+.button {
+    @extend %game-shared;
+    display: inline-block;
+    font-size: 20px;
+    padding: 5px 15px 5px 15px;
+    &:hover {
+        cursor: pointer;
+    }
 }

@@ -1,0 +1,101 @@
+@import "../../styles/palette.scss";
+
+.title {
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+}
+
+.inputSection {
+    position: relative;
+    flex-grow: 1;
+}
+
+.inputSubSection {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%);
+    max-height: 80%;
+    overflow: auto;
+}
+
+.inputItem {
+    position: relative;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+%input-shared {
+    position: relative;
+    display: flex;
+    max-width: 300px;
+    &::after {
+        content: "";
+        width: 40px;
+    }
+}
+
+.input {
+    @extend %input-shared;
+}
+
+.error {
+    @extend %input-shared;
+    border: solid 2px $colorError;
+}
+
+.addingButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.footerButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.deleteButton {
+    position: absolute;
+    left: 89%;
+    top: 20%;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.errorMessage {
+    position: absolute;
+    bottom: -23px;
+    left: 0;
+    color: $colorError;
+}
+
+@media screen and (max-width: 321px) {
+    .content {
+        height: 60vh;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    %input-shared {
+        width: 65vw;
+        &::after {
+            content: "";
+            width: 5vw;
+        }
+    }
+    .inputItem {
+        width: 70vw;
+    }
+    .deleteButton {
+        left: 95%;
+    }
+}
