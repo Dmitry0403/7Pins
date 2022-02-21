@@ -1,9 +1,7 @@
 import { Api } from "./Api";
 import type { GameType } from "../store/gameSlice";
 
-const { getUserGamesList } = Api.prototype;
-
-let listGames: GameType[] = [
+const listGames: GameType[] = [
     {
         dateGame: "Mon Dec 29 2021",
         idGame: "1",
@@ -34,10 +32,15 @@ let listGames: GameType[] = [
     },
 ];
 
-export const getGamesList = (): GameType[] => {
-    try {
-        return getUserGamesList();
-    } catch {
-        return listGames;
-    }
+export const getGamesList = (): Promise<GameType[]> => {
+    const { getUserGamesList } = Api.prototype;
+    return getUserGamesList()
+        .then((data) => {
+            if (data) {
+                return data;
+            } else throw new Error("error");
+        })
+        .catch(() => {
+            return listGames;
+        });
 };

@@ -1,5 +1,5 @@
 import { CheckCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, generatePath } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { LINKS } from "../../common/routes";
@@ -7,7 +7,9 @@ import { getGamesList } from "../../api";
 import type { GameType } from "../../store/gameSlice";
 
 export const ListGames: React.FC = () => {
-    const listGames: GameType[] = getGamesList();
+    const [listGames, setList] = useState<GameType[]>([]);
+
+    getGamesList().then((data) => setList(data));
 
     const isCompleteGame = listGames.find((item) => item.isComplete === false);
 
