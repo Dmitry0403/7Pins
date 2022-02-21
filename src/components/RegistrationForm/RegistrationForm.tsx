@@ -1,36 +1,37 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import scss from "./styles.module.scss";
 import { Button, Input } from "antd";
-import appConfig from "../../appConfig.json";
+import appConfig from "../../../appConfig.json";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { gameActions, playersSelector } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
 import { nanoid } from "nanoid";
 import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
-export interface NameType {
+export interface IName {
     name: string;
     error: string;
 }
 
-interface PlayerType {
-    [id: string]: NameType;
+interface IPlayer {
+    [id: string]: IName;
 }
 
 const minPlayers = appConfig.minPlayersNumber;
 const maxPlayers = appConfig.maxPlayersNumber;
 const minLength = appConfig.minInputLengthInRegistrationForm;
-const maxLength = appConfig.maxInputLengthInRegostrationForm;
+const maxLength = appConfig.maxInputLengthInRegistrationForm;
 
 export const RegistrationForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const playerNames = useAppSelector(playersSelector);
-    let initialPlayers: PlayerType = {};
 
-    const getInitialPlayers = (): PlayerType => {
+    let initialPlayers: IPlayer = {};
+
+    const getInitialPlayers = (): IPlayer => {
         return Array(minPlayers)
             .fill("player")
             .map(() => ({
@@ -46,7 +47,7 @@ export const RegistrationForm: React.FC = () => {
             );
     };
 
-    const getInitialPlayersFromStore = (): PlayerType => {
+    const getInitialPlayersFromStore = (): IPlayer => {
         return playerNames.reduce(
             (object, item) => ({
                 ...object,
@@ -62,7 +63,8 @@ export const RegistrationForm: React.FC = () => {
             : (initialPlayers = getInitialPlayers());
     }, [playerNames]);
 
-    const [players, setPlayers] = useState<PlayerType>(initialPlayers);
+    const [players, setPlayers] = useState<IPlayer>(initialPlayers);
+
     const [validation, setValidation] = useState<string[]>([]);
 
     const numberPlayers = Object.keys(players).length;
@@ -70,18 +72,18 @@ export const RegistrationForm: React.FC = () => {
     const getErrorMessageDuringInput = (value: string) => {
         let error = "";
         const isString = value.match(/[^A-Za-zА-Яа-я\s]/);
-        if (isString) {
-            error = `use letters only`;
-        }
-        if (value.length > maxLength) {
-            error = `no more than ${maxLength} letters`;
-        }
         if (
             Object.keys(players).find(
                 (key) => players[key].name === value && players[key].name !== ""
             )
         ) {
             error = "this name already exists";
+        }
+        if (isString) {
+            error = `use letters only`;
+        }
+        if (value.length > maxLength) {
+            error = `no more than ${maxLength} letters`;
         }
         return error;
     };
@@ -137,7 +139,12 @@ export const RegistrationForm: React.FC = () => {
         if (error) {
             if (!validation.includes(id)) {
                 setValidation((prevState) => [...prevState, id]);
+                setPlayers((prevState) => ({
+                    ...prevState,
+                    [id]: { name: value, error },
+                }));
             }
+            return;
         } else {
             if (validation.includes(id)) {
                 const newValidation = validation.filter((item) => item !== id);
@@ -174,7 +181,7 @@ export const RegistrationForm: React.FC = () => {
     };
 
     return (
-        <div className={scss.wrapper}>
+        <div>
             <div className={scss.title}> Players registration</div>
             <div className={scss.content}>
                 <div className={scss.inputSection}>
@@ -196,23 +203,25 @@ export const RegistrationForm: React.FC = () => {
                                         prefix={<UserOutlined />}
                                         onChange={handleChangeName}
                                     />
+                                    {numberPlayers > minPlayers && (
+                                        <div
+                                            className={scss.deleteButton}
+                                            onClick={() =>
+                                                handleDeleteInput(id)
+                                            }
+                                        >
+                                            <CloseCircleOutlined
+                                                style={{
+                                                    fontSize: "25px",
+                                                    color: "gray",
+                                                }}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                                 <div className={scss.errorMessage}>
                                     {players[id].error}
                                 </div>
-                                {numberPlayers > minPlayers && (
-                                    <div
-                                        className={scss.icon}
-                                        onClick={() => handleDeleteInput(id)}
-                                    >
-                                        <CloseCircleOutlined
-                                            style={{
-                                                fontSize: "25px",
-                                                color: "gray",
-                                            }}
-                                        />
-                                    </div>
-                                )}
                             </div>
                         ))}
                         <div className={scss.addingButton}>
@@ -229,7 +238,7 @@ export const RegistrationForm: React.FC = () => {
                         back
                     </Button>
                     <Button size="large" onClick={handleSubmitNames}>
-                        start game
+                        next
                     </Button>
                 </div>
             </div>

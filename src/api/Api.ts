@@ -1,12 +1,12 @@
-import type { GameType } from "../store/gameSlice";
+import type { IGame } from "../store/gameSlice";
 
 interface ApiType {
-    getUserGamesList: () => Promise<GameType[]>;
+    getUserGamesList: () => Promise<IGame[]>;
 }
 
 export class Api implements ApiType {
-    getUserGamesList(): Promise<GameType[]> {
-        const resp: Promise<GameType[]> = new Promise((resolve) => {
+    getUserGamesList(): Promise<IGame[]> {
+        const resp: Promise<IGame[]> = new Promise((resolve) => {
             resolve(JSON.parse(localStorage.getItem("listGames") as string));
         });
         return resp;

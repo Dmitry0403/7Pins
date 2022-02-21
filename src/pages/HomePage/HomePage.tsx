@@ -10,7 +10,7 @@ export const HomePage: React.FC = () => {
 
     return (
         <MasterPage>
-            <div className={scss.wrapper}>
+            <div className={scss.container}>
                 <div className={scss.mainTitle}>
                     Welcome to <span>7Pins!</span>
                 </div>

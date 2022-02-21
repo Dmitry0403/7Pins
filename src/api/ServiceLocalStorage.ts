@@ -1,7 +1,7 @@
 import { Api } from "./Api";
-import type { GameType } from "../store/gameSlice";
+import type { IGame } from "../store/gameSlice";
 
-const listGames: GameType[] = [
+const listGames: IGame[] = [
     {
         dateGame: "Mon Dec 29 2021",
         idGame: "1",
@@ -32,7 +32,7 @@ const listGames: GameType[] = [
     },
 ];
 
-export const getGamesList = (): Promise<GameType[]> => {
+export const getGamesList = (): Promise<IGame[]> => {
     const { getUserGamesList } = Api.prototype;
     return getUserGamesList()
         .then((data) => {

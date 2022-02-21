@@ -2,6 +2,8 @@
 
 .listGames {
     display: inline-block;
+    max-height: 130px;
+    overflow: auto;
 }
 
 %game-shared {
@@ -67,6 +69,6 @@
 }
 
 .message {
-    padding: 10px;
+    padding: 5px;
     color: $colorError;
 }

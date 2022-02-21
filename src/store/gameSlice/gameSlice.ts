@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { NameType } from "../../components/RegistrationForm";
+import type { IName } from "../../components/RegistrationForm";
 import { nanoid } from "nanoid";
 
-export interface GameType {
+export interface IGame {
     dateGame: string;
     idGame: string;
     players: {
@@ -13,7 +13,7 @@ export interface GameType {
     isComplete: boolean;
 }
 
-const initialState: GameType = {
+const initialState: IGame = {
     dateGame: "",
     idGame: "",
     players: [],
@@ -24,7 +24,7 @@ const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        createGame: (state, action: PayloadAction<NameType[]>) => {
+        createGame: (state, action: PayloadAction<IName[]>) => {
             const players = action.payload.map((item) => ({
                 name: item.name,
                 idPlayer: nanoid(),
