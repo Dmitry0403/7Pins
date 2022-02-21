@@ -9,7 +9,9 @@ import type { GameType } from "../../store/gameSlice";
 export const ListGames: React.FC = () => {
     const [listGames, setList] = useState<GameType[]>([]);
 
-    getGamesList().then((data) => setList(data));
+    useEffect(() => {
+        getGamesList().then((data) => setList(data));
+    }, []);
 
     const isCompleteGame = listGames.find((item) => item.isComplete === false);
 
