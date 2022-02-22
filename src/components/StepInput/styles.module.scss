@@ -1,0 +1,21 @@
+%input-shared {
+    height: 30px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    text-align: center;
+    margin: 2px;
+}
+
+.main {
+    display: flex;
+}
+
+.button {
+    @extend %input-shared;
+    width: 30px;
+}
+
+.value {
+    @extend %input-shared;
+    width: 60px;
+}
