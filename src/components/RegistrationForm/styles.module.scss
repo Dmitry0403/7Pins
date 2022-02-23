@@ -30,16 +30,13 @@
     position: relative;
     display: flex;
     margin-bottom: 20px;
+    width: 23vw;
 }
 
 %input-shared {
     position: relative;
     display: flex;
-    max-width: 300px;
-    &::after {
-        content: "";
-        width: 40px;
-    }
+    width: 20vw;
 }
 
 .input {
@@ -64,7 +61,7 @@
 }
 .deleteButton {
     position: absolute;
-    left: 89%;
+    left: 103%;
     top: 20%;
     &:hover {
         cursor: pointer;
@@ -86,16 +83,12 @@
 
 @media screen and (max-width: 576px) {
     %input-shared {
-        width: 65vw;
-        &::after {
-            content: "";
-            width: 5vw;
-        }
+        width: 58vw;
     }
     .inputItem {
         width: 70vw;
     }
     .deleteButton {
-        left: 95%;
+        left: 103%;
     }
 }

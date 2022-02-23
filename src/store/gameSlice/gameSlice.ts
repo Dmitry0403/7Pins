@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { IName } from "../../components/RegistrationForm";
 import { nanoid } from "nanoid";
+import appConfig from "../../../appConfig.json";
 
 export interface IGame {
     dateGame: string;
@@ -9,6 +10,7 @@ export interface IGame {
     players: {
         name: string;
         idPlayer: string;
+        points: number;
     }[];
     isComplete: boolean;
 }
@@ -27,6 +29,7 @@ const gameSlice = createSlice({
         createGame: (state, action: PayloadAction<IName[]>) => {
             const players = action.payload.map((item) => ({
                 name: item.name,
+                points: appConfig.defaultInitialPlayerPoints,
                 idPlayer: nanoid(),
             }));
             return (state = {

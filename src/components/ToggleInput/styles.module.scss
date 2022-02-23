@@ -10,11 +10,6 @@
     display: flex;
 }
 
-// .button {
-//     @extend %input-shared;
-//     width: 30px;
-// }
-
 .value {
     @extend %input-shared;
     width: 60px;
