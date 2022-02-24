@@ -3,22 +3,22 @@ import scss from "./styles.module.scss";
 import { Checkbox } from "antd";
 
 interface IProps {
-    value: number;
+    id: string;
+    value: boolean;
     title: string;
-    handleChangeCheckbox: () => void;
+    handleCheckbox: (id: string) => void;
 }
 
 export const CheckboxInput: React.FC<IProps> = ({
+    id,
     value,
     title,
-    handleChangeCheckbox,
+    handleCheckbox,
 }) => {
     return (
         <div className={scss.main}>
-            <div className={scss.title} key={title}>
-                {title}
-            </div>
-            <Checkbox value={value} onChange={handleChangeCheckbox} />
+            <div className={scss.title}>{title}:</div>
+            <Checkbox checked={value} onChange={() => handleCheckbox(id)} />
         </div>
     );
 };

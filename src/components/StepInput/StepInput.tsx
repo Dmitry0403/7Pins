@@ -3,34 +3,38 @@ import scss from "./styles.module.scss";
 import { Button } from "antd";
 
 interface IProps {
-    value: number;
+    value: any;
+    id: string;
     title: string;
-    handleDecrement: (title: string) => void;
-    handleIncrement: (title: string) => void;
+    handleDecrement: (id: string) => void;
+    handleIncrement: (id: string) => void;
 }
 
 export const StepInput: React.FC<IProps> = ({
     value,
+    id,
     title,
     handleDecrement,
     handleIncrement,
 }) => {
     return (
         <div className={scss.main}>
-            <div className={scss.title}>{title}</div>
-            <Button
-                className={scss.button}
-                onClick={() => handleDecrement(title)}
-            >
-                -
-            </Button>
-            <div className={scss.value}>{value}</div>
-            <Button
-                className={scss.button}
-                onClick={() => handleIncrement(title)}
-            >
-                +
-            </Button>
+            <div className={scss.title}>{title}:</div>
+            <div className={scss.buttonSection}>
+                <Button
+                    className={scss.button}
+                    onClick={() => handleDecrement(id)}
+                >
+                    -
+                </Button>
+                <div className={scss.value}>{value}</div>
+                <Button
+                    className={scss.button}
+                    onClick={() => handleIncrement(id)}
+                >
+                    +
+                </Button>
+            </div>
         </div>
     );
 };

@@ -1,7 +1,32 @@
 {
     "minPlayersNumber": 2,
     "maxPlayersNumber": 5,
+    "maxListGamesNumber": 10,
     "minInputLengthInRegistrationForm": 2,
     "maxInputLengthInRegistrationForm": 10,
-    "defaultInitialPlayerPoints": 500
+    "defaultPlayerPoints": 500,
+    "points": {
+        "kingDefaultValue": 25,
+        "officerDefaultValue": 30,
+        "pawnDefaultValue": 5,
+        "onlyKingDownedDefaultValue": 50,
+        "carolBallsDefaultValue": 5,
+        "alianBallDefaultValue": 5,
+        "kingAndFourPawnsKnockedDownDefaultValue": 100,
+        "allPinsKnockedDownDefaultValue": 200,
+        "fiveCaromBallsDefaultValue": 200,
+        "bothSightingBallsScoredDefaultValue": 200
+    },
+    "penalty": {
+        "ballJumedOffTableDefaultValue": 5,
+        "cueBallNotTouchSingleAimingBallDefaultValue": 5,
+        "ballDirectlyKnockedDownPinsDefaultValueIsSumOfDownePins": true,
+        "cueBallFallsIntoPocketDefaultValue": 5,
+        "touchingClothesOrCuePinsdefaultValueIsSumOfDownePins": true,
+        "touchingAimingBallWithCueDefaultValue": 25,
+        "allPintsAddedToPenaltyPointsDefaultValue": true
+    },
+    "minValuePlayerPoints": 200,
+    "minValueSetting": 5,
+    "maxSettingsPoint": 200
 }

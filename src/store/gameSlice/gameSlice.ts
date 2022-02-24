@@ -1,42 +1,56 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { IName } from "../../components/RegistrationForm";
+import type { ISetting } from "../../components/SettingsTable";
 import { nanoid } from "nanoid";
-import appConfig from "../../../appConfig.json";
+
+interface IPlayer {
+    name: string;
+    value?: any;
+    order?: number;
+}
+
+export interface IPlayers {
+    [key: string]: IPlayer;
+}
 
 export interface IGame {
     dateGame: string;
     idGame: string;
-    players: {
-        name: string;
-        idPlayer: string;
-        points: number;
-    }[];
+    players: IPlayers;
+    settingGame: ISetting;
     isComplete: boolean;
 }
 
 const initialState: IGame = {
     dateGame: "",
     idGame: "",
-    players: [],
+    players: {},
+    settingGame: {},
     isComplete: false,
 };
-
 const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        createGame: (state, action: PayloadAction<IName[]>) => {
-            const players = action.payload.map((item) => ({
-                name: item.name,
-                points: appConfig.defaultInitialPlayerPoints,
-                idPlayer: nanoid(),
-            }));
+        createGame: (state) => {
             return (state = {
-                ...state,
                 dateGame: new Date().toDateString(),
                 idGame: nanoid(),
-                players,
+                players: {},
+                settingGame: {},
+                isComplete: false,
+            });
+        },
+        updatePlayersData: (state, action: PayloadAction<IPlayers>) => {
+            return (state = {
+                ...state,
+                players: action.payload,
+            });
+        },
+        updateSettingsData: (state, action: PayloadAction<ISetting>) => {
+            return (state = {
+                ...state,
+                settingGame: action.payload,
             });
         },
     },
@@ -44,5 +58,6 @@ const gameSlice = createSlice({
 
 export const gameActions = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
-export const gameSelector = (state: RootState) => state.game;
-export const playersSelector = (state: RootState) => state.game.players;
+export const gameSelector = (state: RootState) => state.currentGame;
+export const playersSelector = (state: RootState) => state.currentGame.players;
+export const settingGame = (state: RootState) => state.currentGame.settingGame;

@@ -1,0 +1,1 @@
+export { GamePoints } from "./GamePoints";

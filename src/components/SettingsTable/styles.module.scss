@@ -1,0 +1,102 @@
+%block-shared {
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+    background-color: rgb(253, 251, 251);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.mainSettingsGame {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mainTitle {
+    font-size: 20px;
+    text-align: center;
+}
+
+.mainSection {
+    @extend %block-shared;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.playersSection {
+    @extend %block-shared;
+    margin-bottom: 10px;
+}
+
+.playersTitle {
+    margin-bottom: 5px;
+}
+
+.title {
+    font-weight: 600;
+    font-style: italic;
+}
+.player {
+    margin-bottom: 5px;
+}
+
+.playerButton {
+    display: flex;
+}
+
+.playerOrder {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.selectTitle {
+    margin-right: 5px;
+}
+
+.settingsSection {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.pointsSection {
+    margin-right: 20px;
+}
+
+.button {
+    margin-right: 5px;
+}
+
+.resetButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.footerButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+@media screen and (max-width: 576px) {
+    .settingsSection {
+        display: block;
+    }
+    .pointsSection {
+        margin-right: 0px;
+    }
+    .playerButton {
+        display: inline;
+    }
+    .playerOrder {
+        margin-left: 0;
+    }
+}
+
+@media screen and (min-height: 680px) {
+    .settingsSection {
+        height: 50vh;
+    }
+}

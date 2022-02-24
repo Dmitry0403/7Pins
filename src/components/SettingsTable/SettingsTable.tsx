@@ -1,215 +1,402 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import scss from "./styles.module.scss";
 import { StepInput } from "../StepInput";
 import { CheckboxInput } from "../CheckboxInput";
-import { ToggleInput } from "../ToggleInput";
+import { RadioInput } from "../RadioInput";
+import { SelectInput } from "../SelectInput";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { gameActions, playersSelector } from "../../store/gameSlice";
+import {
+    gameActions,
+    playersSelector,
+    settingGame,
+} from "../../store/gameSlice";
+import { Button, RadioChangeEvent } from "antd";
+import appConfig from "../../../appConfig.json";
+import { LINKS } from "../../common/routes";
+import { useNavigate } from "react-router-dom";
+import type { IPlayers } from "../../store/gameSlice";
+import { updateListGames } from "../../store/listGamesSlice";
+import {
+    updatingListGamesStatusSelector,
+    loadingStatusSelector,
+    errorMesaageSelector,
+    LOAD_STATUSES,
+} from "../../store/listGamesSlice";
+import { Spin } from "antd";
+import { LanguageThemeContext } from "../../themeContext";
 
-interface ISetting {
-    [key: string]: { value: any };
-}
-
-interface IState {
-    players: {
-        name: string;
-        idPlayer: string;
-        points: number;
-    }[];
-    settings: {
-        points: ISetting;
-        penalties: ISetting;
+export interface ISetting {
+    [key: string]: {
+        title: string;
+        value: any;
     };
 }
 
-const defaultPoints: ISetting = {
-    "King:": { value: 25 },
-    "Officer:": { value: 30 },
-    "Pawn:": { value: 5 },
-    "Only the king is downed:": { value: 50 },
-    "Carom balls:": { value: 5 },
-    "Alien ball:": { value: 5 },
-    "The king and 4 pawns are knocked down at the same time:": { value: 100 },
-
-    "All the pins are knocked down at the same time:": { value: 200 },
-
-    "The player made five carom balls in a row without gaining other points:": {
-        value: 200,
-    },
-    "As a result of the impact , both sighting balls are scored:": {
-        value: 200,
-    },
-};
-
-const dafaultPenalties: ISetting = {
-    "Cue ball or aiming ball jumped off the table:": { value: 5 },
-    "The cue ball did not touch a single aiming ball:": { value: 5 },
-    "Cue ball or aiming ball directly knocked down the pins:": {
-        value: "the sum of the downed pins",
-    },
-    "The cue ball falls into the pocket:": { value: 5 },
-    "Touching clothes or cue pins:": { value: "the sum of the downed pins" },
-    "Touching the aiming ball with the cue:": { value: 25 },
-    "All points scored in this approach are added to the penalty points:": {
-        value: true,
-    },
-};
+const defaultPlayerPoints = appConfig.defaultPlayerPoints;
+const minValuePlayerPoints = appConfig.minValuePlayerPoints;
+const minValueSetting = appConfig.minValueSetting;
 
 export const SettingsTable: React.FC = () => {
-    const playersData = useAppSelector(playersSelector);
-    const initialStateSettings: IState = {
-        players: playersData,
-        settings: { points: defaultPoints, penalties: dafaultPenalties },
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const playersFromStore = useAppSelector(playersSelector);
+    const settingsFromStore = useAppSelector(settingGame);
+
+    const loadingStatus = useAppSelector(loadingStatusSelector);
+    const errorMessage = useAppSelector(errorMesaageSelector);
+    const updatingStatus = useAppSelector(updatingListGamesStatusSelector);
+
+    const languageTheme = useContext(LanguageThemeContext);
+
+    const pointsSettingsWithStepInput = {
+        king: {
+            title: languageTheme.king,
+            value: appConfig.points.kingDefaultValue,
+        },
+        officer: {
+            title: languageTheme.officer,
+            value: appConfig.points.officerDefaultValue,
+        },
+        pawn: {
+            title: languageTheme.pawn,
+            value: appConfig.points.pawnDefaultValue,
+        },
+        onlyKingDowned: {
+            title: languageTheme.onlyKingDowned,
+            value: appConfig.points.onlyKingDownedDefaultValue,
+        },
+        caromBalls: {
+            title: languageTheme.caromBalls,
+            value: appConfig.points.carolBallsDefaultValue,
+        },
+        alianBall: {
+            title: languageTheme.alianBall,
+            value: appConfig.points.alianBallDefaultValue,
+        },
+        kingAndFourPawnsKnockedDown: {
+            title: languageTheme.kingAndFourPawnsKnockedDown,
+            value: appConfig.points.kingAndFourPawnsKnockedDownDefaultValue,
+        },
+    };
+    const pointsSettingsWithRadioInput = {
+        allPinsKnockedDown: {
+            title: languageTheme.allPinsKnockedDown,
+            value: appConfig.points.allPinsKnockedDownDefaultValue,
+        },
+        fiveCaromBalls: {
+            title: languageTheme.fiveCaromBalls,
+            value: appConfig.points.fiveCaromBallsDefaultValue,
+        },
+        bothSightingBallsScored: {
+            title: languageTheme.bothSightingBallsScored,
+            value: appConfig.points.bothSightingBallsScoredDefaultValue,
+        },
+    };
+    const penaltySettingsWithStepInput = {
+        ballJumedOffTable: {
+            title: languageTheme.ballJumedOffTable,
+            value: appConfig.penalty.ballJumedOffTableDefaultValue,
+        },
+        cueBallNotTouchSingleAimingBall: {
+            title: languageTheme.cueBallNotTouchSingleAimingBall,
+            value: appConfig.penalty
+                .cueBallNotTouchSingleAimingBallDefaultValue,
+        },
+        cueBallFallsIntoPocket: {
+            title: languageTheme.cueBallFallsIntoPocket,
+            value: appConfig.penalty.cueBallFallsIntoPocketDefaultValue,
+        },
+        touchingAimingBallWithCue: {
+            title: languageTheme.touchingAimingBallWithCue,
+            value: appConfig.penalty.touchingAimingBallWithCueDefaultValue,
+        },
     };
 
+    const penaltySettingsWithCheckbox = {
+        ballDirectlyKnockedPins: {
+            title: languageTheme.ballDirectlyKnockedPins,
+            value: appConfig.penalty
+                .ballDirectlyKnockedDownPinsDefaultValueIsSumOfDownePins,
+        },
+        touchingClothesOrCuePins: {
+            title: languageTheme.touchingClothesOrCuePins,
+            value: appConfig.penalty
+                .touchingClothesOrCuePinsdefaultValueIsSumOfDownePins,
+        },
+        allPintsAddedToPenaltyPoints: {
+            title: languageTheme.allPintsAddedToPenaltyPoints,
+            value: appConfig.penalty.allPintsAddedToPenaltyPointsDefaultValue,
+        },
+    };
+
+    useEffect(() => {
+        if (updatingStatus) {
+            navigate(LINKS.game);
+        }
+    }, [updatingStatus]);
+
+    const getInitialDefaultSettings = (): ISetting => {
+        return Object.assign(
+            {},
+            pointsSettingsWithStepInput,
+            pointsSettingsWithRadioInput,
+            penaltySettingsWithStepInput,
+            penaltySettingsWithCheckbox
+        );
+    };
+
+    const getInitialDataPlayers = (): IPlayers => {
+        return Object.keys(playersFromStore).reduce(
+            (object, key, index) => ({
+                ...object,
+                [key]: {
+                    ...playersFromStore[key],
+                    value: defaultPlayerPoints,
+                    order: index + 1,
+                },
+            }),
+            {}
+        );
+    };
+
+    const [statePlayers, setStatePlayers] = useState<IPlayers>(
+        getInitialDataPlayers()
+    );
+
+    let initialSettings: ISetting = {};
+    Object.keys(settingsFromStore)[0]
+        ? (initialSettings = settingsFromStore)
+        : (initialSettings = getInitialDefaultSettings());
     const [stateSettings, setStateSettings] =
-        useState<IState>(initialStateSettings);
+        useState<ISetting>(initialSettings);
 
-    const handlePlayerPointsIncrement = (title: string) => {
-        const { players } = stateSettings;
-        const newDataPlayerPoints = players.map((item) => {
-            if (item.name === title) {
-                return { ...item, points: item.points + 50 };
-            }
-            return item;
-        });
-        setStateSettings((prevState) => ({
-            ...prevState,
-            players: newDataPlayerPoints,
-        }));
+    const handleSubmitSettings = () => {
+        dispatch(gameActions.updatePlayersData(statePlayers));
+        dispatch(gameActions.updateSettingsData(stateSettings));
+        dispatch(updateListGames());
     };
 
-    const handlePlayerPointsDecrement = (title: string) => {
-        const newDataPlayerPoints = players.map((item) => {
-            if (item.name === title && item.points > 200) {
-                return { ...item, points: item.points - 50 };
-            }
-            return item;
-        });
-        setStateSettings((prevState) => ({
-            ...prevState,
-            players: newDataPlayerPoints,
-        }));
+    const handleGoBack = () => {
+        dispatch(gameActions.updatePlayersData(statePlayers));
+        dispatch(gameActions.updateSettingsData(stateSettings));
+        navigate(LINKS.start);
     };
 
-    const handlePointsIncrement = (title: string) => {
-        const { points } = stateSettings.settings;
-        setStateSettings((prevState) => ({
-            ...prevState,
-            settings: {
-                ...prevState.settings,
-                points: {
-                    ...points,
-                    [title]: {
-                        value: points[title].value + 5,
-                    },
+    const handleReset = () => {
+        setStatePlayers(getInitialDataPlayers());
+        setStateSettings(getInitialDefaultSettings());
+    };
+
+    const renderPlayers = () => {
+        const handlePlayerPointsIncrement = (key: string) => {
+            setStatePlayers((prevState) => ({
+                ...prevState,
+                [key]: {
+                    ...prevState[key],
+                    value: Number(prevState[key].value) + 50,
                 },
-            },
-        }));
-    };
+            }));
+        };
 
-    const handlePointsDecrement = (title: string) => {
-        const { points } = stateSettings.settings;
-        setStateSettings((prevState) => ({
-            ...prevState,
-            settings: {
-                ...prevState.settings,
-                points: {
-                    ...points,
-                    [title]: {
-                        value:
-                            points[title].value > 5
-                                ? points[title].value - 5
-                                : points[title].value,
-                    },
+        const handlePlayerPointsDecrement = (key: string) => {
+            setStatePlayers((prevState) => ({
+                ...prevState,
+                [key]: {
+                    ...prevState[key],
+                    value:
+                        prevState[key].value > minValuePlayerPoints
+                            ? Number(prevState[key].value) - 50
+                            : prevState[key].value,
                 },
-            },
-        }));
-    };
-    const handlePenaltiesIncrement = (title: string) => {
-        const { penalties } = stateSettings.settings;
-        setStateSettings((prevState) => ({
-            ...prevState,
-            settings: {
-                ...prevState.settings,
-                penalties: {
-                    ...penalties,
-                    [title]: {
-                        value: penalties[title].value + 5,
-                    },
-                },
-            },
-        }));
-    };
+            }));
+        };
 
-    const handlePenaltiesDecrement = (title: string) => {
-        const { penalties } = stateSettings.settings;
-        setStateSettings((prevState) => ({
-            ...prevState,
-            settings: {
-                ...prevState.settings,
-                penalties: {
-                    ...penalties,
-                    [title]: {
-                        value:
-                            penalties[title].value > 5
-                                ? penalties[title].value - 5
-                                : penalties[title].value,
-                    },
+        const handleOrderSelect = (
+            e: React.ChangeEvent<HTMLSelectElement>,
+            key: string
+        ) => {
+            const value = Number(e.target.value);
+            const prevValue = statePlayers[key].order;
+            const replacementKey = Object.keys(statePlayers).find(
+                (key) => statePlayers[key].order === value
+            ) as string;
+
+            setStatePlayers((prevState) => ({
+                ...prevState,
+                [replacementKey]: {
+                    ...prevState[replacementKey],
+                    order: prevValue,
                 },
-            },
-        }));
-    };
-    const {
-        players,
-        settings: { points, penalties },
-    } = stateSettings;
-    return (
-        <div>
-            <div className={scss.mainTitle}>Settings of the game</div>
-            <div className={scss.playersSection}>
-                {players.map((item) => (
-                    <div className={scss.player} key={item.idPlayer}>
-                        <StepInput
-                            key={item.idPlayer}
-                            title={item.name}
-                            value={item.points}
-                            handleDecrement={handlePlayerPointsDecrement}
-                            handleIncrement={handlePlayerPointsIncrement}
+                [key]: { ...prevState[key], order: value },
+            }));
+        };
+
+        const playersNumber = Object.keys(statePlayers).length;
+        return Object.keys(statePlayers).map((key) => (
+            <div className={scss.player} key={key}>
+                <div className={scss.playerButton}>
+                    <StepInput
+                        id={key}
+                        title={statePlayers[key].name}
+                        value={statePlayers[key].value}
+                        handleDecrement={handlePlayerPointsDecrement}
+                        handleIncrement={handlePlayerPointsIncrement}
+                    />
+                    <div className={scss.playerOrder}>
+                        <div className={scss.selectTitle}>order in game:</div>
+                        <SelectInput
+                            id={key}
+                            selectedValue={statePlayers[key].order as number}
+                            playersNumber={playersNumber}
+                            handleSelect={handleOrderSelect}
                         />
                     </div>
-                ))}
+                </div>
             </div>
-            <div className={scss.settingsSection}>
-                <div className={scss.pointsSection}>
-                    {Object.keys(points).map((key) => (
-                        <StepInput
-                            key={key}
-                            title={key}
-                            value={points[key].value}
-                            handleDecrement={handlePointsDecrement}
-                            handleIncrement={handlePointsIncrement}
-                        />
-                    ))}
+        ));
+    };
+
+    const renderPointsSettingsWithStepInput = () => {
+        return Object.keys(pointsSettingsWithStepInput).map((key) => (
+            <div className={scss.settings} key={key}>
+                <StepInput
+                    id={key}
+                    title={stateSettings[key].title}
+                    value={stateSettings[key].value}
+                    handleDecrement={handlePointsDecrement}
+                    handleIncrement={handlePointsIncrement}
+                />
+            </div>
+        ));
+    };
+
+    const handlePointsIncrement = (id: string) => {
+        setStateSettings((prevState) => ({
+            ...prevState,
+            [id]: {
+                ...prevState[id],
+                value: prevState[id].value + 5,
+            },
+        }));
+    };
+
+    const handlePointsDecrement = (id: string) => {
+        setStateSettings((prevState) => ({
+            ...prevState,
+            [id]: {
+                ...prevState[id],
+                value:
+                    prevState[id].value <= minValueSetting
+                        ? prevState[id].value
+                        : prevState[id].value - 5,
+            },
+        }));
+    };
+
+    const renderPointsSettingsWithRadioInput = () => {
+        const handleRadio = (e: RadioChangeEvent) => {
+            const value = e.target.value;
+            const key = e.target.name as string;
+            setStateSettings((prevState) => ({
+                ...prevState,
+                [key]: {
+                    ...prevState[key],
+                    value,
+                },
+            }));
+        };
+
+        return Object.keys(pointsSettingsWithRadioInput).map((key) => (
+            <div className={scss.settings} key={key}>
+                <RadioInput
+                    name={key}
+                    value={stateSettings[key].value}
+                    handleRadio={handleRadio}
+                />
+            </div>
+        ));
+    };
+
+    const renderPenaltySettingsWithStepInput = () => {
+        return Object.keys(penaltySettingsWithStepInput).map((key) => (
+            <div className={scss.settings} key={key}>
+                <StepInput
+                    id={key}
+                    title={stateSettings[key].title}
+                    value={stateSettings[key].value}
+                    handleDecrement={handlePointsDecrement}
+                    handleIncrement={handlePointsIncrement}
+                />
+            </div>
+        ));
+    };
+
+    const renderPenaltySettingsWithCheckbox = () => {
+        const handleCheckbox = (key: string) => {
+            setStateSettings((prevState) => ({
+                ...prevState,
+                [key]: {
+                    ...prevState[key],
+                    value: !prevState[key].value,
+                },
+            }));
+        };
+
+        return Object.keys(penaltySettingsWithCheckbox).map((key) => (
+            <div className={scss.settings} key={key}>
+                <CheckboxInput
+                    id={key}
+                    title={stateSettings[key].title}
+                    value={stateSettings[key].value}
+                    handleCheckbox={handleCheckbox}
+                />
+            </div>
+        ));
+    };
+
+    return (
+        <div className={scss.mainSettingsGame}>
+            <div className={scss.mainTitle}>Settings of the game</div>
+            <div className={scss.mainSection}>
+                <div className={scss.playersSection}>
+                    <div className={scss.title}>Initial points of players:</div>
+                    {renderPlayers()}
                 </div>
-                <div className={scss.penaltiesSection}>
-                    {Object.keys(penalties).map((key) =>
-                        Number(penalties[key].value) ? (
-                            <StepInput
-                                key={key}
-                                title={key}
-                                value={penalties[key].value}
-                                handleDecrement={handlePenaltiesDecrement}
-                                handleIncrement={handlePenaltiesIncrement}
-                            />
-                        ) : (
-                            <div className={scss.stringSettings}>
-                                <div>{key}</div>
-                                <div>{penalties[key].value}</div>
-                            </div>
-                        )
-                    )}
+                <div className={scss.settingsSection}>
+                    <div className={scss.pointsSection}>
+                        <div className={scss.title}>Points:</div>
+                        {renderPointsSettingsWithStepInput()}
+                        {renderPointsSettingsWithRadioInput()}
+                    </div>
+                    <div className={scss.penaltiesSection}>
+                        <div className={scss.title}>Penalties:</div>
+                        {renderPenaltySettingsWithStepInput()}
+                        {renderPenaltySettingsWithCheckbox()}
+                    </div>
                 </div>
+            </div>
+            <div className={scss.resetButton}>
+                <Button size="large" onClick={handleReset}>
+                    Reset settings
+                </Button>
+            </div>
+            <div className={scss.footerButtons}>
+                <Button
+                    className={scss.button}
+                    size="large"
+                    onClick={handleGoBack}
+                >
+                    back
+                </Button>
+                {loadingStatus === LOAD_STATUSES.LOADING && (
+                    <Spin size="large" />
+                )}
+                {loadingStatus === LOAD_STATUSES.FAILURE && (
+                    <div>{errorMessage}</div>
+                )}
+                <Button size="large" onClick={handleSubmitSettings}>
+                    next
+                </Button>
             </div>
         </div>
     );

@@ -1,15 +1,15 @@
 @import "../../styles/palette.scss";
 
+.mainRegistrationForm {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .title {
     text-align: center;
     font-size: 35px;
     margin-bottom: 20px;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    height: 70vh;
 }
 
 .inputSection {
@@ -30,7 +30,7 @@
     position: relative;
     display: flex;
     margin-bottom: 20px;
-    width: 23vw;
+    width: 25vw;
 }
 
 %input-shared {
@@ -50,6 +50,7 @@
 
 .addingButton {
     display: flex;
+    width: 80%;
     justify-content: flex-end;
     margin-bottom: 20px;
 }
@@ -76,8 +77,8 @@
 }
 
 @media screen and (max-width: 321px) {
-    .content {
-        height: 60vh;
+    .addingButton {
+        width: 85%;
     }
 }
 
@@ -90,5 +91,14 @@
     }
     .deleteButton {
         left: 103%;
+    }
+    .addingButton {
+        width: 83%;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .footerButtons {
+        justify-content: space-around;
     }
 }

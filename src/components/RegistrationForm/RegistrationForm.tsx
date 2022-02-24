@@ -11,7 +11,7 @@ import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 export interface IName {
     name: string;
-    error: string;
+    error?: string;
 }
 
 interface IPlayer {
@@ -27,7 +27,7 @@ export const RegistrationForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const playerNames = useAppSelector(playersSelector);
+    const playersFromStore = useAppSelector(playersSelector);
 
     let initialPlayers: IPlayer = {};
 
@@ -48,20 +48,20 @@ export const RegistrationForm: React.FC = () => {
     };
 
     const getInitialPlayersFromStore = (): IPlayer => {
-        return playerNames.reduce(
-            (object, item) => ({
+        return Object.keys(playersFromStore).reduce(
+            (object, key) => ({
                 ...object,
-                [item.idPlayer]: { name: item.name, error: "" },
+                [key]: { ...playersFromStore[key], error: "" },
             }),
             {}
         );
     };
 
     useMemo(() => {
-        playerNames[0]
+        Object.keys(playersFromStore)[0]
             ? (initialPlayers = getInitialPlayersFromStore())
             : (initialPlayers = getInitialPlayers());
-    }, [playerNames]);
+    }, [playersFromStore]);
 
     const [players, setPlayers] = useState<IPlayer>(initialPlayers);
 
@@ -168,79 +168,83 @@ export const RegistrationForm: React.FC = () => {
     };
 
     const dispatchPlayersToStore = () => {
-        const arrayNames = Object.values(players);
-        dispatch(gameActions.createGame(arrayNames));
-        navigate(LINKS.setting);
+        const newPlayers = { ...players };
+        Object.keys(newPlayers).map((key) => {
+            delete newPlayers[key].error;
+        });
+        dispatch(gameActions.updatePlayersData(newPlayers));
     };
 
     const handleSubmitNames = () => {
         const isValid = checkPlayersValidationOnSubmit();
         if (isValid) {
             dispatchPlayersToStore();
+            navigate(LINKS.setting);
         }
     };
 
+    const handleGoBack = () => {
+        dispatchPlayersToStore();
+        navigate(LINKS.home);
+    };
+
     return (
-        <div>
+        <div className={scss.mainRegistrationForm}>
             <div className={scss.title}> Players registration</div>
-            <div className={scss.content}>
-                <div className={scss.inputSection}>
-                    <div className={scss.inputSubSection}>
-                        {Object.keys(players).map((id) => (
-                            <div className={scss.inputItem} key={id}>
-                                <div
-                                    className={
-                                        validation.includes(id)
-                                            ? scss.error
-                                            : scss.input
-                                    }
-                                >
-                                    <Input
-                                        size="large"
-                                        placeholder="player"
-                                        name={id}
-                                        value={players[id].name}
-                                        prefix={<UserOutlined />}
-                                        onChange={handleChangeName}
-                                    />
-                                    {numberPlayers > minPlayers && (
-                                        <div
-                                            className={scss.deleteButton}
-                                            onClick={() =>
-                                                handleDeleteInput(id)
-                                            }
-                                        >
-                                            <CloseCircleOutlined
-                                                style={{
-                                                    fontSize: "25px",
-                                                    color: "gray",
-                                                }}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                                <div className={scss.errorMessage}>
-                                    {players[id].error}
-                                </div>
+            <div className={scss.inputSection}>
+                <div className={scss.inputSubSection}>
+                    {Object.keys(players).map((id) => (
+                        <div className={scss.inputItem} key={id}>
+                            <div
+                                className={
+                                    validation.includes(id)
+                                        ? scss.error
+                                        : scss.input
+                                }
+                            >
+                                <Input
+                                    size="large"
+                                    placeholder="player"
+                                    name={id}
+                                    value={players[id].name}
+                                    prefix={<UserOutlined />}
+                                    onChange={handleChangeName}
+                                />
+                                {numberPlayers > minPlayers && (
+                                    <div
+                                        className={scss.deleteButton}
+                                        onClick={() => handleDeleteInput(id)}
+                                    >
+                                        <CloseCircleOutlined
+                                            style={{
+                                                fontSize: "25px",
+                                                color: "gray",
+                                            }}
+                                        />
+                                    </div>
+                                )}
                             </div>
-                        ))}
-                        <div className={scss.addingButton}>
-                            {numberPlayers < maxPlayers && (
-                                <Button size="middle" onClick={handleAddInput}>
-                                    add player
-                                </Button>
-                            )}
+                            <div className={scss.errorMessage}>
+                                {players[id].error}
+                            </div>
                         </div>
+                    ))}
+                    <div className={scss.addingButton}>
+                        {numberPlayers < maxPlayers && (
+                            <Button size="middle" onClick={handleAddInput}>
+                                add player
+                            </Button>
+                        )}
                     </div>
                 </div>
-                <div className={scss.footerButtons}>
-                    <Button size="large" onClick={() => navigate(LINKS.home)}>
-                        back
-                    </Button>
-                    <Button size="large" onClick={handleSubmitNames}>
-                        next
-                    </Button>
-                </div>
+            </div>
+            <div className={scss.footerButtons}>
+                <Button size="large" onClick={handleGoBack}>
+                    back
+                </Button>
+                <Button size="large" onClick={handleSubmitNames}>
+                    next
+                </Button>
             </div>
         </div>
     );

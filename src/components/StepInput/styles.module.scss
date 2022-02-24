@@ -1,5 +1,6 @@
 %input-shared {
     height: 30px;
+    width: 60px;
     border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
     text-align: center;
@@ -8,14 +9,24 @@
 
 .main {
     display: flex;
+    align-items: flex-end;
 }
-
-// .button {
-//     @extend %input-shared;
-//     width: 30px;
-// }
 
 .value {
     @extend %input-shared;
-    width: 60px;
+}
+
+.title {
+    margin-right: 5px;
+    width: 30vw;
+}
+
+.buttonSection {
+    display: flex;
+}
+
+@media screen and (max-width: 576px) {
+    .title {
+        width: 70vw;
+    }
 }

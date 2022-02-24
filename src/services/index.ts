@@ -1,0 +1,1 @@
+export { serviceGame } from "./ServiceGame";
