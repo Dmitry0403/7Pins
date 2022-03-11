@@ -1,0 +1,24 @@
+.main {
+    display: flex;
+    align-items: flex-end;
+}
+
+.title {
+    margin-right: 10px;
+    width: 30vw;
+}
+
+@media screen and (max-width: 576px) {
+    .main {
+        align-items: center;
+    }
+    .buttonSection {
+        flex-direction: column;
+    }
+    .title {
+        width: 70%;
+    }
+    .button {
+        width: 20%;
+    }
+}

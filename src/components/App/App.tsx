@@ -12,17 +12,15 @@ import "antd/dist/antd.css";
 
 export const App: React.FC = () => {
     return (
-        <div>
-            <Routes>
-                <Route path={LINKS.home} element={<HomePage />} />
-                <Route path={LINKS.details} element={<DetailsPage />} />
-                <Route path={LINKS.start} element={<StartPage />} />
-                <Route path={LINKS.setting} element={<SettingPage />} />
-                <Route path={LINKS.game} element={<GamePage />} />
-                <Route path={LINKS.results} element={<ResultsPage />} />
-                <Route path={LINKS.rules} element={<RulesPage />} />
-                <Route path="*" element={<Navigate to={LINKS.home} />} />
-            </Routes>
-        </div>
+        <Routes>
+            <Route path={LINKS.home} element={<HomePage />} />
+            <Route path={LINKS.details} element={<DetailsPage />} />
+            <Route path={LINKS.start} element={<StartPage />} />
+            <Route path={LINKS.setting} element={<SettingPage />} />
+            <Route path={LINKS.game} element={<GamePage />} />
+            <Route path={LINKS.results} element={<ResultsPage />} />
+            <Route path={LINKS.rules} element={<RulesPage />} />
+            <Route path="*" element={<Navigate to={LINKS.home} />} />
+        </Routes>
     );
 };

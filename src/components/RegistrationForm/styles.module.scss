@@ -1,15 +1,15 @@
 @import "../../styles/palette.scss";
 
+.mainRegistrationForm {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .title {
     text-align: center;
     font-size: 35px;
     margin-bottom: 20px;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    height: 70vh;
 }
 
 .inputSection {
@@ -22,7 +22,7 @@
     top: 0%;
     left: 50%;
     transform: translate(-50%);
-    max-height: 80%;
+    max-height: 100%;
     overflow: auto;
 }
 
@@ -30,16 +30,13 @@
     position: relative;
     display: flex;
     margin-bottom: 20px;
+    width: 25vw;
 }
 
 %input-shared {
     position: relative;
     display: flex;
-    max-width: 300px;
-    &::after {
-        content: "";
-        width: 40px;
-    }
+    width: 20vw;
 }
 
 .input {
@@ -53,6 +50,7 @@
 
 .addingButton {
     display: flex;
+    width: 80%;
     justify-content: flex-end;
     margin-bottom: 20px;
 }
@@ -64,7 +62,7 @@
 }
 .deleteButton {
     position: absolute;
-    left: 89%;
+    left: 103%;
     top: 20%;
     &:hover {
         cursor: pointer;
@@ -79,23 +77,28 @@
 }
 
 @media screen and (max-width: 321px) {
-    .content {
-        height: 60vh;
+    .addingButton {
+        width: 85%;
     }
 }
 
 @media screen and (max-width: 576px) {
     %input-shared {
-        width: 65vw;
-        &::after {
-            content: "";
-            width: 5vw;
-        }
+        width: 58vw;
     }
     .inputItem {
         width: 70vw;
     }
     .deleteButton {
-        left: 95%;
+        left: 103%;
+    }
+    .addingButton {
+        width: 83%;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .footerButtons {
+        justify-content: space-around;
     }
 }

@@ -1,9 +1,21 @@
 @import "../../styles/palette.scss";
 
+.mainListGames {
+    height: 45%;
+}
+
+.sectionListGames {
+    height: 100%;
+}
+
+.subSectionListGames {
+    height: 100%;
+}
+
 .listGames {
     display: inline-block;
-    max-height: 130px;
     overflow: auto;
+    height: 100%;
 }
 
 %game-shared {

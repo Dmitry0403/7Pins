@@ -1,0 +1,32 @@
+%input-shared {
+    height: 30px;
+    width: 60px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    text-align: center;
+    margin: 2px;
+}
+
+.main {
+    display: flex;
+    align-items: flex-end;
+}
+
+.value {
+    @extend %input-shared;
+}
+
+.title {
+    margin-right: 5px;
+    width: 30vw;
+}
+
+.buttonSection {
+    display: flex;
+}
+
+@media screen and (max-width: 576px) {
+    .title {
+        width: 70vw;
+    }
+}
