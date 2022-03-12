@@ -3,7 +3,8 @@ export enum LINKS {
     details = "/details/:id",
     rules = "/rules",
     start = "/start",
-    game = "/game/:id",
+    game = "/game",
     results = "/results",
     setting = "/setting",
+    confirmation = "/confirmation",
 }

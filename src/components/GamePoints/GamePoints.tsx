@@ -3,7 +3,7 @@ import scss from "./styles.module.scss";
 import { Button } from "antd";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { settingGame } from "../../store/gameSlice";
-import { LanguageThemeContext } from "../../themeContext";
+import { LanguageThemeContext } from "../../languageContext";
 
 interface IProps {}
 

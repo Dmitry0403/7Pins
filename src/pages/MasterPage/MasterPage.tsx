@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import scss from "./styles.module.scss";
-import { LanguageThemeContext, languageTheme } from "../../themeContext";
+import { LanguageThemeContext, languageTheme } from "../../languageContext";
 
 interface IMasterPageProps {}
 

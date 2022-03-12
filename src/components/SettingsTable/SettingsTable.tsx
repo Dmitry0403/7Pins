@@ -23,7 +23,7 @@ import {
     LOAD_STATUSES,
 } from "../../store/listGamesSlice";
 import { Spin } from "antd";
-import { LanguageThemeContext } from "../../themeContext";
+import { LanguageThemeContext } from "../../languageContext";
 
 export interface ISetting {
     [key: string]: {
@@ -131,7 +131,7 @@ export const SettingsTable: React.FC = () => {
 
     useEffect(() => {
         if (updatingStatus) {
-            navigate(LINKS.game);
+            navigate(LINKS.confirmation);
         }
     }, [updatingStatus]);
 
@@ -356,10 +356,12 @@ export const SettingsTable: React.FC = () => {
 
     return (
         <div className={scss.mainSettingsGame}>
-            <div className={scss.mainTitle}>Settings of the game</div>
+            <div className={scss.mainTitle}>The game setup</div>
             <div className={scss.mainSection}>
                 <div className={scss.playersSection}>
-                    <div className={scss.title}>Initial points of players:</div>
+                    <div className={scss.title}>
+                        Initial points of the players:
+                    </div>
                     {renderPlayers()}
                 </div>
                 <div className={scss.settingsSection}>
