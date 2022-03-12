@@ -3,52 +3,52 @@ import scss from "./styles.module.scss";
 import { Button } from "antd";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { settingGame } from "../../store/gameSlice";
-import { LanguageThemeContext } from "../../languageContext";
+import { LanguageContext } from "../../languageContext";
 
 interface IProps {}
 
 export const GamePoints: React.FC<IProps> = ({}) => {
     const settings = useAppSelector(settingGame);
-    const languageTheme = useContext(LanguageThemeContext);
+    const language = useContext(LanguageContext);
     const points = {
         king: {
-            title: languageTheme.king,
+            title: language.king,
             value: settings.king.value,
         },
         officer: {
-            title: languageTheme.officer,
+            title: language.officer,
             value: settings.officer.value,
         },
         pawn: {
-            title: languageTheme.pawn,
+            title: language.pawn,
             value: settings.pawn.value,
         },
         onlyKingDowned: {
-            title: languageTheme.onlyKingDowned,
+            title: language.onlyKingDowned,
             value: settings.onlyKingDowned.value,
         },
         caromBalls: {
-            title: languageTheme.caromBalls,
+            title: language.caromBalls,
             value: settings.caromBalls.value,
         },
         alianBall: {
-            title: languageTheme.alianBall,
+            title: language.alianBall,
             value: settings.alianBall.value,
         },
         kingAndFourPawnsKnockedDown: {
-            title: languageTheme.kingAndFourPawnsKnockedDown,
+            title: language.kingAndFourPawnsKnockedDown,
             value: settings.kingAndFourPawnsKnockedDown.value,
         },
         allPinsKnockedDown: {
-            title: languageTheme.allPinsKnockedDown,
+            title: language.allPinsKnockedDown,
             value: settings.allPinsKnockedDown.value,
         },
         fiveCaromBalls: {
-            title: languageTheme.fiveCaromBalls,
+            title: language.fiveCaromBalls,
             value: settings.fiveCaromBalls.value,
         },
         bothSightingBallsScored: {
-            title: languageTheme.bothSightingBallsScored,
+            title: language.bothSightingBallsScored,
             value: settings.bothSightingBallsScored.value,
         },
     };

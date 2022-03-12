@@ -5,4 +5,4 @@ export {
     playersSelector,
     settingGame,
 } from "./gameSlice";
-export type { IGame, IPlayers } from "./gameSlice";
+export type { IGame, IPlayers, IPlayer } from "./gameSlice";

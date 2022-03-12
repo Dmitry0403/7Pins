@@ -1,23 +1,21 @@
 .wrapper {
     max-width: 1440px;
     margin: 0 auto;
-    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .wrapperChildren {
-    padding: 20px;
-    height: 100%;
+    padding: 10px;
+    flex-grow: 1;
 }
 
 .header {
-    position: sticky;
-    top: 0;
-    left: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 15px;
     padding: 10px 20px 10px 20px;
     background-color: #f1eeee;
-    z-index: 3;
 }

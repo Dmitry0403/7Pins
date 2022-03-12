@@ -1,0 +1,88 @@
+%block-shared {
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+    background-color: rgb(253, 251, 251);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+%setting-shared {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.mainConfirmationGame {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mainTitle {
+    font-size: 20px;
+    text-align: center;
+}
+
+.mainSection {
+    @extend %block-shared;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    overflow: auto;
+    flex-grow: 1;
+    position: relative;
+}
+
+.mainSubSection {
+    padding: 10px;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%);
+    max-height: 100%;
+    min-width: 100%;
+    overflow: auto;
+}
+
+.playersSection {
+    margin-bottom: 20px;
+}
+
+.title {
+    font-weight: 600;
+    font-style: italic;
+}
+
+.player {
+    @extend %block-shared;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 7px;
+}
+
+.playerName {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.settingItem span {
+    margin-right: 5px;
+}
+
+.setting {
+    @extend %setting-shared;
+}
+
+.settingGray {
+    @extend %setting-shared;
+    background: rgb(233, 229, 229);
+}
+
+.settingItem {
+    margin-right: 10px;
+}
+
+.footerButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}

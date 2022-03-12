@@ -26,8 +26,6 @@ export const ListGames: React.FC = () => {
 
     const isCompleteGame = listGames.find((item) => Boolean(!item.isComplete));
 
-    loadingStatus === LOAD_STATUSES.LOADING && <Spin size="large" />;
-
     return (
         <div className={scss.mainListGames}>
             {loadingStatus === LOAD_STATUSES.LOADING && <Spin size="large" />}
@@ -35,18 +33,18 @@ export const ListGames: React.FC = () => {
                 <div className={scss.sectionListGames}>
                     <div className={scss.titleListGames}>
                         List of your games (view details):
+                        {isCompleteGame && (
+                            <div className={scss.message}>
+                                you have uncompleted games
+                            </div>
+                        )}
                     </div>
-                    {listGames.length === 0 ? (
+                    {!listGames.length ? (
                         <div className={scss.emptyListGames}>
                             list of your games is empty.
                         </div>
                     ) : (
                         <div className={scss.subSectionListGames}>
-                            {isCompleteGame && (
-                                <div className={scss.message}>
-                                    you have uncompleted games
-                                </div>
-                            )}
                             <div className={scss.listGames}>
                                 {listGames.map((item) => (
                                     <Link

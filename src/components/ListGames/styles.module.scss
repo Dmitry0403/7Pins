@@ -1,21 +1,32 @@
 @import "../../styles/palette.scss";
 
+%list-shared {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .mainListGames {
-    height: 45%;
+    @extend %list-shared;
 }
 
 .sectionListGames {
-    height: 100%;
+    @extend %list-shared;
 }
 
 .subSectionListGames {
-    height: 100%;
+    position: relative;
+    flex-grow: 1;
 }
 
 .listGames {
-    display: inline-block;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%);
+    max-height: 100%;
+    min-width: fit-content;
     overflow: auto;
-    height: 100%;
 }
 
 %game-shared {

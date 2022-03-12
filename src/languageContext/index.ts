@@ -1,1 +1,1 @@
-export { LanguageThemeContext, languageTheme } from "./languageTheme";
+export { LanguageContext, language } from "./language";

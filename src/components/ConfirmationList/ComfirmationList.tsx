@@ -1,17 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import scss from "./styles.module.scss";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import {
-    gameActions,
-    playersSelector,
-    settingGame,
-} from "../../store/gameSlice";
+import { playersSelector, settingGame } from "../../store/gameSlice";
 import { Button, Spin } from "antd";
 import { LINKS } from "../../common/routes";
 import { useNavigate } from "react-router-dom";
 import { updateListGames } from "../../store/listGamesSlice";
 import {
-    updatingListGamesStatusSelector,
+    isUpdateListGamesStatusSelector,
     loadingStatusSelector,
     errorMesaageSelector,
     LOAD_STATUSES,
@@ -25,7 +21,13 @@ export const ConfirmationList: React.FC = () => {
 
     const loadingStatus = useAppSelector(loadingStatusSelector);
     const errorMessage = useAppSelector(errorMesaageSelector);
-    const updatingStatus = useAppSelector(updatingListGamesStatusSelector);
+    const isUpdateListGames = useAppSelector(isUpdateListGamesStatusSelector);
+
+    useEffect(() => {
+        if (isUpdateListGames) {
+            navigate(LINKS.game);
+        }
+    }, [isUpdateListGames]);
 
     const handleSubmitGame = () => {
         dispatch(updateListGames());
@@ -39,39 +41,50 @@ export const ConfirmationList: React.FC = () => {
         <div className={scss.mainConfirmationGame}>
             <div className={scss.mainTitle}>Settings of the game</div>
             <div className={scss.mainSection}>
-                <div className={scss.playersSection}>
-                    <div className={scss.title}>Points of the players:</div>
-                    {Object.keys(players).map((item) => (
-                        <div className={scss.player} key={item}>
-                            <div className={scss.playerName}>
-                                <span>name: </span>
-                                <span>{players[item].name}</span>
+                <div className={scss.mainSubSection}>
+                    <div className={scss.playersSection}>
+                        <div className={scss.title}>Points of the players:</div>
+                        {Object.keys(players).map((item) => (
+                            <div className={scss.player} key={item}>
+                                <div className={scss.playerName}>
+                                    {players[item].name}
+                                </div>
+                                <div className={scss.playerSetting}>
+                                    <div className={scss.settingItem}>
+                                        <span>points:</span>
+                                        <span>{players[item].value}</span>
+                                    </div>
+                                    <div className={scss.settingItem}>
+                                        <span>order:</span>
+                                        <span>{players[item].order}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={scss.playerPoints}>
-                                <span>points: </span>
-                                <span>{players[item].value}</span>
-                            </div>
-                            <div className={scss.playerOrder}>
-                                <span>order: </span>
-                                <span>{players[item].order}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className={scss.settingsSection}>
-                    <div className={scss.title}>Points of the game:</div>
-                    {Object.keys(settings).map((item) => (
-                        <div className={scss.setting}>
-                            <div className={scss.settingItem}>
-                                <span>title: </span>
-                                <span>{settings[item].title}</span>
-                            </div>
-                            <div className={scss.settingItem}>
-                                <span>value: </span>
-                                <span>{settings[item].value}</span>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    <div className={scss.settingsSection}>
+                        <div className={scss.title}>Points of the game:</div>
+                        {Object.keys(settings).map(
+                            (item, idx) =>
+                                settings[item].value && (
+                                    <div
+                                        className={
+                                            idx % 2 === 0
+                                                ? scss.settingGray
+                                                : scss.setting
+                                        }
+                                        key={item}
+                                    >
+                                        <div className={scss.settingItem}>
+                                            {settings[item].title}
+                                        </div>
+                                        <div className={scss.settingItem}>
+                                            {settings[item].value}
+                                        </div>
+                                    </div>
+                                )
+                        )}
+                    </div>
                 </div>
             </div>
             <div className={scss.footerButtons}>

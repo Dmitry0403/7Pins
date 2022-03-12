@@ -16,7 +16,7 @@ export const CheckboxInput: React.FC<IProps> = ({
     handleCheckbox,
 }) => {
     return (
-        <div className={scss.main}>
+        <div className={scss.mainCheckbox}>
             <div className={scss.title}>{title}:</div>
             <Checkbox checked={value} onChange={() => handleCheckbox(id)} />
         </div>

@@ -3,10 +3,10 @@ import type { RootState } from "../store";
 import type { ISetting } from "../../components/SettingsTable";
 import { nanoid } from "nanoid";
 
-interface IPlayer {
+export interface IPlayer {
     name: string;
-    value?: any;
-    order?: number;
+    value: number | null;
+    order: number | null;
 }
 
 export interface IPlayers {
