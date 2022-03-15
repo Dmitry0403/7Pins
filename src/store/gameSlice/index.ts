@@ -3,6 +3,6 @@ export {
     gameActions,
     gameSelector,
     playersSelector,
-    settingGame,
+    settingGameSelector,
 } from "./gameSlice";
 export type { IGame, IPlayers, IPlayer } from "./gameSlice";

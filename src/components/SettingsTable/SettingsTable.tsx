@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
     gameActions,
     playersSelector,
-    settingGame,
+    settingGameSelector,
 } from "../../store/gameSlice";
 import { Button, RadioChangeEvent } from "antd";
 import appConfig from "../../../appConfig.json";
@@ -29,7 +29,7 @@ export const SettingsTable: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const playersFromStore = useAppSelector(playersSelector);
-    const settingsFromStore = useAppSelector(settingGame);
+    const settingsFromStore = useAppSelector(settingGameSelector);
 
     const language = useContext(LanguageContext);
 

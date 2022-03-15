@@ -32,22 +32,6 @@ export const Game: React.FC = () => {
     return (
         <div className={scss.mainGame}>
             <GamePlayers />
-            <div className={scss.choiceSection}>
-                <Button
-                    className={scss.choiceSetting}
-                    onClick={() => handleChoiceSetting(true)}
-                >
-                    points
-                </Button>
-                <Button
-                    className={scss.choiceSetting}
-                    onClick={() => handleChoiceSetting(false)}
-                >
-                    penalty
-                </Button>
-            </div>
-            {choice ? <GamePoints /> : <GamePenalty />}
-            <Button>back move</Button>
         </div>
     );
 };

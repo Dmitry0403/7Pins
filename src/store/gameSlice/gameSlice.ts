@@ -60,4 +60,5 @@ export const gameActions = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
 export const gameSelector = (state: RootState) => state.currentGame;
 export const playersSelector = (state: RootState) => state.currentGame.players;
-export const settingGame = (state: RootState) => state.currentGame.settingGame;
+export const settingGameSelector = (state: RootState) =>
+    state.currentGame.settingGame;

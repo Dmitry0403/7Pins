@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import scss from "./styles.module.scss";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { playersSelector, settingGame } from "../../store/gameSlice";
+import {
+    gameSelector,
+    playersSelector,
+    settingGameSelector,
+} from "../../store/gameSlice";
 import { Button, Spin } from "antd";
 import { LINKS } from "../../common/routes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, generatePath } from "react-router-dom";
 import { updateListGames } from "../../store/listGamesSlice";
 import {
     isUpdateListGamesStatusSelector,
@@ -12,12 +16,15 @@ import {
     errorMesaageSelector,
     LOAD_STATUSES,
 } from "../../store/listGamesSlice";
+import { LanguageContext } from "../../languageContext";
 
 export const ConfirmationList: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const players = useAppSelector(playersSelector);
-    const settings = useAppSelector(settingGame);
+    const settings = useAppSelector(settingGameSelector);
+    const gameId = useAppSelector(gameSelector).idGame;
+    const language = useContext(LanguageContext);
 
     const loadingStatus = useAppSelector(loadingStatusSelector);
     const errorMessage = useAppSelector(errorMesaageSelector);
@@ -25,7 +32,7 @@ export const ConfirmationList: React.FC = () => {
 
     useEffect(() => {
         if (isUpdateListGames) {
-            navigate(LINKS.game);
+            navigate(generatePath(LINKS.game, { id: gameId }));
         }
     }, [isUpdateListGames]);
 
@@ -66,7 +73,7 @@ export const ConfirmationList: React.FC = () => {
                         <div className={scss.title}>Points of the game:</div>
                         {Object.keys(settings).map(
                             (item, idx) =>
-                                settings[item].value && (
+                                settings[item] && (
                                     <div
                                         className={
                                             idx % 2 === 0
@@ -76,10 +83,14 @@ export const ConfirmationList: React.FC = () => {
                                         key={item}
                                     >
                                         <div className={scss.settingItem}>
-                                            {settings[item].title}
+                                            {
+                                                language[
+                                                    item as keyof typeof language
+                                                ]
+                                            }
                                         </div>
                                         <div className={scss.settingItem}>
-                                            {settings[item].value}
+                                            {settings[item]}
                                         </div>
                                     </div>
                                 )
