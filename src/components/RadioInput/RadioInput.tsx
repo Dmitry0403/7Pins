@@ -13,7 +13,7 @@ const maxSettingsPoint = appConfig.maxSettingsPoint;
 
 export const RadioInput: React.FC<IProps> = ({ name, value, handleRadio }) => {
     return (
-        <div className={scss.main}>
+        <div className={scss.mainRadioInput}>
             <div className={scss.title}>{name}:</div>
             <Radio.Group
                 className={scss.button}

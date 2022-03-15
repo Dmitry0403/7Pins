@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import scss from "./styles.module.scss";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { playersSelector } from "../../store/gameSlice";
-import { LanguageThemeContext } from "../../themeContext";
+import { LanguageContext } from "../../languageContext";
 
 interface IProps {}
 

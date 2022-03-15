@@ -18,7 +18,7 @@ export const StepInput: React.FC<IProps> = ({
     handleIncrement,
 }) => {
     return (
-        <div className={scss.main}>
+        <div className={scss.mainStepInput}>
             <div className={scss.title}>{title}:</div>
             <div className={scss.buttonSection}>
                 <Button

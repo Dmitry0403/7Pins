@@ -8,14 +8,14 @@ import { gameActions, playersSelector } from "../../store/gameSlice";
 import { LINKS } from "../../common/routes";
 import { nanoid } from "nanoid";
 import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import type { IPlayer } from "../../store/gameSlice";
 
-export interface IName {
-    name: string;
+interface IPlayerReg extends IPlayer {
     error?: string;
 }
 
-interface IPlayer {
-    [id: string]: IName;
+interface IPlayers {
+    [id: string]: IPlayerReg;
 }
 
 const minPlayers = appConfig.minPlayersNumber;
@@ -29,13 +29,15 @@ export const RegistrationForm: React.FC = () => {
 
     const playersFromStore = useAppSelector(playersSelector);
 
-    let initialPlayers: IPlayer = {};
+    let initialPlayers: IPlayers = {};
 
-    const getInitialPlayers = (): IPlayer => {
+    const getInitialPlayers = (): IPlayers => {
         return Array(minPlayers)
             .fill("player")
             .map(() => ({
                 name: "",
+                value: null,
+                order: null,
                 error: "",
             }))
             .reduce(
@@ -47,11 +49,16 @@ export const RegistrationForm: React.FC = () => {
             );
     };
 
-    const getInitialPlayersFromStore = (): IPlayer => {
+    const getInitialPlayersFromStore = (): IPlayers => {
         return Object.keys(playersFromStore).reduce(
             (object, key) => ({
                 ...object,
-                [key]: { ...playersFromStore[key], error: "" },
+                [key]: {
+                    ...playersFromStore[key],
+                    value: null,
+                    order: null,
+                    error: "",
+                },
             }),
             {}
         );
@@ -63,7 +70,7 @@ export const RegistrationForm: React.FC = () => {
             : (initialPlayers = getInitialPlayers());
     }, [playersFromStore]);
 
-    const [players, setPlayers] = useState<IPlayer>(initialPlayers);
+    const [players, setPlayers] = useState<IPlayers>(initialPlayers);
 
     const [validation, setValidation] = useState<string[]>([]);
 
@@ -74,7 +81,9 @@ export const RegistrationForm: React.FC = () => {
         const isString = value.match(/[^A-Za-zА-Яа-я\s]/);
         if (
             Object.keys(players).find(
-                (key) => players[key].name === value && players[key].name !== ""
+                (key) =>
+                    players[key].name === value.trim() &&
+                    players[key].name !== ""
             )
         ) {
             error = "this name already exists";
@@ -110,12 +119,12 @@ export const RegistrationForm: React.FC = () => {
                 if (!value) {
                     setPlayers((prevState) => ({
                         ...prevState,
-                        [key]: { name: "", error },
+                        [key]: { ...prevState[key], name: "", error },
                     }));
                 } else if (!validation.includes(key)) {
                     setPlayers((prevState) => ({
                         ...prevState,
-                        [key]: { name: value, error },
+                        [key]: { ...prevState[key], name: value, error },
                     }));
                 }
                 isValidOnSubmit = false;
@@ -128,7 +137,7 @@ export const RegistrationForm: React.FC = () => {
         const idPlayer = nanoid();
         setPlayers((prevState) => ({
             ...prevState,
-            [idPlayer]: { name: "", error: "" },
+            [idPlayer]: { name: "", value: null, order: null, error: "" },
         }));
     };
 
@@ -141,7 +150,7 @@ export const RegistrationForm: React.FC = () => {
                 setValidation((prevState) => [...prevState, id]);
                 setPlayers((prevState) => ({
                     ...prevState,
-                    [id]: { name: value, error },
+                    [id]: { ...prevState[id], name: value, error },
                 }));
             }
             return;
@@ -153,7 +162,7 @@ export const RegistrationForm: React.FC = () => {
         }
         setPlayers((prevState) => ({
             ...prevState,
-            [id]: { name: value, error },
+            [id]: { ...prevState[id], name: value, error },
         }));
     };
 
@@ -193,48 +202,52 @@ export const RegistrationForm: React.FC = () => {
             <div className={scss.title}> Players registration</div>
             <div className={scss.inputSection}>
                 <div className={scss.inputSubSection}>
-                    {Object.keys(players).map((id) => (
-                        <div className={scss.inputItem} key={id}>
-                            <div
-                                className={
-                                    validation.includes(id)
-                                        ? scss.error
-                                        : scss.input
-                                }
-                            >
-                                <Input
-                                    size="large"
-                                    placeholder="player"
-                                    name={id}
-                                    value={players[id].name}
-                                    prefix={<UserOutlined />}
-                                    onChange={handleChangeName}
-                                />
-                                {numberPlayers > minPlayers && (
-                                    <div
-                                        className={scss.deleteButton}
-                                        onClick={() => handleDeleteInput(id)}
-                                    >
-                                        <CloseCircleOutlined
-                                            style={{
-                                                fontSize: "25px",
-                                                color: "gray",
-                                            }}
-                                        />
-                                    </div>
-                                )}
+                    <div>
+                        {Object.keys(players).map((id) => (
+                            <div className={scss.inputItem} key={id}>
+                                <div
+                                    className={
+                                        validation.includes(id)
+                                            ? scss.error
+                                            : scss.input
+                                    }
+                                >
+                                    <Input
+                                        size="large"
+                                        placeholder="player"
+                                        name={id}
+                                        value={players[id].name}
+                                        prefix={<UserOutlined />}
+                                        onChange={handleChangeName}
+                                    />
+                                    {numberPlayers > minPlayers && (
+                                        <div
+                                            className={scss.deleteButton}
+                                            onClick={() =>
+                                                handleDeleteInput(id)
+                                            }
+                                        >
+                                            <CloseCircleOutlined
+                                                style={{
+                                                    fontSize: "25px",
+                                                    color: "gray",
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className={scss.errorMessage}>
+                                    {players[id].error}
+                                </div>
                             </div>
-                            <div className={scss.errorMessage}>
-                                {players[id].error}
-                            </div>
+                        ))}
+                        <div className={scss.addingButton}>
+                            {numberPlayers < maxPlayers && (
+                                <Button size="middle" onClick={handleAddInput}>
+                                    add player
+                                </Button>
+                            )}
                         </div>
-                    ))}
-                    <div className={scss.addingButton}>
-                        {numberPlayers < maxPlayers && (
-                            <Button size="middle" onClick={handleAddInput}>
-                                add player
-                            </Button>
-                        )}
                     </div>
                 </div>
             </div>

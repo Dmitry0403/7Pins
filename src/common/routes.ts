@@ -6,4 +6,5 @@ export enum LINKS {
     game = "/game/:id",
     results = "/results",
     setting = "/setting",
+    confirmation = "/confirmation",
 }

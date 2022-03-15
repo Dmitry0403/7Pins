@@ -15,7 +15,7 @@ export const SelectInput: React.FC<IProps> = ({
     handleSelect,
 }) => {
     return (
-        <div className={scss.main}>
+        <div className={scss.mainSelectInput}>
             <select
                 className={scss.button}
                 onChange={(e) => handleSelect(e, id)}

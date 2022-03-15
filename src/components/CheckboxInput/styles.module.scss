@@ -7,24 +7,12 @@
     margin: 2px;
 }
 
-.main {
+.mainCheckbox {
     display: flex;
+    justify-content: space-between;
     align-items: flex-end;
 }
 
 .title {
     margin-right: 5px;
-    width: 30vw;
-}
-
-@media screen and (max-width: 576px) {
-    .main {
-        align-items: center;
-    }
-    .buttonSection {
-        flex-direction: column;
-    }
-    .title {
-        width: 70vw;
-    }
 }

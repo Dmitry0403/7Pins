@@ -7,7 +7,7 @@ import appConfig from "../../../appConfig.json";
 interface IState {
     listGames: IGame[];
     loadingStatus: string;
-    updatingListGamesStatus: boolean;
+    isUpdateListGamesStatus: boolean;
     error: any;
 }
 
@@ -21,7 +21,7 @@ export enum LOAD_STATUSES {
 const initialState: IState = {
     listGames: [],
     loadingStatus: LOAD_STATUSES.UNKNOWN,
-    updatingListGamesStatus: false,
+    isUpdateListGamesStatus: false,
     error: "",
 };
 
@@ -87,7 +87,7 @@ const listGamesSlice = createSlice({
         resetUpdatingListGamesStatus: (state) => {
             return (state = {
                 ...state,
-                updatingListGamesStatus: false,
+                isUpdateListGamesStatus: false,
             });
         },
     },
@@ -111,11 +111,11 @@ const listGamesSlice = createSlice({
             })
             .addCase(updateListGames.fulfilled, (state) => {
                 (state.loadingStatus = LOAD_STATUSES.SUCCESS),
-                    (state.updatingListGamesStatus = true);
+                    (state.isUpdateListGamesStatus = true);
             })
             .addCase(updateListGames.rejected, (state, action) => {
                 (state.loadingStatus = LOAD_STATUSES.FAILURE),
-                    (state.updatingListGamesStatus = false),
+                    (state.isUpdateListGamesStatus = false),
                     (state.error = action.payload);
             });
     },
@@ -129,5 +129,5 @@ export const loadingStatusSelector = (state: RootState) =>
     state.stateGames.loadingStatus;
 export const errorMesaageSelector = (state: RootState) =>
     state.stateGames.error;
-export const updatingListGamesStatusSelector = (state: RootState) =>
-    state.stateGames.updatingListGamesStatus;
+export const isUpdateListGamesStatusSelector = (state: RootState) =>
+    state.stateGames.isUpdateListGamesStatus;

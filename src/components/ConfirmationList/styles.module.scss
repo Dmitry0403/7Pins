@@ -5,7 +5,13 @@
     padding: 10px;
 }
 
-.mainSettingsGame {
+%setting-shared {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.mainConfirmationGame {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -18,13 +24,14 @@
 
 .mainSection {
     @extend %block-shared;
-    flex-grow: 1;
-    position: relative;
     border: 1px solid black;
     margin-bottom: 10px;
+    overflow: auto;
+    flex-grow: 1;
+    position: relative;
 }
 
-.wrapperMainSection {
+.mainSubSection {
     padding: 10px;
     position: absolute;
     top: 0%;
@@ -36,52 +43,42 @@
 }
 
 .playersSection {
-    @extend %block-shared;
-    margin-bottom: 10px;
-}
-
-.playersTitle {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 .title {
     font-weight: 600;
     font-style: italic;
 }
-.player {
-    margin-bottom: 5px;
-}
 
-.playerOrder {
+.player {
+    @extend %block-shared;
     display: flex;
     align-items: center;
-    margin-left: 30px;
+    justify-content: space-around;
+    margin-bottom: 7px;
 }
 
-.selectTitle {
+.playerName {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.settingItem span {
     margin-right: 5px;
 }
 
-.settingsSection {
-    margin-bottom: 10px;
+.setting {
+    @extend %setting-shared;
 }
 
 .settingGray {
+    @extend %setting-shared;
     background: rgb(233, 229, 229);
 }
 
-.pointsSection {
-    margin-bottom: 20px;
-}
-
-.button {
-    margin-right: 5px;
-}
-
-.resetButton {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
+.settingItem {
+    margin-right: 10px;
 }
 
 .footerButtons {

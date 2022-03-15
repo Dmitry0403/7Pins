@@ -3,43 +3,43 @@ import scss from "./styles.module.scss";
 import { Button } from "antd";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { settingGame } from "../../store/gameSlice";
-import { LanguageThemeContext } from "../../themeContext";
+import { LanguageContext } from "../../languageContext";
 
 interface IProps {}
 
 export const GamePenalty: React.FC<IProps> = ({}) => {
     const settings = useAppSelector(settingGame);
-    const languageTheme = useContext(LanguageThemeContext);
+    const language = useContext(LanguageContext);
     const penalty = {
         ballJumedOffTable: {
-            title: languageTheme.ballJumedOffTable,
+            title: language.ballJumedOffTable,
             value: settings.ballJumedOffTable.value,
         },
         cueBallNotTouchSingleAimingBall: {
-            title: languageTheme.cueBallNotTouchSingleAimingBall,
+            title: language.cueBallNotTouchSingleAimingBall,
             value: settings.cueBallNotTouchSingleAimingBall.value,
         },
         cueBallFallsIntoPocket: {
-            title: languageTheme.cueBallFallsIntoPocket,
+            title: language.cueBallFallsIntoPocket,
             value: settings.cueBallFallsIntoPocket.value,
         },
         touchingAimingBallWithCue: {
-            title: languageTheme.touchingAimingBallWithCue,
+            title: language.touchingAimingBallWithCue,
             value: settings.touchingAimingBallWithCue.value,
         },
     };
 
     const downedPinsPenalty = {
         king: {
-            title: languageTheme.king,
+            title: language.king,
             value: settings.king.value,
         },
         officer: {
-            title: languageTheme.officer,
+            title: language.officer,
             value: settings.officer.value,
         },
         pawn: {
-            title: languageTheme.pawn,
+            title: language.pawn,
             value: settings.pawn.value,
         },
     };

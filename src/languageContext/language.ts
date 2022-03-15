@@ -1,6 +1,6 @@
 import React from "react";
 
-export const languageTheme = {
+export const language = {
     english: {
         king: "King",
         officer: "Officer",
@@ -29,4 +29,4 @@ export const languageTheme = {
     },
 };
 
-export const LanguageThemeContext = React.createContext(languageTheme.english);
+export const LanguageContext = React.createContext(language.english);
