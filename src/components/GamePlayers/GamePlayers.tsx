@@ -1,13 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import scss from "./styles.module.scss";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { playersSelector } from "../../store/gameSlice";
-import { LanguageContext } from "../../languageContext";
+import { useDispatch } from "react-redux";
+import { fetchGame } from "../../store/gameSlice";
 
-interface IProps {}
-
-export const GamePlayers: React.FC<IProps> = ({}) => {
+export const GamePlayers: React.FC = () => {
+    const dispatch = useDispatch();
     const players = useAppSelector(playersSelector);
+
+    useEffect(() => {
+        if (!players) {
+            dispatch(fetchGame());
+        }
+    }, [dispatch]);
 
     return (
         <div className={scss.gamePlayers}>

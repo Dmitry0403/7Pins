@@ -11,7 +11,7 @@ import {
 } from "../../store/listGamesSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Spin } from "antd";
-import { LOAD_STATUSES } from "../../store/listGamesSlice";
+import { LOAD_STATUSES } from "../../common";
 
 export const ListGames: React.FC = () => {
     const dispatch = useAppDispatch();

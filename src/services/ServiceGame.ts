@@ -1,20 +1,17 @@
 import type { IGame } from "../store/gameSlice";
 
 interface IServiceGame {
-    postUserGamesList: (payload: IGame[]) => Promise<string>;
-    getUserGamesList: () => Promise<IGame[]>;
+    postGames: (payload: IGame[] | IGame, path: string) => Promise<string>;
+    getGames: (path: string) => Promise<IGame[] | IGame>;
 }
 
 class ServiceGame implements IServiceGame {
-    postUserGamesList(payload: IGame[]): Promise<string> {
+    postGames(payload: IGame[] | IGame, path: string): Promise<string> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 Math.random() * 100 < 90
                     ? (() => {
-                          localStorage.setItem(
-                              "listGames",
-                              JSON.stringify(payload)
-                          );
+                          localStorage.setItem(path, JSON.stringify(payload));
                           resolve("ok");
                       })()
                     : reject("loading error, try again");
@@ -22,16 +19,12 @@ class ServiceGame implements IServiceGame {
         });
     }
 
-    getUserGamesList(): Promise<IGame[]> {
+    getGames(path: string): Promise<IGame[] | IGame> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 Math.random() * 100 < 90
-                    ? resolve(
-                          JSON.parse(
-                              localStorage.getItem("listGames") as string
-                          )
-                      )
-                    : reject("error loading the list of games");
+                    ? resolve(JSON.parse(localStorage.getItem(path) as string))
+                    : reject("loading error, try again");
             }, 1200);
         });
     }

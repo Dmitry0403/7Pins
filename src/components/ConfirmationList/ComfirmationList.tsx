@@ -2,20 +2,18 @@ import React, { useContext, useEffect } from "react";
 import scss from "./styles.module.scss";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import {
+    updateGame,
     gameSelector,
     playersSelector,
     settingGameSelector,
+    loadingGameStatusSelector,
+    errorMessageGameSelector,
+    isUpdateGameStatusSelector,
 } from "../../store/gameSlice";
 import { Button, Spin } from "antd";
 import { LINKS } from "../../common/routes";
 import { useNavigate, generatePath } from "react-router-dom";
-import { updateListGames } from "../../store/listGamesSlice";
-import {
-    isUpdateListGamesStatusSelector,
-    loadingStatusSelector,
-    errorMesaageSelector,
-    LOAD_STATUSES,
-} from "../../store/listGamesSlice";
+import { LOAD_STATUSES } from "../../common";
 import { LanguageContext } from "../../languageContext";
 
 export const ConfirmationList: React.FC = () => {
@@ -26,9 +24,9 @@ export const ConfirmationList: React.FC = () => {
     const gameId = useAppSelector(gameSelector).idGame;
     const language = useContext(LanguageContext);
 
-    const loadingStatus = useAppSelector(loadingStatusSelector);
-    const errorMessage = useAppSelector(errorMesaageSelector);
-    const isUpdateListGames = useAppSelector(isUpdateListGamesStatusSelector);
+    const loadingStatus = useAppSelector(loadingGameStatusSelector);
+    const errorMessage = useAppSelector(errorMessageGameSelector);
+    const isUpdateListGames = useAppSelector(isUpdateGameStatusSelector);
 
     useEffect(() => {
         if (isUpdateListGames) {
@@ -37,7 +35,7 @@ export const ConfirmationList: React.FC = () => {
     }, [isUpdateListGames]);
 
     const handleSubmitGame = () => {
-        dispatch(updateListGames());
+        dispatch(updateGame());
     };
 
     const handleGoBack = () => {

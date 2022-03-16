@@ -7,7 +7,6 @@ import {
     listGamesSelector,
     loadingStatusSelector,
     errorMesaageSelector,
-    LOAD_STATUSES,
 } from "../../store/listGamesSlice";
 import { LINKS } from "../../common/routes";
 import { useNavigate } from "react-router-dom";
@@ -19,15 +18,6 @@ import { GamePlayers } from "../GamePlayers";
 export const Game: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-
-    const [choice, setChoice] = useState<boolean>(true);
-
-    const loadingStatus = useAppSelector(loadingStatusSelector);
-    const errorMessage = useAppSelector(errorMesaageSelector);
-
-    const handleChoiceSetting = (boolean: boolean) => {
-        setChoice(boolean);
-    };
 
     return (
         <div className={scss.mainGame}>

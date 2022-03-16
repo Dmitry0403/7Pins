@@ -6,14 +6,13 @@ import { MasterPage } from "../MasterPage";
 import { ListGames } from "../../components/ListGames";
 import { useAppDispatch } from "../../store/hooks";
 import { gameActions } from "../../store/gameSlice";
-import { listGamesActions } from "../../store/listGamesSlice/listGamesSlice";
 
 export const HomePage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const handleStartGame = () => {
-        dispatch(listGamesActions.resetUpdatingListGamesStatus());
+        dispatch(gameActions.resetUpdatingGame());
         dispatch(gameActions.createGame());
         navigate(LINKS.start);
     };
