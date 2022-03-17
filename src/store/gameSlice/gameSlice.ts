@@ -44,7 +44,7 @@ const initialState: IState = {
 };
 
 export const fetchGame = createAsyncThunk(
-    "datefetchGames",
+    "game/fetchGames",
     async (_, { rejectWithValue }) => {
         try {
             const resp = (await serviceGame.getGames("currentGame")) as IGame;

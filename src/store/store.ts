@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { gameReducer } from "./gameSlice";
 import { listGamesReducer } from "./listGamesSlice";
+import { currencyReducer } from "./currencySlice";
 
 export const store = configureStore({
     reducer: {
         currentGame: gameReducer,
         stateGames: listGamesReducer,
+        currency: currencyReducer,
     },
 });
 

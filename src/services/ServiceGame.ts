@@ -1,8 +1,10 @@
 import type { IGame } from "../store/gameSlice";
+import type { ICurrency } from "../store/currencySlice";
 
 interface IServiceGame {
     postGames: (payload: IGame[] | IGame, path: string) => Promise<string>;
     getGames: (path: string) => Promise<IGame[] | IGame>;
+    getCurrency: (params: string) => Promise<any>;
 }
 
 class ServiceGame implements IServiceGame {
@@ -26,6 +28,14 @@ class ServiceGame implements IServiceGame {
                     ? resolve(JSON.parse(localStorage.getItem(path) as string))
                     : reject("loading error, try again");
             }, 1200);
+        });
+    }
+
+    getCurrency(params: string): Promise<ICurrency[]> {
+        return fetch(params).then((resp) => {
+            if (resp.ok) {
+                return resp.json();
+            }
         });
     }
 }
