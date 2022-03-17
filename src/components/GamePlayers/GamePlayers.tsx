@@ -4,13 +4,21 @@ import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { playersSelector } from "../../store/gameSlice";
 import { useDispatch } from "react-redux";
 import { fetchGame } from "../../store/gameSlice";
+import { Spin } from "antd";
+import {
+    loadingGameStatusSelector,
+    errorMessageGameSelector,
+} from "../../store/gameSlice";
+import { LOAD_STATUSES } from "../../common";
 
 export const GamePlayers: React.FC = () => {
     const dispatch = useDispatch();
     const players = useAppSelector(playersSelector);
+    const errorMessage = useAppSelector(errorMessageGameSelector);
+    const loadStatus = useAppSelector(loadingGameStatusSelector);
 
     useEffect(() => {
-        if (!players) {
+        if (!Object.keys(players)[0]) {
             dispatch(fetchGame());
         }
     }, [dispatch]);
@@ -18,6 +26,8 @@ export const GamePlayers: React.FC = () => {
     return (
         <div className={scss.gamePlayers}>
             <div className={scss.titlePlayers}> Players points </div>
+            {loadStatus === LOAD_STATUSES.LOADING && <Spin />}
+            {loadStatus === LOAD_STATUSES.FAILURE && <div>{errorMessage}</div>}
             <div className={scss.listPlayers}>
                 {Object.keys(players).map((item) => (
                     <div className={scss.itemPlayer} key={item}>

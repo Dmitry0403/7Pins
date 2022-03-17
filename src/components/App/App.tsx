@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import {
+    Routes,
+    Route,
+    Navigate,
+    useParams,
+    generatePath,
+} from "react-router-dom";
 import { HomePage } from "../../pages/HomePage";
 import { StartPage } from "../../pages/StartPage";
 import { SettingPage } from "../../pages/SettingPage";

@@ -1,27 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import scss from "./styles.module.scss";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { gameActions } from "../../store/gameSlice";
-import {
-    fetchListGames,
-    listGamesSelector,
-    loadingStatusSelector,
-    errorMesaageSelector,
-} from "../../store/listGamesSlice";
-import { LINKS } from "../../common/routes";
-import { useNavigate } from "react-router-dom";
-import { Spin, Button } from "antd";
-import { GamePoints } from "../GamePoints";
-import { GamePenalty } from "../GamePenalty";
 import { GamePlayers } from "../GamePlayers";
+import { useLocation, useNavigate } from "react-router-dom";
+import { updateListGames } from "../../store/listGamesSlice";
+import { useDispatch } from "react-redux";
+import { LINKS } from "../../common";
+import { Button } from "antd";
 
 export const Game: React.FC = () => {
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    const handleExitGame = () => {
+        dispatch(updateListGames());
+        navigate(LINKS.home);
+    };
     return (
         <div className={scss.mainGame}>
-            <GamePlayers />
+            <div className={scss.players}>
+                <GamePlayers />
+            </div>
+            <div className={scss.footerButtons}>
+                <Button size="large" onClick={handleExitGame}>
+                    exit the game
+                </Button>
+                <Button size="large">next player</Button>
+            </div>
         </div>
     );
 };

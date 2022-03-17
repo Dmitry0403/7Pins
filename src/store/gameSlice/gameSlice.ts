@@ -4,7 +4,6 @@ import type { ISetting } from "../../components/SettingsTable";
 import { LOAD_STATUSES } from "../../common";
 import { serviceGame } from "../../services";
 import { nanoid } from "nanoid";
-import appConfig from "../../../appConfig.json";
 
 export interface IPlayer {
     name: string;
@@ -46,7 +45,7 @@ const initialState: IState = {
 
 export const fetchGame = createAsyncThunk(
     "datefetchGames",
-    async (_, { rejectWithValue, dispatch }) => {
+    async (_, { rejectWithValue }) => {
         try {
             const resp = (await serviceGame.getGames("currentGame")) as IGame;
             if (!resp) {
@@ -138,7 +137,8 @@ const gameSlice = createSlice({
             .addCase(fetchGame.fulfilled, (state, action) => {
                 (state.loadingStatusGame = LOAD_STATUSES.SUCCESS),
                     (state.loadingStatusGame = LOAD_STATUSES.SUCCESS),
-                    (state.game = action.payload);
+                    (state.game = action.payload),
+                    (state.isUpdateGameStatus = true);
             })
             .addCase(fetchGame.rejected, (state, action) => {
                 (state.loadingStatusGame = LOAD_STATUSES.FAILURE),

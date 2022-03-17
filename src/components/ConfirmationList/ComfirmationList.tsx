@@ -26,13 +26,14 @@ export const ConfirmationList: React.FC = () => {
 
     const loadingStatus = useAppSelector(loadingGameStatusSelector);
     const errorMessage = useAppSelector(errorMessageGameSelector);
-    const isUpdateListGames = useAppSelector(isUpdateGameStatusSelector);
+    const isUpdateGame = useAppSelector(isUpdateGameStatusSelector);
 
     useEffect(() => {
-        if (isUpdateListGames) {
-            navigate(generatePath(LINKS.game, { id: gameId }));
+        if (isUpdateGame) {
+            // navigate(generatePath(LINKS.game, { id: gameId }));
+            navigate(LINKS.game);
         }
-    }, [isUpdateListGames]);
+    }, [isUpdateGame]);
 
     const handleSubmitGame = () => {
         dispatch(updateGame());
