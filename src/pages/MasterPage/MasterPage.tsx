@@ -1,28 +1,36 @@
-import React, { PropsWithChildren } from "react";
+import React, { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import scss from "./styles.module.scss";
 import { LanguageContext, language } from "../../languageContext";
-import { Link } from "react-router-dom";
-import { LINKS } from "../../common";
+import { PortModal } from "../PortModalPage";
+import { MenuCard } from "../../components/MenuCard";
+import { Outlet } from "react-router-dom";
 
-interface IMasterPageProps {}
+export const MasterPage: React.FC = () => {
+    const [isActivePortModal, setIsActivePortModal] = useState(false);
+    const handleChangeActiveMenu = () => {
+        setIsActivePortModal((prevState) => !prevState);
+    };
 
-export const MasterPage: React.FC = (
-    props: PropsWithChildren<IMasterPageProps>
-) => {
     return (
         <LanguageContext.Provider value={language.english}>
             <div className={scss.wrapper}>
                 <div className={scss.header}>
                     <div className={scss.icon}>7Pins</div>
-                    <Link to={LINKS.currency} className={scss.currency}>
-                        currency
-                    </Link>
                     <div>
-                        <MenuOutlined />
+                        <MenuOutlined onClick={handleChangeActiveMenu} />
                     </div>
                 </div>
-                <div className={scss.wrapperChildren}>{props.children}</div>
+                <div className={scss.wrapperChildren}>
+                    <Outlet />
+                </div>
+                {isActivePortModal && (
+                    <PortModal>
+                        <MenuCard
+                            handleExitPortModal={handleChangeActiveMenu}
+                        />
+                    </PortModal>
+                )}
             </div>
         </LanguageContext.Provider>
     );

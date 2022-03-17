@@ -30,8 +30,7 @@ export const ConfirmationList: React.FC = () => {
 
     useEffect(() => {
         if (isUpdateGame) {
-            // navigate(generatePath(LINKS.game, { id: gameId }));
-            navigate(LINKS.game);
+            navigate(generatePath(LINKS.game, { id: gameId }));
         }
     }, [isUpdateGame]);
 
@@ -71,11 +70,11 @@ export const ConfirmationList: React.FC = () => {
                     <div className={scss.settingsSection}>
                         <div className={scss.title}>Points of the game:</div>
                         {Object.keys(settings).map(
-                            (item, idx) =>
+                            (item, i) =>
                                 settings[item] && (
                                     <div
                                         className={
-                                            idx % 2 === 0
+                                            i % 2 === 0
                                                 ? scss.settingGray
                                                 : scss.setting
                                         }

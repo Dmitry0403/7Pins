@@ -2,13 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
 import { LOAD_STATUSES } from "../../common";
-import { serviceGame } from "../../services";
+import { serviceCurrency } from "../../services";
 
 export interface ICurrency {
     Cur_Abbreviation: string;
     Cur_Name: string;
     Cur_OfficialRate: number;
     Cur_Scale: number;
+    Cur_ID: number;
 }
 
 interface IState {
@@ -27,7 +28,7 @@ export const fetchCurrency = createAsyncThunk(
     "currency/fetchCurrency",
     async (url: string, { rejectWithValue }) => {
         try {
-            const resp = await serviceGame.getCurrency(url);
+            const resp = await serviceCurrency.getCurrency(url);
             if (!resp) {
                 throw new Error("loading error, try again");
             }
@@ -50,12 +51,11 @@ const currencySlice = createSlice({
             })
             .addCase(fetchCurrency.fulfilled, (state, action) => {
                 (state.loadingStatus = LOAD_STATUSES.SUCCESS),
-                    (state.loadingStatus = LOAD_STATUSES.SUCCESS),
                     (state.data = action.payload);
             })
             .addCase(fetchCurrency.rejected, (state, action) => {
                 (state.loadingStatus = LOAD_STATUSES.FAILURE),
-                    (state.error = action.payload);
+                    (state.error = action.error.message);
             });
     },
 });

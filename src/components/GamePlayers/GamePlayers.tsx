@@ -1,36 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import scss from "./styles.module.scss";
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { playersSelector } from "../../store/gameSlice";
-import { useDispatch } from "react-redux";
-import { fetchGame } from "../../store/gameSlice";
-import { Spin } from "antd";
-import {
-    loadingGameStatusSelector,
-    errorMessageGameSelector,
-} from "../../store/gameSlice";
-import { LOAD_STATUSES } from "../../common";
+import type { IPlayers } from "../../store/gameSlice";
 
-export const GamePlayers: React.FC = () => {
-    const dispatch = useDispatch();
-    const players = useAppSelector(playersSelector);
-    const errorMessage = useAppSelector(errorMessageGameSelector);
-    const loadStatus = useAppSelector(loadingGameStatusSelector);
+interface IProps {
+    players: IPlayers;
+}
 
-    useEffect(() => {
-        if (!Object.keys(players)[0]) {
-            dispatch(fetchGame());
-        }
-    }, [dispatch]);
-
+export const GamePlayers: React.FC<IProps> = ({ players }) => {
     return (
         <div className={scss.gamePlayers}>
             <div className={scss.titlePlayers}> Players points </div>
-            {loadStatus === LOAD_STATUSES.LOADING && <Spin />}
-            {loadStatus === LOAD_STATUSES.FAILURE && <div>{errorMessage}</div>}
             <div className={scss.listPlayers}>
                 {Object.keys(players).map((item) => (
-                    <div className={scss.itemPlayer} key={item}>
+                    <div
+                        className={
+                            players[item].isActive
+                                ? scss.activePlayer
+                                : scss.player
+                        }
+                        key={item}
+                    >
                         <div className={scss.namePlayer}>
                             {players[item].name}:
                         </div>

@@ -4,14 +4,13 @@ import type { ICurrency } from "../store/currencySlice";
 interface IServiceGame {
     postGames: (payload: IGame[] | IGame, path: string) => Promise<string>;
     getGames: (path: string) => Promise<IGame[] | IGame>;
-    getCurrency: (params: string) => Promise<any>;
 }
 
 class ServiceGame implements IServiceGame {
     postGames(payload: IGame[] | IGame, path: string): Promise<string> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                Math.random() * 100 < 90
+                Math.random() * 100 < 95
                     ? (() => {
                           localStorage.setItem(path, JSON.stringify(payload));
                           resolve("ok");
@@ -24,18 +23,10 @@ class ServiceGame implements IServiceGame {
     getGames(path: string): Promise<IGame[] | IGame> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                Math.random() * 100 < 90
+                Math.random() * 100 < 95
                     ? resolve(JSON.parse(localStorage.getItem(path) as string))
                     : reject("loading error, try again");
             }, 1200);
-        });
-    }
-
-    getCurrency(params: string): Promise<ICurrency[]> {
-        return fetch(params).then((resp) => {
-            if (resp.ok) {
-                return resp.json();
-            }
         });
     }
 }

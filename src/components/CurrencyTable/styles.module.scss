@@ -1,3 +1,5 @@
+@import "../../styles/palette.scss";
+
 .mainCurrencyTable {
     display: flex;
     flex-direction: column;
@@ -19,6 +21,7 @@
 .sectionCurrencies {
     flex-grow: 1;
     position: relative;
+    margin-bottom: 5px;
 }
 
 .subSectionCurrencies {
@@ -51,7 +54,8 @@
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    grid-gap: 20px;
+    gap: 5px;
+    font-size: 16px;
 }
 
 .titles {
@@ -62,9 +66,15 @@
 
 .itemCurrency {
     @extend %currency-shared;
+    cursor: pointer;
 }
 
 .itemCurrencyGray {
     @extend %currency-shared;
     background-color: rgb(228, 222, 222);
+    cursor: pointer;
+}
+
+.error {
+    color: $colorError;
 }

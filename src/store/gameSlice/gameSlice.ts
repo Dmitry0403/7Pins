@@ -9,6 +9,7 @@ export interface IPlayer {
     name: string;
     value: number | null;
     order: number | null;
+    isActive: boolean | null;
 }
 
 export interface IPlayers {

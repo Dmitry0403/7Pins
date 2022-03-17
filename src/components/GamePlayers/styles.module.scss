@@ -2,8 +2,9 @@
     margin-bottom: 10px;
 }
 
-.itemPlayer {
+%player-shared {
     display: flex;
+    justify-content: space-around;
     padding: 0px 10px;
     border: 1px solid rgb(0, 0, 0);
     box-shadow: 0 0 5px rgb(158, 157, 157);
@@ -11,6 +12,18 @@
     margin-bottom: 5px;
 }
 
+.player {
+    @extend %player-shared;
+}
+
+.activePlayer {
+    @extend %player-shared;
+    border: 2px solid #40a9ff;
+    box-shadow: 0 0 5px #a1d4fd;
+    padding: 15px 10px;
+    font-size: 25px;
+}
+
 .namePlayer {
-    margin-right: 5px;
+    margin-right: 10px;
 }
