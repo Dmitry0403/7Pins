@@ -1,0 +1,26 @@
+%input-shared {
+    height: 30px;
+    width: 60px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    text-align: center;
+    margin: 2px;
+}
+
+.mainStepInput {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.value {
+    @extend %input-shared;
+}
+
+.title {
+    margin-right: 5px;
+}
+
+.buttonSection {
+    display: flex;
+}

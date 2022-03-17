@@ -7,4 +7,5 @@ export enum LINKS {
     results = "/results",
     setting = "/setting",
     confirmation = "/confirmation",
+    currency = "/currency",
 }

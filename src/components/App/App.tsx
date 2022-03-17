@@ -14,6 +14,7 @@ import { RulesPage } from "../../pages/RulesPage";
 import { GamePage } from "../../pages/GamePage";
 import { ResultsPage } from "../../pages/ResultsPage";
 import { DetailsPage } from "../../pages/DetailsPage";
+import { CurrencyPage } from "../../pages/CurrencyPage";
 import { LINKS } from "../../common/routes";
 import "antd/dist/antd.css";
 
@@ -28,6 +29,7 @@ export const App: React.FC = () => {
             <Route path={LINKS.game} element={<GamePage />} />
             <Route path={LINKS.results} element={<ResultsPage />} />
             <Route path={LINKS.rules} element={<RulesPage />} />
+            <Route path={LINKS.currency} element={<CurrencyPage />} />
             <Route path="*" element={<Navigate to={LINKS.home} />} />
         </Routes>
     );
