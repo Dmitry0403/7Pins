@@ -38,6 +38,7 @@ export const RegistrationForm: React.FC = () => {
                 name: "",
                 value: null,
                 order: null,
+                isActive: false,
                 error: "",
             }))
             .reduce(
@@ -137,7 +138,13 @@ export const RegistrationForm: React.FC = () => {
         const idPlayer = nanoid();
         setPlayers((prevState) => ({
             ...prevState,
-            [idPlayer]: { name: "", value: null, order: null, error: "" },
+            [idPlayer]: {
+                name: "",
+                value: null,
+                order: null,
+                error: "",
+                isActive: false,
+            },
         }));
     };
 

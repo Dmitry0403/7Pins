@@ -3,25 +3,17 @@ import type { RootState } from "../store";
 import type { IGame } from "../gameSlice";
 import { serviceGame } from "../../services";
 import appConfig from "../../../appConfig.json";
+import { LOAD_STATUSES } from "../../common";
 
 interface IState {
     listGames: IGame[];
     loadingStatus: string;
-    isUpdateListGamesStatus: boolean;
     error: any;
-}
-
-export enum LOAD_STATUSES {
-    UNKNOWN = "unknown",
-    LOADING = "loading",
-    SUCCESS = "loaded",
-    FAILURE = "failure",
 }
 
 const initialState: IState = {
     listGames: [],
     loadingStatus: LOAD_STATUSES.UNKNOWN,
-    isUpdateListGamesStatus: false,
     error: "",
 };
 
@@ -29,7 +21,7 @@ export const fetchListGames = createAsyncThunk(
     "listGames/fetchListGames",
     async (_, { rejectWithValue }) => {
         try {
-            const resp = await serviceGame.getUserGamesList();
+            const resp = (await serviceGame.getGames("listGames")) as IGame[];
             if (!resp) {
                 return [];
             }
@@ -56,12 +48,12 @@ export const updateListGames = createAsyncThunk<
 >(
     "listGames/updateListGames",
     async (_, { rejectWithValue, dispatch, getState }) => {
-        const listGames = getState().stateGames.listGames as IGame[];
-        const newGame = getState().currentGame;
+        const listGames = getState().stateGames.listGames;
+        const newGame = getState().currentGame.game;
         const newListGames = [...listGames, newGame];
 
         try {
-            const resp = await serviceGame.postUserGamesList(newListGames);
+            const resp = await serviceGame.postGames(newListGames, "listGames");
             if (resp !== "ok") {
                 throw new Error("error updating the list of games");
             }
@@ -82,12 +74,6 @@ const listGamesSlice = createSlice({
             return (state = {
                 ...state,
                 listGames: action.payload,
-            });
-        },
-        resetUpdatingListGamesStatus: (state) => {
-            return (state = {
-                ...state,
-                isUpdateListGamesStatus: false,
             });
         },
     },
@@ -111,11 +97,11 @@ const listGamesSlice = createSlice({
             })
             .addCase(updateListGames.fulfilled, (state) => {
                 (state.loadingStatus = LOAD_STATUSES.SUCCESS),
-                    (state.isUpdateListGamesStatus = true);
+                    (state.loadingStatus = LOAD_STATUSES.LOADING);
             })
             .addCase(updateListGames.rejected, (state, action) => {
                 (state.loadingStatus = LOAD_STATUSES.FAILURE),
-                    (state.isUpdateListGamesStatus = false),
+                    (state.loadingStatus = LOAD_STATUSES.FAILURE),
                     (state.error = action.payload);
             });
     },
@@ -129,5 +115,3 @@ export const loadingStatusSelector = (state: RootState) =>
     state.stateGames.loadingStatus;
 export const errorMesaageSelector = (state: RootState) =>
     state.stateGames.error;
-export const isUpdateListGamesStatusSelector = (state: RootState) =>
-    state.stateGames.isUpdateListGamesStatus;

@@ -5,6 +5,4 @@ export {
     listGamesSelector,
     loadingStatusSelector,
     errorMesaageSelector,
-    isUpdateListGamesStatusSelector,
-    LOAD_STATUSES,
 } from "./listGamesSlice";

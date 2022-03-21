@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
     gameActions,
     playersSelector,
-    settingGame,
+    settingGameSelector,
 } from "../../store/gameSlice";
 import { Button, RadioChangeEvent } from "antd";
 import appConfig from "../../../appConfig.json";
@@ -29,7 +29,7 @@ export const SettingsTable: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const playersFromStore = useAppSelector(playersSelector);
-    const settingsFromStore = useAppSelector(settingGame);
+    const settingsFromStore = useAppSelector(settingGameSelector);
 
     const language = useContext(LanguageContext);
 
@@ -121,7 +121,11 @@ export const SettingsTable: React.FC = () => {
                 .reduce(
                     (obj, item) => ({
                         ...obj,
-                        [item]: statePlayers[item],
+                        [item]: {
+                            ...statePlayers[item],
+                            isActive:
+                                statePlayers[item].order === 1 ? true : false,
+                        },
                     }),
                     {}
                 );
@@ -213,9 +217,9 @@ export const SettingsTable: React.FC = () => {
     };
 
     const renderPointsSettingsWithStepInput = () => {
-        return Object.keys(pointsSettingsWithStepInput).map((key, idx) => (
+        return Object.keys(pointsSettingsWithStepInput).map((key, i) => (
             <div
-                className={idx % 2 === 0 ? scss.settingGray : scss.setting}
+                className={i % 2 === 0 ? scss.settingGray : scss.setting}
                 key={key}
             >
                 <StepInput
@@ -256,9 +260,9 @@ export const SettingsTable: React.FC = () => {
             }));
         };
 
-        return Object.keys(pointsSettingsWithRadioInput).map((key, idx) => (
+        return Object.keys(pointsSettingsWithRadioInput).map((key, i) => (
             <div
-                className={idx % 2 !== 0 ? scss.settingGray : scss.setting}
+                className={i % 2 !== 0 ? scss.settingGray : scss.setting}
                 key={key}
             >
                 <RadioInput
@@ -271,9 +275,9 @@ export const SettingsTable: React.FC = () => {
     };
 
     const renderPenaltySettingsWithStepInput = () => {
-        return Object.keys(penaltySettingsWithStepInput).map((key, idx) => (
+        return Object.keys(penaltySettingsWithStepInput).map((key, i) => (
             <div
-                className={idx % 2 === 0 ? scss.settingGray : scss.setting}
+                className={i % 2 === 0 ? scss.settingGray : scss.setting}
                 key={key}
             >
                 <StepInput
@@ -295,9 +299,9 @@ export const SettingsTable: React.FC = () => {
             }));
         };
 
-        return Object.keys(penaltySettingsWithCheckbox).map((key, idx) => (
+        return Object.keys(penaltySettingsWithCheckbox).map((key, i) => (
             <div
-                className={idx % 2 === 0 ? scss.settingGray : scss.setting}
+                className={i % 2 === 0 ? scss.settingGray : scss.setting}
                 key={key}
             >
                 <CheckboxInput

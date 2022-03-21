@@ -1,36 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import scss from "./styles.module.scss";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { playersSelector, settingGame } from "../../store/gameSlice";
+import {
+    updateGame,
+    gameSelector,
+    playersSelector,
+    settingGameSelector,
+    loadingGameStatusSelector,
+    errorMessageGameSelector,
+    isUpdateGameStatusSelector,
+} from "../../store/gameSlice";
 import { Button, Spin } from "antd";
 import { LINKS } from "../../common/routes";
-import { useNavigate } from "react-router-dom";
-import { updateListGames } from "../../store/listGamesSlice";
-import {
-    isUpdateListGamesStatusSelector,
-    loadingStatusSelector,
-    errorMesaageSelector,
-    LOAD_STATUSES,
-} from "../../store/listGamesSlice";
+import { useNavigate, generatePath } from "react-router-dom";
+import { LOAD_STATUSES } from "../../common";
+import { LanguageContext } from "../../languageContext";
 
 export const ConfirmationList: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const players = useAppSelector(playersSelector);
-    const settings = useAppSelector(settingGame);
+    const settings = useAppSelector(settingGameSelector);
+    const gameId = useAppSelector(gameSelector).idGame;
+    const language = useContext(LanguageContext);
 
-    const loadingStatus = useAppSelector(loadingStatusSelector);
-    const errorMessage = useAppSelector(errorMesaageSelector);
-    const isUpdateListGames = useAppSelector(isUpdateListGamesStatusSelector);
+    const loadingStatus = useAppSelector(loadingGameStatusSelector);
+    const errorMessage = useAppSelector(errorMessageGameSelector);
+    const isUpdateGame = useAppSelector(isUpdateGameStatusSelector);
 
     useEffect(() => {
-        if (isUpdateListGames) {
-            navigate(LINKS.game);
+        if (isUpdateGame) {
+            navigate(generatePath(LINKS.game, { id: gameId }));
         }
-    }, [isUpdateListGames]);
+    }, [isUpdateGame]);
 
     const handleSubmitGame = () => {
-        dispatch(updateListGames());
+        dispatch(updateGame());
     };
 
     const handleGoBack = () => {
@@ -65,21 +70,25 @@ export const ConfirmationList: React.FC = () => {
                     <div className={scss.settingsSection}>
                         <div className={scss.title}>Points of the game:</div>
                         {Object.keys(settings).map(
-                            (item, idx) =>
-                                settings[item].value && (
+                            (item, i) =>
+                                settings[item] && (
                                     <div
                                         className={
-                                            idx % 2 === 0
+                                            i % 2 === 0
                                                 ? scss.settingGray
                                                 : scss.setting
                                         }
                                         key={item}
                                     >
                                         <div className={scss.settingItem}>
-                                            {settings[item].title}
+                                            {
+                                                language[
+                                                    item as keyof typeof language
+                                                ]
+                                            }
                                         </div>
                                         <div className={scss.settingItem}>
-                                            {settings[item].value}
+                                            {settings[item]}
                                         </div>
                                     </div>
                                 )
