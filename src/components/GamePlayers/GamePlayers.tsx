@@ -9,7 +9,7 @@ interface IProps {
 export const GamePlayers: React.FC<IProps> = ({ players }) => {
     return (
         <div className={scss.gamePlayers}>
-            <div className={scss.titlePlayers}> Players points </div>
+            <div className={scss.titlePlayers}> Players points: </div>
             <div className={scss.listPlayers}>
                 {Object.keys(players).map((item) => (
                     <div

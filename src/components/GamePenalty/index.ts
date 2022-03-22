@@ -1,1 +1,0 @@
-export { GamePenalty } from "./GamePenalty";

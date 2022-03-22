@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { ISetting } from "../../components/SettingsTable";
 import { LOAD_STATUSES } from "../../common";
 import { serviceGame } from "../../services";
 import { nanoid } from "nanoid";
@@ -14,6 +13,10 @@ export interface IPlayer {
 
 export interface IPlayers {
     [key: string]: IPlayer;
+}
+
+export interface ISetting {
+    [key: string]: any;
 }
 
 export interface IGame {

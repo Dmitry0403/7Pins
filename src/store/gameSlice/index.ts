@@ -10,4 +10,4 @@ export {
     errorMessageGameSelector,
     isUpdateGameStatusSelector,
 } from "./gameSlice";
-export type { IGame, IPlayers, IPlayer } from "./gameSlice";
+export type { IGame, IPlayers, IPlayer, ISetting } from "./gameSlice";

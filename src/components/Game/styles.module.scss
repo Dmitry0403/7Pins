@@ -4,8 +4,20 @@
     height: 100%;
 }
 
-.players {
+.settingsSection {
+    position: relative;
     flex-grow: 1;
+    margin-bottom: 5px;
+}
+
+.settingsSubSection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+    overflow: auto;
+    padding: 5px;
+    width: 50%;
 }
 
 .footerButtons {

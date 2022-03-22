@@ -6,6 +6,7 @@ import { updateListGames } from "../../store/listGamesSlice";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import {
     playersSelector,
+    settingGameSelector,
     fetchGame,
     gameActions,
     updateGame,
@@ -13,11 +14,14 @@ import {
 import { useDispatch } from "react-redux";
 import { LINKS } from "../../common";
 import { Button } from "antd";
+import { GamePoints } from "../GamePoints";
+import { GamePenalties } from "../GamePenalties";
 
 export const Game: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const players = useAppSelector(playersSelector);
+    const settings = useAppSelector(settingGameSelector);
 
     useEffect(() => {
         if (!Object.keys(players)[0]) {
@@ -66,6 +70,12 @@ export const Game: React.FC = () => {
         <div className={scss.mainGame}>
             <div className={scss.players}>
                 <GamePlayers players={players} />
+            </div>
+            <div className={scss.settingsSection}>
+                <div className={scss.settingsSubSection}>
+                    <GamePoints settings={settings} />
+                    <GamePenalties settings={settings} />
+                </div>
             </div>
             <div className={scss.footerButtons}>
                 <Button size="large" onClick={handleExitGame}>
