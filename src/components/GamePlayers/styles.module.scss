@@ -1,5 +1,11 @@
 .gamePlayers {
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.titlePlayers {
+    font-size: 20px;
 }
 
 %player-shared {
@@ -20,10 +26,25 @@
     @extend %player-shared;
     border: 2px solid #40a9ff;
     box-shadow: 0 0 5px #a1d4fd;
-    padding: 15px 10px;
+    padding: 10px 10px;
     font-size: 25px;
 }
 
 .namePlayer {
     margin-right: 10px;
+}
+
+@media screen and (max-height: 360px) {
+    .wrapperListPlayers {
+        position: relative;
+        flex-grow: 1;
+    }
+
+    .listPlayers {
+        position: absolute;
+        max-height: 100%;
+        padding: 5px;
+        width: 100%;
+        overflow: auto;
+    }
 }

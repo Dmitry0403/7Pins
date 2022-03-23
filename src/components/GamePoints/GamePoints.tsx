@@ -1,25 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import scss from "./styles.module.scss";
-import { Button } from "antd";
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { settingGameSelector } from "../../store/gameSlice";
-import { LanguageContext } from "../../languageContext";
+import { ISetting } from "../../store/gameSlice";
+import { LanguageForGameContext } from "../../languageContext";
 
-interface IProps {}
+interface IProps {
+    settings: ISetting;
+}
 
-export const GamePoints: React.FC<IProps> = ({}) => {
-    const settings = useAppSelector(settingGameSelector);
-    const language = useContext(LanguageContext);
+const pointsKeys = ["king", "officer", "pawn", "caromBalls", "alianBall"];
+
+export const GamePoints: React.FC<IProps> = ({ settings }) => {
+    const languageForGame = useContext(LanguageForGameContext);
 
     return (
-        <div className={scss.gameSetting}>
-            <div className={scss.title}>Games points</div>
-            {Object.keys(settings).map((item) => (
-                <div className={scss.itemButton} key={item}>
-                    <Button className={scss.button}>
-                        {settings[item].value}
-                    </Button>
-                    <span>{settings[item].title}</span>
+        <div className={scss.gamePoints}>
+            <div className={scss.title}>Game points:</div>
+            {pointsKeys.map((item) => (
+                <div className={scss.button} key={item}>
+                    {languageForGame[item as keyof typeof languageForGame]}
                 </div>
             ))}
         </div>

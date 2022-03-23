@@ -14,12 +14,8 @@ import { Button, RadioChangeEvent } from "antd";
 import appConfig from "../../../appConfig.json";
 import { LINKS } from "../../common/routes";
 import { useNavigate } from "react-router-dom";
-import type { IPlayers } from "../../store/gameSlice";
+import type { IPlayers, ISetting } from "../../store/gameSlice";
 import { LanguageContext } from "../../languageContext";
-
-export interface ISetting {
-    [key: string]: any;
-}
 
 const defaultPlayerPoints = appConfig.defaultPlayerPoints;
 const minValuePlayerPoints = appConfig.minValuePlayerPoints;
@@ -266,7 +262,7 @@ export const SettingsTable: React.FC = () => {
                 key={key}
             >
                 <RadioInput
-                    name={key}
+                    name={language[key as keyof typeof language]}
                     value={stateSettings[key]}
                     handleRadio={handleRadio}
                 />

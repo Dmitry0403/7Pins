@@ -1,21 +1,17 @@
 @import "../../styles/palette.scss";
 
-.gamePoints {
-    margin-bottom: 20px;
-}
-
 .button {
-    border: 1px solid $colorPoints;
-    box-shadow: 0 0 5px $colorPoints;
+    border: 1px solid $colorUncomplete;
+    box-shadow: 0 0 5px $colorUncomplete;
     background-color: rgb(253, 251, 251);
     border-radius: 5px;
     padding: 5px;
     text-align: center;
-    margin-bottom: 10px;
     width: 100%;
+    margin-bottom: 10px;
     &:hover {
         cursor: pointer;
-        box-shadow: 0 0 10px $colorPoints;
+        box-shadow: 0 0 10px $colorUncomplete;
     }
 }
 

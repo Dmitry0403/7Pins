@@ -12,7 +12,6 @@ import { CurrencyPage } from "../../pages/CurrencyPage";
 import { MasterPage } from "../../pages/MasterPage";
 import { LINKS } from "../../common/routes";
 import "antd/dist/antd.css";
-import { Game } from "../Game";
 
 export const App: React.FC = () => {
     return (

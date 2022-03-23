@@ -4,11 +4,90 @@
     height: 100%;
 }
 
+%style-shared {
+    margin-bottom: 5px;
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+}
+
 .players {
+    @extend %style-shared;
+    padding: 5px;
+}
+
+.gameInfoSection {
+    position: relative;
+    display: flex;
     flex-grow: 1;
+    padding: 0 5px;
+    @extend %style-shared;
+}
+
+.settingsSection {
+    position: absolute;
+    max-height: 100%;
+    overflow: auto;
+    padding: 5px;
+    width: 50%;
+}
+
+.statisticsSection {
+    position: absolute;
+    left: 50%;
+    min-height: 100%;
+    padding: 5px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.currentGamePointsTitle {
+    font-size: 20px;
+    text-align: center;
+}
+
+%box-shared {
+    border: 1px solid rgb(0, 0, 0);
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+    background-color: rgb(253, 251, 251);
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.currentGamePointsValue {
+    @extend %box-shared;
+}
+
+.gameStatistics {
+    flex-grow: 1;
+    position: relative;
+}
+
+.gameStatisticsList {
+    position: absolute;
+    max-height: 100%;
+    min-width: fit-content;
+    overflow: auto;
+}
+
+.button {
+    @extend %box-shared;
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 0 10px rgb(158, 157, 157);
+    }
 }
 
 .footerButtons {
     display: flex;
     justify-content: space-between;
+}
+
+@media screen and (max-height: 360px) {
+    .players {
+        margin-bottom: 10px;
+        height: 35%;
+    }
 }

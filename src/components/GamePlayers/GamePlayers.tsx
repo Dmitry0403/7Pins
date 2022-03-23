@@ -9,25 +9,27 @@ interface IProps {
 export const GamePlayers: React.FC<IProps> = ({ players }) => {
     return (
         <div className={scss.gamePlayers}>
-            <div className={scss.titlePlayers}> Players points </div>
-            <div className={scss.listPlayers}>
-                {Object.keys(players).map((item) => (
-                    <div
-                        className={
-                            players[item].isActive
-                                ? scss.activePlayer
-                                : scss.player
-                        }
-                        key={item}
-                    >
-                        <div className={scss.namePlayer}>
-                            {players[item].name}:
+            <div className={scss.titlePlayers}> Players points: </div>
+            <div className={scss.wrapperListPlayers}>
+                <div className={scss.listPlayers}>
+                    {Object.keys(players).map((item) => (
+                        <div
+                            className={
+                                players[item].isActive
+                                    ? scss.activePlayer
+                                    : scss.player
+                            }
+                            key={item}
+                        >
+                            <div className={scss.namePlayer}>
+                                {players[item].name}:
+                            </div>
+                            <div className={scss.pointsPlayer}>
+                                {players[item].value}
+                            </div>
                         </div>
-                        <div className={scss.pointsPlayer}>
-                            {players[item].value}
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     );

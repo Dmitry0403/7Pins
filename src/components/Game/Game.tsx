@@ -6,6 +6,7 @@ import { updateListGames } from "../../store/listGamesSlice";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import {
     playersSelector,
+    settingGameSelector,
     fetchGame,
     gameActions,
     updateGame,
@@ -13,17 +14,20 @@ import {
 import { useDispatch } from "react-redux";
 import { LINKS } from "../../common";
 import { Button } from "antd";
+import { GamePoints } from "../GamePoints";
+import { GamePenalties } from "../GamePenalties";
 
 export const Game: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const players = useAppSelector(playersSelector);
+    const settings = useAppSelector(settingGameSelector);
 
     useEffect(() => {
-        if (!Object.keys(players)[0]) {
+        if (!Object.keys(players).length) {
             dispatch(fetchGame());
         }
-    }, [dispatch]);
+    }, []);
 
     const handleChangeActivePlayer = () => {
         const numberPlayers = Object.keys(players).length;
@@ -67,12 +71,30 @@ export const Game: React.FC = () => {
             <div className={scss.players}>
                 <GamePlayers players={players} />
             </div>
+            <div className={scss.gameInfoSection}>
+                <div className={scss.settingsSection}>
+                    <GamePoints settings={settings} />
+                    <GamePenalties settings={settings} />
+                </div>
+                <div className={scss.statisticsSection}>
+                    <div className={scss.currentGamePoints}>
+                        <div className={scss.currentGamePointsTitle}>
+                            Current points:
+                        </div>
+                        <div className={scss.currentGamePointsValue}>0</div>
+                    </div>
+                    <div className={scss.gameStatistics}>
+                        <div className={scss.gameStatisticsList}></div>
+                    </div>
+                    <div className={scss.button}>record the impact</div>
+                </div>
+            </div>
             <div className={scss.footerButtons}>
                 <Button size="large" onClick={handleExitGame}>
                     exit the game
                 </Button>
                 <Button size="large" onClick={handleChangeActivePlayer}>
-                    next player
+                    commit the approach
                 </Button>
             </div>
         </div>
