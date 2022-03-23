@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import scss from "./styles.module.scss";
-import { Button } from "antd";
 import type { ISetting } from "../../store/gameSlice";
 import { LanguageForGameContext } from "../../languageContext";
 

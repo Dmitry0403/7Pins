@@ -1,25 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import scss from "./styles.module.scss";
-import { Button } from "antd";
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { ISetting, settingGameSelector } from "../../store/gameSlice";
+import { ISetting } from "../../store/gameSlice";
 import { LanguageForGameContext } from "../../languageContext";
 
 interface IProps {
     settings: ISetting;
 }
 
-const pointsKeys = [
-    "king",
-    "officer",
-    "pawn",
-    "onlyKingDowned",
-    "caromBalls",
-    "alianBall",
-    "kingAndFourPawnsKnockedDown",
-    "allPinsKnockedDown",
-    "bothSightingBallsScored",
-];
+const pointsKeys = ["king", "officer", "pawn", "caromBalls", "alianBall"];
 
 export const GamePoints: React.FC<IProps> = ({ settings }) => {
     const languageForGame = useContext(LanguageForGameContext);
