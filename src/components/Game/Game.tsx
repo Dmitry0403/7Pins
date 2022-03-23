@@ -24,10 +24,10 @@ export const Game: React.FC = () => {
     const settings = useAppSelector(settingGameSelector);
 
     useEffect(() => {
-        if (!Object.keys(players)[0]) {
+        if (!Object.keys(players).length) {
             dispatch(fetchGame());
         }
-    }, [dispatch]);
+    }, []);
 
     const handleChangeActivePlayer = () => {
         const numberPlayers = Object.keys(players).length;

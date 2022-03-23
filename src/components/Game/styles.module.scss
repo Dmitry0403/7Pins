@@ -4,11 +4,22 @@
     height: 100%;
 }
 
+%style-shared {
+    margin-bottom: 5px;
+    box-shadow: 0 0 5px rgb(158, 157, 157);
+}
+
+.players {
+    @extend %style-shared;
+    padding: 5px;
+}
+
 .gameInfoSection {
     position: relative;
     display: flex;
     flex-grow: 1;
-    margin-bottom: 5px;
+    padding: 0 5px;
+    @extend %style-shared;
 }
 
 .settingsSection {
@@ -72,4 +83,11 @@
 .footerButtons {
     display: flex;
     justify-content: space-between;
+}
+
+@media screen and (max-height: 360px) {
+    .players {
+        margin-bottom: 10px;
+        height: 35%;
+    }
 }
