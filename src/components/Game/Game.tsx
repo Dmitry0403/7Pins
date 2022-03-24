@@ -29,6 +29,51 @@ export const Game: React.FC = () => {
         }
     }, []);
 
+    const [points, setPoints] = useState<number>(0);
+    const [penalties, setPenalties] = useState<number>(0);
+    const [impact, setImpact] = useState<string[]>([]);
+
+    const handleClickPoint = (key: string) => {
+        if (!impact.includes(key)) {
+            setImpact((prevState) => [...prevState, key]);
+            setPoints((prevState) => prevState + settings[key]);
+        } else {
+            switch (key) {
+                case "king" || "caromBalls":
+                    return;
+                case "officer":
+                    if (impact.filter((key) => key === "officer").length >= 2) {
+                        return;
+                    }
+                    setImpact((prevState) => [...prevState, key]);
+                    setPoints((prevState) => prevState + settings[key]);
+                    break;
+                case "pawn":
+                    if (impact.filter((key) => key === "pawn").length >= 4) {
+                        return;
+                    }
+                    setImpact((prevState) => [...prevState, key]);
+                    setPoints((prevState) => prevState + settings[key]);
+                    break;
+                case "alianBall":
+                    if (
+                        impact.filter((key) => key === "alianBall").length >= 2
+                    ) {
+                        return;
+                    }
+                    setImpact((prevState) => [...prevState, key]);
+                    setPoints((prevState) => prevState + settings[key]);
+                    break;
+                default:
+                    return;
+            }
+        }
+    };
+
+    const handleClickPenalty = (key: string) => {
+        setPenalties((prevState) => prevState + settings[key]);
+    };
+
     const handleChangeActivePlayer = () => {
         const numberPlayers = Object.keys(players).length;
 
@@ -73,15 +118,18 @@ export const Game: React.FC = () => {
             </div>
             <div className={scss.gameInfoSection}>
                 <div className={scss.settingsSection}>
-                    <GamePoints settings={settings} />
-                    <GamePenalties settings={settings} />
+                    <GamePoints handleClickPoint={handleClickPoint} />
+                    <GamePenalties
+                        settings={settings}
+                        handleClickPenalty={handleClickPenalty}
+                    />
                 </div>
                 <div className={scss.statisticsSection}>
                     <div className={scss.currentGamePoints}>
-                        <div className={scss.currentGamePointsTitle}>
-                            Current points:
+                        <div className={scss.currentGamePointsValue}>
+                            <div>Points: {points}</div>
+                            <div>Penalties: {penalties}</div>
                         </div>
-                        <div className={scss.currentGamePointsValue}>0</div>
                     </div>
                     <div className={scss.gameStatistics}>
                         <div className={scss.gameStatisticsList}></div>

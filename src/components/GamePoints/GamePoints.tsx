@@ -1,22 +1,25 @@
 import React, { useContext } from "react";
 import scss from "./styles.module.scss";
-import { ISetting } from "../../store/gameSlice";
 import { LanguageForGameContext } from "../../languageContext";
 
 interface IProps {
-    settings: ISetting;
+    handleClickPoint: (key: string) => void;
 }
 
 const pointsKeys = ["king", "officer", "pawn", "caromBalls", "alianBall"];
 
-export const GamePoints: React.FC<IProps> = ({ settings }) => {
+export const GamePoints: React.FC<IProps> = ({ handleClickPoint }) => {
     const languageForGame = useContext(LanguageForGameContext);
 
     return (
         <div className={scss.gamePoints}>
             <div className={scss.title}>Game points:</div>
             {pointsKeys.map((item) => (
-                <div className={scss.button} key={item}>
+                <div
+                    className={scss.button}
+                    key={item}
+                    onClick={() => handleClickPoint(item)}
+                >
                     {languageForGame[item as keyof typeof languageForGame]}
                 </div>
             ))}
