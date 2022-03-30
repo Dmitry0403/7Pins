@@ -5,7 +5,7 @@ import { LanguageForGameContext } from "../../languageContext";
 
 interface IProps {
     settings: ISetting;
-    handleClickPenalty: (value: string) => void;
+    handleClickPoint: (value: string, isPenalty: boolean) => void;
 }
 
 const penaltiesKeys = [
@@ -19,7 +19,7 @@ const downedPinsPenaltiesKeys = ["king", "officer", "pawn"];
 
 export const GamePenalties: React.FC<IProps> = ({
     settings,
-    handleClickPenalty,
+    handleClickPoint,
 }) => {
     const languageForGame = useContext(LanguageForGameContext);
 
@@ -30,7 +30,7 @@ export const GamePenalties: React.FC<IProps> = ({
                 <div
                     className={scss.button}
                     key={item}
-                    onClick={() => handleClickPenalty(item)}
+                    onClick={() => handleClickPoint(item, true)}
                 >
                     {languageForGame[item as keyof typeof languageForGame]}
                 </div>
@@ -43,7 +43,7 @@ export const GamePenalties: React.FC<IProps> = ({
                         <div
                             className={scss.button}
                             key={item}
-                            onClick={() => handleClickPenalty(item)}
+                            onClick={() => handleClickPoint(item, true)}
                         >
                             {
                                 languageForGame[

@@ -3,7 +3,7 @@ import scss from "./styles.module.scss";
 import { LanguageForGameContext } from "../../languageContext";
 
 interface IProps {
-    handleClickPoint: (key: string) => void;
+    handleClickPoint: (key: string, isPenalty: boolean) => void;
 }
 
 const pointsKeys = ["king", "officer", "pawn", "caromBalls", "alianBall"];
@@ -18,7 +18,7 @@ export const GamePoints: React.FC<IProps> = ({ handleClickPoint }) => {
                 <div
                     className={scss.button}
                     key={item}
-                    onClick={() => handleClickPoint(item)}
+                    onClick={() => handleClickPoint(item, false)}
                 >
                     {languageForGame[item as keyof typeof languageForGame]}
                 </div>
