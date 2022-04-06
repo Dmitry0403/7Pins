@@ -69,30 +69,23 @@ export const ConfirmationList: React.FC = () => {
                     </div>
                     <div className={scss.settingsSection}>
                         <div className={scss.title}>Points of the game:</div>
-                        {Object.keys(settings).map(
-                            (item, i) =>
-                                settings[item] && (
-                                    <div
-                                        className={
-                                            i % 2 === 0
-                                                ? scss.settingGray
-                                                : scss.setting
-                                        }
-                                        key={item}
-                                    >
-                                        <div className={scss.settingItem}>
-                                            {
-                                                language[
-                                                    item as keyof typeof language
-                                                ]
-                                            }
-                                        </div>
-                                        <div className={scss.settingItem}>
-                                            {settings[item]}
-                                        </div>
-                                    </div>
-                                )
-                        )}
+                        {Object.keys(settings).map((item, i) => (
+                            <div
+                                className={
+                                    i % 2 === 0
+                                        ? scss.settingGray
+                                        : scss.setting
+                                }
+                                key={item}
+                            >
+                                <div className={scss.settingItem}>
+                                    {language[item as keyof typeof language]}
+                                </div>
+                                <div className={scss.settingItem}>
+                                    {settings[item]}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

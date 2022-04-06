@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import scss from "./styles.module.scss";
 import { StepInput } from "../StepInput";
-import { CheckboxInput } from "../CheckboxInput";
 import { RadioInput } from "../RadioInput";
 import { SelectInput } from "../SelectInput";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -55,24 +54,12 @@ export const SettingsTable: React.FC = () => {
             appConfig.penalty.touchingAimingBallWithCueDefaultValue,
     };
 
-    const penaltySettingsWithCheckbox = {
-        ballDirectlyKnockedPins:
-            appConfig.penalty
-                .ballDirectlyKnockedDownPinsDefaultValueIsSumOfDownePins,
-        touchingClothesOrCuePins:
-            appConfig.penalty
-                .touchingClothesOrCuePinsdefaultValueIsSumOfDownePins,
-        allPintsAddedToPenaltyPoints:
-            appConfig.penalty.allPintsAddedToPenaltyPointsDefaultValue,
-    };
-
     const getInitialDefaultSettings = (): ISetting => {
         return Object.assign(
             {},
             pointsSettingsWithStepInput,
             pointsSettingsWithRadioInput,
-            penaltySettingsWithStepInput,
-            penaltySettingsWithCheckbox
+            penaltySettingsWithStepInput
         );
     };
 
@@ -287,29 +274,6 @@ export const SettingsTable: React.FC = () => {
         ));
     };
 
-    const renderPenaltySettingsWithCheckbox = () => {
-        const handleCheckbox = (key: string) => {
-            setStateSettings((prevState) => ({
-                ...prevState,
-                [key]: !prevState[key],
-            }));
-        };
-
-        return Object.keys(penaltySettingsWithCheckbox).map((key, i) => (
-            <div
-                className={i % 2 === 0 ? scss.settingGray : scss.setting}
-                key={key}
-            >
-                <CheckboxInput
-                    id={key}
-                    title={language[key as keyof typeof language]}
-                    value={stateSettings[key]}
-                    handleCheckbox={handleCheckbox}
-                />
-            </div>
-        ));
-    };
-
     return (
         <div className={scss.mainSettingsGame}>
             <div className={scss.mainTitle}>The game setup</div>
@@ -330,7 +294,6 @@ export const SettingsTable: React.FC = () => {
                         <div className={scss.penaltiesSection}>
                             <div className={scss.title}>Penalties:</div>
                             {renderPenaltySettingsWithStepInput()}
-                            {renderPenaltySettingsWithCheckbox()}
                         </div>
                     </div>
                 </div>

@@ -19,12 +19,24 @@ export const language = {
         cueBallNotTouchSingleAimingBall: "Cue ball did't touch an aiming ball",
         cueBallFallsIntoPocket: "Cue ball fell into the pocket",
         touchingAimingBallWithCue: "Touching the aiming ball with the cue",
-        ballDirectlyKnockedPins:
-            "Cue ball or aiming ball directly knocked down the pins - the sum of the downed pins",
-        touchingClothesOrCuePins:
-            "Touching clothes or cue pins - the sum of the downed pins",
-        allPintsAddedToPenaltyPoints:
-            "All points scored in this approach are added to the penalty points",
+    },
+    russian: {
+        king: "Король",
+        officer: "Офицер",
+        pawn: "Пешка",
+        onlyKingDowned: "Сбит только король",
+        caromBalls: "Карамболь",
+        alianBall: "Чужой шар",
+        kingAndFourPawnsKnockedDown: "Сбиты одновременно король и четыре пешки",
+        allPinsKnockedDown: "Сбиты одновременно все кегли",
+        fiveCaromBalls:
+            "Игрок «сделал» подряд пять карамболей, не набирая при этом других очков",
+        bothSightingBallsScored:
+            "В результате удара забиты оба прицельных шара",
+        ballJumedOffTable: "Шар выскочил со стола",
+        cueBallNotTouchSingleAimingBall: "Биток не коснулся прицельного шара",
+        cueBallFallsIntoPocket: "Биток падает в лузу",
+        touchingAimingBallWithCue: "Касание кием прицельного шара",
     },
 };
 
