@@ -15,10 +15,9 @@ export const language = {
             "The player made five carom balls in a row without gaining other point",
         bothSightingBallsScored:
             "As a result of the impact, both sighting balls are scored",
-        ballJumedOffTable: "Cue ball or aiming ball jumped off the table",
-        cueBallNotTouchSingleAimingBall:
-            "The cue ball did not touch a single aiming ball",
-        cueBallFallsIntoPocket: "The cue ball falls into the pocket",
+        ballJumedOffTable: "Ball jumped off",
+        cueBallNotTouchSingleAimingBall: "Cue ball did't touch an aiming ball",
+        cueBallFallsIntoPocket: "Cue ball fell into the pocket",
         touchingAimingBallWithCue: "Touching the aiming ball with the cue",
         ballDirectlyKnockedPins:
             "Cue ball or aiming ball directly knocked down the pins - the sum of the downed pins",

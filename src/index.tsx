@@ -4,24 +4,18 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./components/App";
 import { store } from "./store/store";
 import "./styles/styles.css";
-import {
-    LanguageContext,
-    language,
-    LanguageForGameContext,
-    languageForGame,
-} from "./languageContext";
+import { LanguageContext, language } from "./languageContext";
 
-ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <LanguageContext.Provider value={language.english}>
-                <LanguageForGameContext.Provider
-                    value={languageForGame.english}
-                >
+const Main: React.FC = () => {
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
+                <LanguageContext.Provider value={language.english}>
                     <App />
-                </LanguageForGameContext.Provider>
-            </LanguageContext.Provider>
-        </BrowserRouter>
-    </Provider>,
-    document.getElementById("root")
-);
+                </LanguageContext.Provider>
+            </BrowserRouter>
+        </Provider>
+    );
+};
+
+ReactDOM.render(<Main />, document.getElementById("root"));

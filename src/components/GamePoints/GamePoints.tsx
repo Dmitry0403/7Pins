@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import scss from "./styles.module.scss";
-import { LanguageForGameContext } from "../../languageContext";
+import { LanguageContext } from "../../languageContext";
 
 interface IProps {
     handleClickPoint: (key: string, isPenalty: boolean) => void;
@@ -9,7 +9,7 @@ interface IProps {
 const pointsKeys = ["king", "officer", "pawn", "caromBalls", "alianBall"];
 
 export const GamePoints: React.FC<IProps> = ({ handleClickPoint }) => {
-    const languageForGame = useContext(LanguageForGameContext);
+    const language = useContext(LanguageContext);
 
     return (
         <div className={scss.gamePoints}>
@@ -20,7 +20,7 @@ export const GamePoints: React.FC<IProps> = ({ handleClickPoint }) => {
                     key={item}
                     onClick={() => handleClickPoint(item, false)}
                 >
-                    {languageForGame[item as keyof typeof languageForGame]}
+                    {language[item as keyof typeof language]}
                 </div>
             ))}
         </div>

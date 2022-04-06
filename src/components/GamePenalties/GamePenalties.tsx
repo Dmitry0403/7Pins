@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import scss from "./styles.module.scss";
 import type { ISetting } from "../../store/gameSlice";
-import { LanguageForGameContext } from "../../languageContext";
+import { LanguageContext } from "../../languageContext";
 
 interface IProps {
     settings: ISetting;
@@ -21,7 +21,7 @@ export const GamePenalties: React.FC<IProps> = ({
     settings,
     handleClickPoint,
 }) => {
-    const languageForGame = useContext(LanguageForGameContext);
+    const language = useContext(LanguageContext);
 
     return (
         <div className={scss.gamePenalties}>
@@ -32,7 +32,7 @@ export const GamePenalties: React.FC<IProps> = ({
                     key={item}
                     onClick={() => handleClickPoint(item, true)}
                 >
-                    {languageForGame[item as keyof typeof languageForGame]}
+                    {language[item as keyof typeof language]}
                 </div>
             ))}
             {(settings.ballDirectlyKnockedPins ||
@@ -45,11 +45,7 @@ export const GamePenalties: React.FC<IProps> = ({
                             key={item}
                             onClick={() => handleClickPoint(item, true)}
                         >
-                            {
-                                languageForGame[
-                                    item as keyof typeof languageForGame
-                                ]
-                            }
+                            {language[item as keyof typeof language]}
                         </div>
                     ))}
                 </div>
