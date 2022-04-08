@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import scss from "./styles.module.scss";
 import type { ISetting } from "../../store/gameSlice";
-import { LanguageContext } from "../../languageContext";
+import { useLanguage } from "../../languageContext";
 
 interface IProps {
     settings: ISetting;
@@ -21,7 +21,7 @@ export const GamePenalties: React.FC<IProps> = ({
     settings,
     handleClickPoint,
 }) => {
-    const language = useContext(LanguageContext);
+    const { languageTheme: language } = useLanguage();
 
     return (
         <div className={scss.gamePenalties}>
@@ -32,24 +32,19 @@ export const GamePenalties: React.FC<IProps> = ({
                     key={item}
                     onClick={() => handleClickPoint(item, true)}
                 >
+                    {language && language[item as keyof typeof language]}
+                </div>
+            ))}
+            <div className={scss.title}>Downed pins penalties:</div>
+            {downedPinsPenaltiesKeys.map((item) => (
+                <div
+                    className={scss.button}
+                    key={item}
+                    onClick={() => handleClickPoint(item, true)}
+                >
                     {language[item as keyof typeof language]}
                 </div>
             ))}
-            {(settings.ballDirectlyKnockedPins ||
-                settings.touchingClothesOrCuePins) && (
-                <div>
-                    <div className={scss.title}>Downed pins penalties:</div>
-                    {downedPinsPenaltiesKeys.map((item) => (
-                        <div
-                            className={scss.button}
-                            key={item}
-                            onClick={() => handleClickPoint(item, true)}
-                        >
-                            {language[item as keyof typeof language]}
-                        </div>
-                    ))}
-                </div>
-            )}
         </div>
     );
 };

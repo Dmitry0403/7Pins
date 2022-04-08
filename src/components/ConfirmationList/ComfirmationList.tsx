@@ -14,7 +14,7 @@ import { Button, Spin } from "antd";
 import { LINKS } from "../../common/routes";
 import { useNavigate, generatePath } from "react-router-dom";
 import { LOAD_STATUSES } from "../../common";
-import { LanguageContext } from "../../languageContext";
+import { useLanguage } from "../../languageContext";
 
 export const ConfirmationList: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ export const ConfirmationList: React.FC = () => {
     const players = useAppSelector(playersSelector);
     const settings = useAppSelector(settingGameSelector);
     const gameId = useAppSelector(gameSelector).idGame;
-    const language = useContext(LanguageContext);
+    const { languageTheme: language } = useLanguage();
 
     const loadingStatus = useAppSelector(loadingGameStatusSelector);
     const errorMessage = useAppSelector(errorMessageGameSelector);

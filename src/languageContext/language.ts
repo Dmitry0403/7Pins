@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 
 export const language = {
     english: {
@@ -40,4 +40,14 @@ export const language = {
     },
 };
 
-export const LanguageContext = React.createContext(language.english);
+type ILanguage = typeof language.english;
+
+interface ILanguageContext {
+    languageTheme: ILanguage;
+    setLanguageTheme: React.Dispatch<SetStateAction<ILanguage>>;
+}
+
+export const LanguageContext = React.createContext<ILanguageContext>({
+    languageTheme: language.russian,
+    setLanguageTheme: () => {},
+});

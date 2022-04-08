@@ -4,15 +4,15 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./components/App";
 import { store } from "./store/store";
 import "./styles/styles.css";
-import { LanguageContext, language } from "./languageContext";
+import { LanguageProvider } from "./languageContext";
 
 const Main: React.FC = () => {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <LanguageContext.Provider value={language.english}>
+                <LanguageProvider>
                     <App />
-                </LanguageContext.Provider>
+                </LanguageProvider>
             </BrowserRouter>
         </Provider>
     );

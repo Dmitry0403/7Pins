@@ -14,7 +14,7 @@ import appConfig from "../../../appConfig.json";
 import { LINKS } from "../../common/routes";
 import { useNavigate } from "react-router-dom";
 import type { IPlayers, ISetting } from "../../store/gameSlice";
-import { LanguageContext } from "../../languageContext";
+import { useLanguage } from "../../languageContext";
 
 const defaultPlayerPoints = appConfig.defaultPlayerPoints;
 const minValuePlayerPoints = appConfig.minValuePlayerPoints;
@@ -26,7 +26,7 @@ export const SettingsTable: React.FC = () => {
     const playersFromStore = useAppSelector(playersSelector);
     const settingsFromStore = useAppSelector(settingGameSelector);
 
-    const language = useContext(LanguageContext);
+    const { languageTheme: language } = useLanguage();
 
     const pointsSettingsWithStepInput = {
         king: appConfig.points.kingDefaultValue,
