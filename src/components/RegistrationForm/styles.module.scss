@@ -59,8 +59,8 @@
 .footerButtons {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
 }
+
 .deleteButton {
     position: absolute;
     left: 103%;
@@ -75,10 +75,4 @@
     bottom: -23px;
     left: 0;
     color: $colorError;
-}
-
-@media screen and (min-width: 800px) {
-    .footerButtons {
-        justify-content: space-around;
-    }
 }

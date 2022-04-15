@@ -25,7 +25,7 @@ export const GamePenalties: React.FC<IProps> = ({
 
     return (
         <div className={scss.gamePenalties}>
-            <div className={scss.title}>Game penalties:</div>
+            <div className={scss.title}>{language.penaltiesGame}</div>
             {penaltiesKeys.map((item) => (
                 <div
                     className={scss.button}
@@ -35,7 +35,7 @@ export const GamePenalties: React.FC<IProps> = ({
                     {language && language[item as keyof typeof language]}
                 </div>
             ))}
-            <div className={scss.title}>Downed pins penalties:</div>
+            <div className={scss.title}>{language.downedPinsPenalties}</div>
             {downedPinsPenaltiesKeys.map((item) => (
                 <div
                     className={scss.button}

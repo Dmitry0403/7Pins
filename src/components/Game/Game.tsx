@@ -16,6 +16,7 @@ import { LINKS } from "../../common";
 import { Button } from "antd";
 import { GamePoints } from "../GamePoints";
 import { GamePenalties } from "../GamePenalties";
+import { useLanguage } from "../../languageContext";
 
 interface IImpact {
     value: string;
@@ -27,6 +28,7 @@ export const Game: React.FC = () => {
     const dispatch = useDispatch();
     const players = useAppSelector(playersSelector);
     const settings = useAppSelector(settingGameSelector);
+    const { languageTheme: language } = useLanguage();
 
     const [approachPoints, setApproachPoints] = useState<number>(0);
     const [impactPoints, setImpactPoints] = useState<number>(0);
@@ -160,24 +162,24 @@ export const Game: React.FC = () => {
                 <div className={scss.statisticsSection}>
                     <div className={scss.currentGamePoints}>
                         <div className={scss.currentGamePointsValue}>
-                            <div>Aproach points: {approachPoints}</div>
-                            <div>Impact points: {impactPoints}</div>
+                            <div>{language.aproachPoints + approachPoints}</div>
+                            <div>{language.impactPoints + impactPoints}</div>
                         </div>
                     </div>
                     <div className={scss.gameStatistics}>
                         <div className={scss.gameStatisticsList}></div>
                     </div>
                     <div className={scss.button} onClick={handleRecordImpact}>
-                        record the impact
+                        {language.recordImpact}
                     </div>
                 </div>
             </div>
             <div className={scss.footerButtons}>
                 <Button size="large" onClick={handleExitGame}>
-                    exit the game
+                    {language.exitGame}
                 </Button>
                 <Button size="large" onClick={handleCommitApproach}>
-                    commit the approach
+                    {language.commitApproach}
                 </Button>
             </div>
         </div>

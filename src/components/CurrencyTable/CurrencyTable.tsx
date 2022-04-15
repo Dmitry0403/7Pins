@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { PortModal } from "../../pages/PortModalPage/PortModalPage";
 import { CurrencyCard } from "../CurrencyCard";
+import { useLanguage } from "../../languageContext";
 
 export const CurrencyTable: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ export const CurrencyTable: React.FC = () => {
     const loadStatus = useAppSelector(loadingStatusCurrencySelector);
     const [currency, setCurrency] = useState<ICurrency>(dataCurrencies[0]);
     const navigate = useNavigate();
+    const { languageTheme: language } = useLanguage();
 
     const baseUrl = "https://www.nbrb.by/api/exrates/rates?";
     const queryParams = { ondate: date, periodicity: "0" };
@@ -34,7 +36,12 @@ export const CurrencyTable: React.FC = () => {
         dispatch(fetchCurrency(url));
     }, [date]);
 
-    const titles = ["Currency", "Units", "Code", "Course"];
+    const titles = [
+        language.currency,
+        language.units,
+        language.code,
+        language.course,
+    ];
 
     const handleClickToday = () => {
         setDate(format(new Date(), "yyy-MM-dd"));
@@ -56,15 +63,15 @@ export const CurrencyTable: React.FC = () => {
     return (
         <div className={scss.mainCurrencyTable}>
             <div className={scss.titleCurrency}>
-                Exchange rates of the National Bank of Belarus on{" "}
-                {date.replace(/(\d*)-(\d*)-(\d*)/, "$3.$2.$1")}
+                {language.exchangeRatesBankBelarus +
+                    date.replace(/(\d*)-(\d*)-(\d*)/, "$3.$2.$1")}
             </div>
             <div className={scss.sectionDate}>
                 <div className={scss.today} onClick={handleClickToday}>
-                    for today
+                    {language.forToday}
                 </div>
                 <div className={scss.date}>
-                    <span>on the date</span>
+                    <span>{language.onDate}</span>
                     <input
                         type="date"
                         value={date}
@@ -108,7 +115,7 @@ export const CurrencyTable: React.FC = () => {
             </div>
             <div className={scss.footerButtons}>
                 <Button size="large" onClick={() => navigate(-1)}>
-                    back
+                    {language.back}
                 </Button>
             </div>
             {isActivePortModal && (

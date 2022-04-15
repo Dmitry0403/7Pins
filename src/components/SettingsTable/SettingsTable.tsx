@@ -121,7 +121,7 @@ export const SettingsTable: React.FC = () => {
     const handleGoBack = () => {
         dispatch(gameActions.updatePlayersData(statePlayers));
         dispatch(gameActions.updateSettingsData(stateSettings));
-        navigate(LINKS.start);
+        navigate(LINKS.registration);
     };
 
     const handleReset = () => {
@@ -186,7 +186,9 @@ export const SettingsTable: React.FC = () => {
                         handleIncrement={handlePlayerPointsIncrement}
                     />
                     <div className={scss.playerOrder}>
-                        <div className={scss.selectTitle}>order in game:</div>
+                        <div className={scss.selectTitle}>
+                            {language.orderInGame}
+                        </div>
                         <SelectInput
                             id={key}
                             selectedValue={statePlayers[key].order as number}
@@ -242,14 +244,14 @@ export const SettingsTable: React.FC = () => {
                 [key]: value,
             }));
         };
-
         return Object.keys(pointsSettingsWithRadioInput).map((key, i) => (
             <div
                 className={i % 2 !== 0 ? scss.settingGray : scss.setting}
                 key={key}
             >
                 <RadioInput
-                    name={language[key as keyof typeof language]}
+                    name={key}
+                    title={language[key as keyof typeof language]}
                     value={stateSettings[key]}
                     handleRadio={handleRadio}
                 />
@@ -276,23 +278,25 @@ export const SettingsTable: React.FC = () => {
 
     return (
         <div className={scss.mainSettingsGame}>
-            <div className={scss.mainTitle}>The game setup</div>
+            <div className={scss.mainTitle}>{language.gameSetup}</div>
             <div className={scss.mainSection}>
                 <div className={scss.wrapperMainSection}>
                     <div className={scss.playersSection}>
                         <div className={scss.title}>
-                            Initial points of the players:
+                            {language.initialPlayersPoints}
                         </div>
                         {renderPlayers()}
                     </div>
                     <div className={scss.settingsSection}>
                         <div className={scss.pointsSection}>
-                            <div className={scss.title}>Points:</div>
+                            <div className={scss.title}>{language.points}</div>
                             {renderPointsSettingsWithStepInput()}
                             {renderPointsSettingsWithRadioInput()}
                         </div>
                         <div className={scss.penaltiesSection}>
-                            <div className={scss.title}>Penalties:</div>
+                            <div className={scss.title}>
+                                {language.penalties}
+                            </div>
                             {renderPenaltySettingsWithStepInput()}
                         </div>
                     </div>
@@ -300,7 +304,7 @@ export const SettingsTable: React.FC = () => {
             </div>
             <div className={scss.resetButton}>
                 <Button size="large" onClick={handleReset}>
-                    Reset settings
+                    {language.reset}
                 </Button>
             </div>
             <div className={scss.footerButtons}>
@@ -309,10 +313,10 @@ export const SettingsTable: React.FC = () => {
                     size="large"
                     onClick={handleGoBack}
                 >
-                    back
+                    {language.back}
                 </Button>
                 <Button size="large" onClick={handleSubmitSettings}>
-                    next
+                    {language.next}
                 </Button>
             </div>
         </div>

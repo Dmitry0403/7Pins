@@ -44,11 +44,13 @@ export const ConfirmationList: React.FC = () => {
 
     return (
         <div className={scss.mainConfirmationGame}>
-            <div className={scss.mainTitle}>Settings of the game</div>
+            <div className={scss.mainTitle}>{language.settingsGame}</div>
             <div className={scss.mainSection}>
                 <div className={scss.mainSubSection}>
                     <div className={scss.playersSection}>
-                        <div className={scss.title}>Points of the players:</div>
+                        <div className={scss.title}>
+                            {language.playersPoints}
+                        </div>
                         {Object.keys(players).map((item) => (
                             <div className={scss.player} key={item}>
                                 <div className={scss.playerName}>
@@ -56,11 +58,11 @@ export const ConfirmationList: React.FC = () => {
                                 </div>
                                 <div className={scss.playerSetting}>
                                     <div className={scss.settingItem}>
-                                        <span>points:</span>
+                                        <span>{language.points}</span>
                                         <span>{players[item].value}</span>
                                     </div>
                                     <div className={scss.settingItem}>
-                                        <span>order:</span>
+                                        <span>{language.orderInGame}</span>
                                         <span>{players[item].order}</span>
                                     </div>
                                 </div>
@@ -68,7 +70,7 @@ export const ConfirmationList: React.FC = () => {
                         ))}
                     </div>
                     <div className={scss.settingsSection}>
-                        <div className={scss.title}>Points of the game:</div>
+                        <div className={scss.title}>{language.gamePoints}</div>
                         {Object.keys(settings).map((item, i) => (
                             <div
                                 className={
@@ -95,7 +97,7 @@ export const ConfirmationList: React.FC = () => {
                     size="large"
                     onClick={handleGoBack}
                 >
-                    back
+                    {language.back}
                 </Button>
                 {loadingStatus === LOAD_STATUSES.LOADING && (
                     <Spin size="large" />
@@ -104,7 +106,7 @@ export const ConfirmationList: React.FC = () => {
                     <div>{errorMessage}</div>
                 )}
                 <Button size="large" onClick={handleSubmitGame}>
-                    next to start
+                    {language.nextToGame}
                 </Button>
             </div>
         </div>

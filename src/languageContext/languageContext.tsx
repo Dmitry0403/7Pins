@@ -1,14 +1,10 @@
-import React, { PropsWithChildren, useState, useMemo, useContext } from "react";
+import React, { PropsWithChildren, useState, useContext } from "react";
 import { language, LanguageContext } from "./language";
 
 interface IContext {}
 
 export const LanguageProvider = (props: PropsWithChildren<IContext>) => {
-    const [languageTheme, setLanguageTheme] = useState(language.english);
-    const value = useMemo(
-        () => [languageTheme, setLanguageTheme],
-        [languageTheme]
-    );
+    const [languageTheme, setLanguageTheme] = useState(language.russian);
     return (
         <LanguageContext.Provider
             value={{ languageTheme, setLanguageTheme }}
@@ -22,6 +18,6 @@ export const useLanguage = () => {
     if (!context) {
         throw new Error("useLanguage must be used within a LanguageContext");
     }
-
-    return context;
+    const { languageTheme, setLanguageTheme } = context;
+    return { languageTheme, setLanguageTheme, language };
 };

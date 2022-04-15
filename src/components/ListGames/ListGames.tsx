@@ -12,9 +12,11 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Spin } from "antd";
 import { LOAD_STATUSES } from "../../common";
+import { useLanguage } from "../../languageContext";
 
 export const ListGames: React.FC = () => {
     const dispatch = useAppDispatch();
+    const { languageTheme: language } = useLanguage();
 
     useEffect(() => {
         dispatch(fetchListGames());
@@ -32,16 +34,16 @@ export const ListGames: React.FC = () => {
             {loadingStatus === LOAD_STATUSES.SUCCESS && (
                 <div className={scss.sectionListGames}>
                     <div className={scss.titleListGames}>
-                        List of your games (view details):
+                        {language.listGames}:
                         {isCompleteGame && (
                             <div className={scss.message}>
-                                you have uncompleted games
+                                {language.umcompletedGame}
                             </div>
                         )}
                     </div>
                     {!listGames.length ? (
                         <div className={scss.emptyListGames}>
-                            list of your games is empty.
+                            {language.emptyGamesList}
                         </div>
                     ) : (
                         <div className={scss.subSectionListGames}>
@@ -63,7 +65,7 @@ export const ListGames: React.FC = () => {
                                                 {item.dateGame}
                                             </div>
                                             <div className={scss.players}>
-                                                players:
+                                                {language.players}:
                                                 {Object.keys(item.players).map(
                                                     (key) => (
                                                         <span

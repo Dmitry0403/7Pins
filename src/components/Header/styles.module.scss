@@ -1,0 +1,18 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    padding: 10px 20px 10px 20px;
+    background-color: #f1eeee;
+}
+
+.sectionMenu {
+    display: flex;
+    align-items: center;
+}
+
+.selectLang {
+    width: 70px;
+    margin-right: 20px;
+}

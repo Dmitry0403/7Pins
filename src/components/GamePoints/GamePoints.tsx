@@ -13,7 +13,7 @@ export const GamePoints: React.FC<IProps> = ({ handleClickPoint }) => {
 
     return (
         <div className={scss.gamePoints}>
-            <div className={scss.title}>Game points:</div>
+            <div className={scss.title}>{language.gamePoints}</div>
             {pointsKeys.map((item) => (
                 <div
                     className={scss.button}
