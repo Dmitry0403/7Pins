@@ -16,63 +16,34 @@ import { LINKS } from "../../common";
 import { Button } from "antd";
 import { GamePoints } from "../GamePoints";
 import { GamePenalties } from "../GamePenalties";
+import { useLanguage } from "../../languageContext";
+
+interface IImpact {
+    value: string;
+    isPenalty: boolean;
+}
 
 export const Game: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const players = useAppSelector(playersSelector);
     const settings = useAppSelector(settingGameSelector);
+    const { languageTheme: language } = useLanguage();
+
+    const [approachPoints, setApproachPoints] = useState<number>(0);
+    const [impactPoints, setImpactPoints] = useState<number>(0);
+    const [impact, setImpact] = useState<IImpact[]>([]);
+    const [isPenalty, setIsPenalty] = useState<boolean>(false);
 
     useEffect(() => {
         if (!Object.keys(players).length) {
             dispatch(fetchGame());
         }
-    }, []);
-
-    const [points, setPoints] = useState<number>(0);
-    const [penalties, setPenalties] = useState<number>(0);
-    const [impact, setImpact] = useState<string[]>([]);
-
-    const handleClickPoint = (key: string) => {
-        if (!impact.includes(key)) {
-            setImpact((prevState) => [...prevState, key]);
-            setPoints((prevState) => prevState + settings[key]);
-        } else {
-            switch (key) {
-                case "king" || "caromBalls":
-                    return;
-                case "officer":
-                    if (impact.filter((key) => key === "officer").length >= 2) {
-                        return;
-                    }
-                    setImpact((prevState) => [...prevState, key]);
-                    setPoints((prevState) => prevState + settings[key]);
-                    break;
-                case "pawn":
-                    if (impact.filter((key) => key === "pawn").length >= 4) {
-                        return;
-                    }
-                    setImpact((prevState) => [...prevState, key]);
-                    setPoints((prevState) => prevState + settings[key]);
-                    break;
-                case "alianBall":
-                    if (
-                        impact.filter((key) => key === "alianBall").length >= 2
-                    ) {
-                        return;
-                    }
-                    setImpact((prevState) => [...prevState, key]);
-                    setPoints((prevState) => prevState + settings[key]);
-                    break;
-                default:
-                    return;
-            }
+        if (isPenalty) {
+            handleChangeActivePlayer();
+            setIsPenalty(false);
         }
-    };
-
-    const handleClickPenalty = (key: string) => {
-        setPenalties((prevState) => prevState + settings[key]);
-    };
+    }, [isPenalty]);
 
     const handleChangeActivePlayer = () => {
         const numberPlayers = Object.keys(players).length;
@@ -94,6 +65,9 @@ export const Game: React.FC = () => {
             ...players,
             [prevActiveKey]: {
                 ...players[prevActiveKey],
+                value: isPenalty
+                    ? Number(players[prevActiveKey].value) + approachPoints
+                    : Number(players[prevActiveKey].value) - approachPoints,
                 isActive: false,
             },
             [nextActiveKey]: {
@@ -101,16 +75,77 @@ export const Game: React.FC = () => {
                 isActive: true,
             },
         };
-
+        setApproachPoints(0);
         dispatch(gameActions.updatePlayersData(newDataPlayers));
         dispatch(updateGame());
+    };
+
+    const handleClickPoint = (value: string, isPenalty: boolean) => {
+        const changeImpactValue = (impactNumber: number) => {
+            if (
+                impact.filter((item) => item.value === value).length >=
+                impactNumber
+            ) {
+                return;
+            }
+            setImpact((prevState) => [...prevState, { value, isPenalty }]);
+            setImpactPoints((prevState) => prevState + settings[value]);
+        };
+
+        switch (value) {
+            case "king":
+                changeImpactValue(1);
+                break;
+            case "officer":
+                changeImpactValue(2);
+                break;
+            case "pawn":
+                changeImpactValue(4);
+                break;
+            case "alianBall":
+                changeImpactValue(2);
+                break;
+            case "caromBalls":
+                changeImpactValue(1);
+                break;
+            case "ballJumedOffTable":
+                changeImpactValue(1);
+                break;
+            case "cueBallNotTouchSingleAimingBall":
+                changeImpactValue(1);
+                break;
+            case "cueBallFallsIntoPocket":
+                changeImpactValue(1);
+                break;
+            case "touchingAimingBallWithCue":
+                changeImpactValue(1);
+                break;
+            default:
+                return;
+        }
+    };
+
+    const handleRecordImpact = () => {
+        if (impact.find((item) => item.isPenalty)) {
+            setIsPenalty(true);
+        }
+        setApproachPoints((prevState) => prevState + impactPoints);
+        setImpactPoints(0);
+        setImpact([]);
+    };
+
+    const handleCommitApproach = () => {
+        if (impactPoints) {
+            handleRecordImpact();
+            return;
+        }
+        handleChangeActivePlayer();
     };
 
     const handleExitGame = () => {
         dispatch(updateListGames());
         navigate(LINKS.home);
     };
-
     return (
         <div className={scss.mainGame}>
             <div className={scss.players}>
@@ -121,28 +156,30 @@ export const Game: React.FC = () => {
                     <GamePoints handleClickPoint={handleClickPoint} />
                     <GamePenalties
                         settings={settings}
-                        handleClickPenalty={handleClickPenalty}
+                        handleClickPoint={handleClickPoint}
                     />
                 </div>
                 <div className={scss.statisticsSection}>
                     <div className={scss.currentGamePoints}>
                         <div className={scss.currentGamePointsValue}>
-                            <div>Points: {points}</div>
-                            <div>Penalties: {penalties}</div>
+                            <div>{language.aproachPoints + approachPoints}</div>
+                            <div>{language.impactPoints + impactPoints}</div>
                         </div>
                     </div>
                     <div className={scss.gameStatistics}>
                         <div className={scss.gameStatisticsList}></div>
                     </div>
-                    <div className={scss.button}>record the impact</div>
+                    <div className={scss.button} onClick={handleRecordImpact}>
+                        {language.recordImpact}
+                    </div>
                 </div>
             </div>
             <div className={scss.footerButtons}>
                 <Button size="large" onClick={handleExitGame}>
-                    exit the game
+                    {language.exitGame}
                 </Button>
-                <Button size="large" onClick={handleChangeActivePlayer}>
-                    commit the approach
+                <Button size="large" onClick={handleCommitApproach}>
+                    {language.commitApproach}
                 </Button>
             </div>
         </div>

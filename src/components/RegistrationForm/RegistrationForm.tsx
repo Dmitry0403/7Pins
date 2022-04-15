@@ -9,6 +9,7 @@ import { LINKS } from "../../common/routes";
 import { nanoid } from "nanoid";
 import { UserOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import type { IPlayer } from "../../store/gameSlice";
+import { useLanguage } from "../../languageContext";
 
 interface IPlayerReg extends IPlayer {
     error?: string;
@@ -26,6 +27,7 @@ const maxLength = appConfig.maxInputLengthInRegistrationForm;
 export const RegistrationForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { languageTheme: language } = useLanguage();
 
     const playersFromStore = useAppSelector(playersSelector);
 
@@ -87,13 +89,13 @@ export const RegistrationForm: React.FC = () => {
                     players[key].name !== ""
             )
         ) {
-            error = "this name already exists";
+            error = language.nameAlreadyExists;
         }
         if (isString) {
-            error = `use letters only`;
+            error = language.lettersOnly;
         }
         if (value.length > maxLength) {
-            error = `no more than ${maxLength} letters`;
+            error = language.noMore + maxLength + language.letters;
         }
         return error;
     };
@@ -101,9 +103,9 @@ export const RegistrationForm: React.FC = () => {
     const getErrorMessageOnSubmit = (value: string) => {
         let error = "";
         if (!value) {
-            error = "enter your name";
+            error = language.enterName;
         } else if (value.length < minLength) {
-            error = `at least ${minLength} letters`;
+            error = language.atLeast + minLength + language.letters;
         }
         return error;
     };
@@ -206,7 +208,7 @@ export const RegistrationForm: React.FC = () => {
 
     return (
         <div className={scss.mainRegistrationForm}>
-            <div className={scss.title}> Players registration</div>
+            <div className={scss.title}>{language.registration}</div>
             <div className={scss.inputSection}>
                 <div className={scss.inputSubSection}>
                     <div>
@@ -221,7 +223,7 @@ export const RegistrationForm: React.FC = () => {
                                 >
                                     <Input
                                         size="large"
-                                        placeholder="player"
+                                        placeholder={language.player}
                                         name={id}
                                         value={players[id].name}
                                         prefix={<UserOutlined />}
@@ -251,7 +253,7 @@ export const RegistrationForm: React.FC = () => {
                         <div className={scss.addingButton}>
                             {numberPlayers < maxPlayers && (
                                 <Button size="middle" onClick={handleAddInput}>
-                                    add player
+                                    {language.addPlayer}
                                 </Button>
                             )}
                         </div>
@@ -260,10 +262,10 @@ export const RegistrationForm: React.FC = () => {
             </div>
             <div className={scss.footerButtons}>
                 <Button size="large" onClick={handleGoBack}>
-                    back
+                    {language.back}
                 </Button>
                 <Button size="large" onClick={handleSubmitNames}>
-                    next
+                    {language.next}
                 </Button>
             </div>
         </div>

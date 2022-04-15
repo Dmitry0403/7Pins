@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { HomePage } from "../../pages/HomePage";
 import { StartPage } from "../../pages/StartPage";
+import { RegistrationPage } from "../../pages/RegistrationPage";
 import { SettingPage } from "../../pages/SettingPage";
 import { ConfirmationPage } from "../../pages/ConfirmationPage";
 import { RulesPage } from "../../pages/RulesPage";
@@ -17,9 +17,12 @@ export const App: React.FC = () => {
     return (
         <Routes>
             <Route path={LINKS.home} element={<MasterPage />}>
-                <Route index element={<HomePage />} />
+                <Route index element={<StartPage />} />
                 <Route path={LINKS.details} element={<DetailsPage />} />
-                <Route path={LINKS.start} element={<StartPage />} />
+                <Route
+                    path={LINKS.registration}
+                    element={<RegistrationPage />}
+                />
                 <Route path={LINKS.setting} element={<SettingPage />} />
                 <Route
                     path={LINKS.confirmation}

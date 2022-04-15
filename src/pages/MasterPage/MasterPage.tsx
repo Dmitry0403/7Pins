@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { MenuOutlined } from "@ant-design/icons";
 import scss from "./styles.module.scss";
 import { PortModal } from "../PortModalPage";
 import { MenuCard } from "../../components/MenuCard";
 import { Outlet } from "react-router-dom";
+import { Header } from "../../components/Header";
 
 export const MasterPage: React.FC = () => {
     const [isActivePortModal, setIsActivePortModal] = useState(false);
@@ -13,12 +13,7 @@ export const MasterPage: React.FC = () => {
 
     return (
         <div className={scss.wrapper}>
-            <div className={scss.header}>
-                <div className={scss.icon}>7Pins</div>
-                <div>
-                    <MenuOutlined onClick={handleChangeActiveMenu} />
-                </div>
-            </div>
+            <Header handleChangeActiveMenu={handleChangeActiveMenu} />
             <div className={scss.wrapperChildren}>
                 <Outlet />
             </div>

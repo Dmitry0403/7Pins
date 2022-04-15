@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import scss from "./styles.module.scss";
 import type { ISetting } from "../../store/gameSlice";
-import { LanguageForGameContext } from "../../languageContext";
+import { useLanguage } from "../../languageContext";
 
 interface IProps {
     settings: ISetting;
-    handleClickPenalty: (value: string) => void;
+    handleClickPoint: (value: string, isPenalty: boolean) => void;
 }
 
 const penaltiesKeys = [
@@ -19,41 +19,32 @@ const downedPinsPenaltiesKeys = ["king", "officer", "pawn"];
 
 export const GamePenalties: React.FC<IProps> = ({
     settings,
-    handleClickPenalty,
+    handleClickPoint,
 }) => {
-    const languageForGame = useContext(LanguageForGameContext);
+    const { languageTheme: language } = useLanguage();
 
     return (
         <div className={scss.gamePenalties}>
-            <div className={scss.title}>Game penalties:</div>
+            <div className={scss.title}>{language.penaltiesGame}</div>
             {penaltiesKeys.map((item) => (
                 <div
                     className={scss.button}
                     key={item}
-                    onClick={() => handleClickPenalty(item)}
+                    onClick={() => handleClickPoint(item, true)}
                 >
-                    {languageForGame[item as keyof typeof languageForGame]}
+                    {language && language[item as keyof typeof language]}
                 </div>
             ))}
-            {(settings.ballDirectlyKnockedPins ||
-                settings.touchingClothesOrCuePins) && (
-                <div>
-                    <div className={scss.title}>Downed pins penalties:</div>
-                    {downedPinsPenaltiesKeys.map((item) => (
-                        <div
-                            className={scss.button}
-                            key={item}
-                            onClick={() => handleClickPenalty(item)}
-                        >
-                            {
-                                languageForGame[
-                                    item as keyof typeof languageForGame
-                                ]
-                            }
-                        </div>
-                    ))}
+            <div className={scss.title}>{language.downedPinsPenalties}</div>
+            {downedPinsPenaltiesKeys.map((item) => (
+                <div
+                    className={scss.button}
+                    key={item}
+                    onClick={() => handleClickPoint(item, true)}
+                >
+                    {language[item as keyof typeof language]}
                 </div>
-            )}
+            ))}
         </div>
     );
 };

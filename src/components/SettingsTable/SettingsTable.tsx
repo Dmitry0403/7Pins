@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import scss from "./styles.module.scss";
 import { StepInput } from "../StepInput";
-import { CheckboxInput } from "../CheckboxInput";
 import { RadioInput } from "../RadioInput";
 import { SelectInput } from "../SelectInput";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -15,7 +14,7 @@ import appConfig from "../../../appConfig.json";
 import { LINKS } from "../../common/routes";
 import { useNavigate } from "react-router-dom";
 import type { IPlayers, ISetting } from "../../store/gameSlice";
-import { LanguageContext } from "../../languageContext";
+import { useLanguage } from "../../languageContext";
 
 const defaultPlayerPoints = appConfig.defaultPlayerPoints;
 const minValuePlayerPoints = appConfig.minValuePlayerPoints;
@@ -27,7 +26,7 @@ export const SettingsTable: React.FC = () => {
     const playersFromStore = useAppSelector(playersSelector);
     const settingsFromStore = useAppSelector(settingGameSelector);
 
-    const language = useContext(LanguageContext);
+    const { languageTheme: language } = useLanguage();
 
     const pointsSettingsWithStepInput = {
         king: appConfig.points.kingDefaultValue,
@@ -55,24 +54,12 @@ export const SettingsTable: React.FC = () => {
             appConfig.penalty.touchingAimingBallWithCueDefaultValue,
     };
 
-    const penaltySettingsWithCheckbox = {
-        ballDirectlyKnockedPins:
-            appConfig.penalty
-                .ballDirectlyKnockedDownPinsDefaultValueIsSumOfDownePins,
-        touchingClothesOrCuePins:
-            appConfig.penalty
-                .touchingClothesOrCuePinsdefaultValueIsSumOfDownePins,
-        allPintsAddedToPenaltyPoints:
-            appConfig.penalty.allPintsAddedToPenaltyPointsDefaultValue,
-    };
-
     const getInitialDefaultSettings = (): ISetting => {
         return Object.assign(
             {},
             pointsSettingsWithStepInput,
             pointsSettingsWithRadioInput,
-            penaltySettingsWithStepInput,
-            penaltySettingsWithCheckbox
+            penaltySettingsWithStepInput
         );
     };
 
@@ -134,7 +121,7 @@ export const SettingsTable: React.FC = () => {
     const handleGoBack = () => {
         dispatch(gameActions.updatePlayersData(statePlayers));
         dispatch(gameActions.updateSettingsData(stateSettings));
-        navigate(LINKS.start);
+        navigate(LINKS.registration);
     };
 
     const handleReset = () => {
@@ -199,7 +186,9 @@ export const SettingsTable: React.FC = () => {
                         handleIncrement={handlePlayerPointsIncrement}
                     />
                     <div className={scss.playerOrder}>
-                        <div className={scss.selectTitle}>order in game:</div>
+                        <div className={scss.selectTitle}>
+                            {language.orderInGame}
+                        </div>
                         <SelectInput
                             id={key}
                             selectedValue={statePlayers[key].order as number}
@@ -255,14 +244,14 @@ export const SettingsTable: React.FC = () => {
                 [key]: value,
             }));
         };
-
         return Object.keys(pointsSettingsWithRadioInput).map((key, i) => (
             <div
                 className={i % 2 !== 0 ? scss.settingGray : scss.setting}
                 key={key}
             >
                 <RadioInput
-                    name={language[key as keyof typeof language]}
+                    name={key}
+                    title={language[key as keyof typeof language]}
                     value={stateSettings[key]}
                     handleRadio={handleRadio}
                 />
@@ -287,57 +276,35 @@ export const SettingsTable: React.FC = () => {
         ));
     };
 
-    const renderPenaltySettingsWithCheckbox = () => {
-        const handleCheckbox = (key: string) => {
-            setStateSettings((prevState) => ({
-                ...prevState,
-                [key]: !prevState[key],
-            }));
-        };
-
-        return Object.keys(penaltySettingsWithCheckbox).map((key, i) => (
-            <div
-                className={i % 2 === 0 ? scss.settingGray : scss.setting}
-                key={key}
-            >
-                <CheckboxInput
-                    id={key}
-                    title={language[key as keyof typeof language]}
-                    value={stateSettings[key]}
-                    handleCheckbox={handleCheckbox}
-                />
-            </div>
-        ));
-    };
-
     return (
         <div className={scss.mainSettingsGame}>
-            <div className={scss.mainTitle}>The game setup</div>
+            <div className={scss.mainTitle}>{language.gameSetup}</div>
             <div className={scss.mainSection}>
                 <div className={scss.wrapperMainSection}>
                     <div className={scss.playersSection}>
                         <div className={scss.title}>
-                            Initial points of the players:
+                            {language.initialPlayersPoints}
                         </div>
                         {renderPlayers()}
                     </div>
                     <div className={scss.settingsSection}>
                         <div className={scss.pointsSection}>
-                            <div className={scss.title}>Points:</div>
+                            <div className={scss.title}>{language.points}</div>
                             {renderPointsSettingsWithStepInput()}
                             {renderPointsSettingsWithRadioInput()}
                         </div>
                         <div className={scss.penaltiesSection}>
-                            <div className={scss.title}>Penalties:</div>
+                            <div className={scss.title}>
+                                {language.penalties}
+                            </div>
                             {renderPenaltySettingsWithStepInput()}
-                            {renderPenaltySettingsWithCheckbox()}
                         </div>
                     </div>
                 </div>
             </div>
             <div className={scss.resetButton}>
                 <Button size="large" onClick={handleReset}>
-                    Reset settings
+                    {language.reset}
                 </Button>
             </div>
             <div className={scss.footerButtons}>
@@ -346,10 +313,10 @@ export const SettingsTable: React.FC = () => {
                     size="large"
                     onClick={handleGoBack}
                 >
-                    back
+                    {language.back}
                 </Button>
                 <Button size="large" onClick={handleSubmitSettings}>
-                    next
+                    {language.next}
                 </Button>
             </div>
         </div>

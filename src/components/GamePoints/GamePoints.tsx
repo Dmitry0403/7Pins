@@ -1,26 +1,26 @@
 import React, { useContext } from "react";
 import scss from "./styles.module.scss";
-import { LanguageForGameContext } from "../../languageContext";
+import { useLanguage } from "../../languageContext";
 
 interface IProps {
-    handleClickPoint: (key: string) => void;
+    handleClickPoint: (key: string, isPenalty: boolean) => void;
 }
 
 const pointsKeys = ["king", "officer", "pawn", "caromBalls", "alianBall"];
 
 export const GamePoints: React.FC<IProps> = ({ handleClickPoint }) => {
-    const languageForGame = useContext(LanguageForGameContext);
+    const { languageTheme: language } = useLanguage();
 
     return (
         <div className={scss.gamePoints}>
-            <div className={scss.title}>Game points:</div>
+            <div className={scss.title}>{language.gamePoints}</div>
             {pointsKeys.map((item) => (
                 <div
                     className={scss.button}
                     key={item}
-                    onClick={() => handleClickPoint(item)}
+                    onClick={() => handleClickPoint(item, false)}
                 >
-                    {languageForGame[item as keyof typeof languageForGame]}
+                    {language[item as keyof typeof language]}
                 </div>
             ))}
         </div>
